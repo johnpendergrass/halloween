@@ -5,14 +5,14 @@ class HalloweenGames {
         this.games = {};
         this.gameNames = {
             'game-1': 'Pumpkin Patch',
-            'game-2': 'Ghost Hunt',
+            'game-2': 'Candy Swap',
             'game-3': 'Spider Web',
             'game-4': 'Bat Cave',
             'game-5': "Witch's Brew"
         };
         this.gameDescriptions = {
             'game-1': 'Collect pumpkins in this spooky patch adventure!',
-            'game-2': 'Hunt ghosts in the haunted mansion rooms.',
+            'game-2': 'Trade candy with friends to build the best collection!',
             'game-3': 'Navigate through the intricate spider webs.',
             'game-4': 'Explore the mysterious depths of the bat cave.',
             'game-5': 'Mix magical potions with the witch!'
