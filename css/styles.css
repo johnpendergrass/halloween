@@ -7,20 +7,17 @@
 body {
     font-family: 'Courier New', monospace;
     background: linear-gradient(135deg, #1a0a0a 0%, #2d1810 50%, #1a0a0a 100%);
-    min-height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
     color: #ff8c42;
+    min-height: 100vh;
+    margin: 0;
+    padding: 0;
 }
 
 .main-container {
-    width: 100%;
-    height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
     background: radial-gradient(ellipse at center, rgba(139, 69, 19, 0.1) 0%, rgba(0, 0, 0, 0.8) 70%);
+    min-height: 100vh;
+    width: 100%;
+    position: relative;
 }
 
 .game-area {
@@ -36,6 +33,10 @@ body {
     grid-template-columns: 250px 1fr 250px;
     gap: 0;
     overflow: hidden;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
 }
 
 /* Left Navigation */
@@ -258,40 +259,3 @@ body {
     color: #cc9966;
 }
 
-/* Responsive design for smaller screens */
-@media (max-width: 1300px) {
-    .game-area {
-        width: 95vw;
-        height: 95vh;
-        max-width: 1280px;
-        max-height: 720px;
-    }
-}
-
-@media (max-width: 768px) {
-    .game-area {
-        grid-template-columns: 1fr;
-        grid-template-rows: auto 1fr auto;
-        height: 95vh;
-    }
-    
-    .left-nav, .right-nav {
-        padding: 10px;
-    }
-    
-    .right-nav {
-        order: 3;
-    }
-    
-    .game-list {
-        flex-direction: row;
-        overflow-x: auto;
-        gap: 5px;
-    }
-    
-    .game-item {
-        min-width: 120px;
-        padding: 10px;
-        text-align: center;
-    }
-}
