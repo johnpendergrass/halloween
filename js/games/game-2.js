@@ -57,17 +57,28 @@ export default class CandySwap {
             { name: 'Toblerone', emoji: '🔺', baseValue: 11, tags: ['chocolate', 'premium', 'nougat'] }
         ];
 
-        this.preferenceTypes = [
+        this.lovePreferences = [
             { type: 'love', text: 'Absolutely loves', tag: 'chocolate', multiplier: 2.0 },
             { type: 'love', text: 'Goes crazy for', tag: 'sour', multiplier: 2.0 },
-            { type: 'love', text: 'Adores', tag: 'fruity', multiplier: 1.8 },
-            { type: 'like', text: 'Really likes', tag: 'crunchy', multiplier: 1.5 },
-            { type: 'like', text: 'Enjoys', tag: 'chewy', multiplier: 1.5 },
-            { type: 'like', text: 'Prefers', tag: 'gummy', multiplier: 1.3 },
-            { type: 'dislike', text: 'Dislikes', tag: 'minty', multiplier: 0.5 },
+            { type: 'love', text: 'Adores', tag: 'fruity', multiplier: 2.0 },
+            { type: 'love', text: 'Absolutely loves', tag: 'gummy', multiplier: 2.0 },
+            { type: 'love', text: 'Goes crazy for', tag: 'crunchy', multiplier: 2.0 }
+        ];
+        
+        this.likePreferences = [
+            { type: 'like', text: 'Preference for', tag: 'chewy', multiplier: 1.3 },
+            { type: 'like', text: 'Preference for', tag: 'hard', multiplier: 1.3 },
+            { type: 'like', text: 'Preference for', tag: 'caramel', multiplier: 1.3 },
+            { type: 'like', text: 'Preference for', tag: 'fizzy', multiplier: 1.3 },
+            { type: 'like', text: 'Preference for', tag: 'premium', multiplier: 1.3 }
+        ];
+        
+        this.hatePreferences = [
             { type: 'hate', text: 'Cannot stand', tag: 'peanut', multiplier: 0.1 },
             { type: 'hate', text: 'Allergic to', tag: 'peanut', multiplier: 0.0 },
-            { type: 'dislike', text: 'Avoids', tag: 'chalky', multiplier: 0.3 }
+            { type: 'hate', text: 'Cannot stand', tag: 'chalky', multiplier: 0.1 },
+            { type: 'hate', text: 'Cannot stand', tag: 'minty', multiplier: 0.1 },
+            { type: 'hate', text: 'Cannot stand', tag: 'nougat', multiplier: 0.1 }
         ];
     }
 
@@ -79,8 +90,8 @@ export default class CandySwap {
                 personality: 'generous',
                 preferences: [
                     { type: 'love', text: 'Absolutely loves', tag: 'chocolate', multiplier: 2.0 },
-                    { type: 'hate', text: 'Allergic to', tag: 'peanut', multiplier: 0.0 },
-                    { type: 'like', text: 'Really likes', tag: 'fruity', multiplier: 1.5 }
+                    { type: 'like', text: 'Preference for', tag: 'caramel', multiplier: 1.3 },
+                    { type: 'hate', text: 'Allergic to', tag: 'peanut', multiplier: 0.0 }
                 ]
             },
             {
@@ -89,8 +100,8 @@ export default class CandySwap {
                 personality: 'picky',
                 preferences: [
                     { type: 'love', text: 'Goes crazy for', tag: 'sour', multiplier: 2.0 },
-                    { type: 'dislike', text: 'Dislikes', tag: 'minty', multiplier: 0.5 },
-                    { type: 'like', text: 'Enjoys', tag: 'crunchy', multiplier: 1.5 }
+                    { type: 'like', text: 'Preference for', tag: 'fizzy', multiplier: 1.3 },
+                    { type: 'hate', text: 'Cannot stand', tag: 'minty', multiplier: 0.1 }
                 ]
             },
             {
@@ -98,9 +109,9 @@ export default class CandySwap {
                 emoji: '👩',
                 personality: 'balanced',
                 preferences: [
-                    { type: 'like', text: 'Prefers', tag: 'gummy', multiplier: 1.3 },
-                    { type: 'hate', text: 'Cannot stand', tag: 'chalky', multiplier: 0.1 },
-                    { type: 'love', text: 'Adores', tag: 'fruity', multiplier: 1.8 }
+                    { type: 'love', text: 'Adores', tag: 'fruity', multiplier: 2.0 },
+                    { type: 'like', text: 'Preference for', tag: 'chewy', multiplier: 1.3 },
+                    { type: 'hate', text: 'Cannot stand', tag: 'chalky', multiplier: 0.1 }
                 ]
             },
             {
@@ -108,9 +119,9 @@ export default class CandySwap {
                 emoji: '👨',
                 personality: 'wild',
                 preferences: [
-                    { type: 'love', text: 'Absolutely loves', tag: 'chocolate', multiplier: 2.0 },
-                    { type: 'like', text: 'Really likes', tag: 'crunchy', multiplier: 1.5 },
-                    { type: 'dislike', text: 'Avoids', tag: 'chewy', multiplier: 0.3 }
+                    { type: 'love', text: 'Goes crazy for', tag: 'crunchy', multiplier: 2.0 },
+                    { type: 'like', text: 'Preference for', tag: 'premium', multiplier: 1.3 },
+                    { type: 'hate', text: 'Cannot stand', tag: 'nougat', multiplier: 0.1 }
                 ]
             }
         ];
@@ -125,9 +136,13 @@ export default class CandySwap {
         return result;
     }
 
-    generateRandomPreferences(count = 3) {
-        const shuffled = [...this.preferenceTypes].sort(() => 0.5 - Math.random());
-        return shuffled.slice(0, count);
+    generateRandomPreferences() {
+        // Always generate exactly: 1 love + 1 like + 1 hate
+        const love = this.lovePreferences[Math.floor(Math.random() * this.lovePreferences.length)];
+        const like = this.likePreferences[Math.floor(Math.random() * this.likePreferences.length)];
+        const hate = this.hatePreferences[Math.floor(Math.random() * this.hatePreferences.length)];
+        
+        return [love, like, hate];
     }
 
     calculateCandyValue(candy, preferences) {
@@ -160,7 +175,7 @@ export default class CandySwap {
         
         // Generate player starting state
         this.playerCandy = this.generateRandomCandy(5);
-        this.playerPreferences = this.generateRandomPreferences(3);
+        this.playerPreferences = this.generateRandomPreferences();
         
         // Randomize friend order
         this.friendOrder = [...this.friends].sort(() => 0.5 - Math.random());
@@ -183,7 +198,27 @@ export default class CandySwap {
 
     generateFriendOffer() {
         const count = Math.floor(Math.random() * 3) + 1; // 1-3 candy
-        this.currentFriend.offering = this.generateRandomCandy(count);
+        
+        // Get tags that this friend likes/loves (they won't offer these)
+        const likedTags = this.currentFriend.preferences
+            .filter(pref => pref.type === 'like' || pref.type === 'love')
+            .map(pref => pref.tag);
+        
+        // Filter out candies with tags the friend likes/loves
+        const availableCandy = this.candyTypes.filter(candy => 
+            !candy.tags.some(tag => likedTags.includes(tag))
+        );
+        
+        // Generate random selection from available candy
+        const result = [];
+        for (let i = 0; i < count; i++) {
+            if (availableCandy.length > 0) {
+                const candy = availableCandy[Math.floor(Math.random() * availableCandy.length)];
+                result.push({ ...candy, id: Math.random().toString(36).substr(2, 9) });
+            }
+        }
+        
+        this.currentFriend.offering = result;
     }
 
     rerollFriendOffer() {
