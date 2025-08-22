@@ -5,14 +5,14 @@ class HalloweenGames {
         this.games = {};
         this.gameNames = {
             'game-1': 'Pumpkin Patch',
-            'game-2': 'Candy Swap',
+            'candy-swap': 'Candy Swap',
             'game-3': 'Spider Web',
             'game-4': 'Bat Cave',
             'game-5': "Witch's Brew"
         };
         this.gameDescriptions = {
             'game-1': 'Collect pumpkins in this spooky patch adventure!',
-            'game-2': 'Trade candy with friends to build the best collection!',
+            'candy-swap': 'Trade candy with friends to build the best collection!',
             'game-3': 'Navigate through the intricate spider webs.',
             'game-4': 'Explore the mysterious depths of the bat cave.',
             'game-5': 'Mix magical potions with the witch!'
@@ -39,7 +39,7 @@ class HalloweenGames {
     }
 
     async loadGames() {
-        const gameIds = ['game-1', 'game-2', 'game-3', 'game-4', 'game-5'];
+        const gameIds = ['game-1', 'candy-swap', 'game-3', 'game-4', 'game-5'];
         
         for (const gameId of gameIds) {
             try {
@@ -82,7 +82,7 @@ class HalloweenGames {
     getGameEmoji(gameId) {
         const emojis = {
             'game-1': '🎃🎃🎃',
-            'game-2': '👻👻👻',
+            'candy-swap': '🍬🍬🍬',
             'game-3': '🕷️🕸️🕷️',
             'game-4': '🦇🦇🦇',
             'game-5': '🧙‍♀️⚗️🧙‍♀️'
