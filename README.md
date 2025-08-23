@@ -1,3 +1,12 @@
+README
+
+for Halloween game 2025
+
+john calls folder halloween2025
+
+
+
+
 # 🎃 Halloween Minigames 🎃
 
 A collection of spooky Halloween-themed minigames built with vanilla HTML, CSS, and JavaScript.
