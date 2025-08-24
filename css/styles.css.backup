@@ -162,8 +162,6 @@ body {
     background: linear-gradient(180deg, #3d2817 0%, #2a1810 100%);
     border-left: 2px solid #ff6600;
     padding: 20px;
-    display: flex;
-    flex-direction: column;
 }
 
 .right-nav h3 {
@@ -174,18 +172,6 @@ body {
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
     border-bottom: 2px solid #ff6600;
     padding-bottom: 10px;
-}
-
-.title-section {
-    margin-bottom: 30px;
-}
-
-.title-section h3 {
-    margin-bottom: 15px;
-}
-
-.games-section h3 {
-    margin-bottom: 15px;
 }
 
 .game-list {

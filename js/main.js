@@ -1,17 +1,19 @@
 class HalloweenGames {
     constructor() {
-        this.currentGame = 'game-1';
+        this.currentGame = 'game-0';
         this.currentScore = 0;
         this.games = {};
         this.gameNames = {
-            'game-1': 'Pumpkin Patch',
+            'game-0': 'Title Screen',
+            'game-1': 'Find the Pumpkin',
             'candy-swap': 'Candy Swap',
             'game-3': 'Spider Web',
             'game-4': 'Bat Cave',
             'game-5': "Witch's Brew"
         };
         this.gameDescriptions = {
-            'game-1': 'Collect pumpkins in this spooky patch adventure!',
+            'game-0': 'Welcome to Halloween Minigames! Select a game to start playing.',
+            'game-1': 'Use WASD keys to move the pumpkin around the screen!',
             'candy-swap': 'Trade candy with friends to build the best collection!',
             'game-3': 'Navigate through the intricate spider webs.',
             'game-4': 'Explore the mysterious depths of the bat cave.',
@@ -24,8 +26,6 @@ class HalloweenGames {
     async init() {
         this.bindEvents();
         await this.loadGames();
-        this.switchGame('game-1');
-        this.updateUI();
     }
 
     bindEvents() {
@@ -39,17 +39,24 @@ class HalloweenGames {
     }
 
     async loadGames() {
-        const gameIds = ['game-1', 'candy-swap', 'game-3', 'game-4', 'game-5'];
+        const gameIds = ['game-0', 'game-1', 'candy-swap', 'game-3', 'game-4', 'game-5'];
         
         for (const gameId of gameIds) {
             try {
                 const module = await import(`./games/${gameId}.js`);
+                console.log(`Successfully loaded module for ${gameId}:`, module);
                 this.games[gameId] = new module.default();
+                console.log(`Successfully instantiated game ${gameId}:`, this.games[gameId]);
             } catch (error) {
                 console.warn(`Could not load game ${gameId}:`, error);
                 this.games[gameId] = this.createFallbackGame(gameId);
+                console.log(`Using fallback game for ${gameId}`);
             }
         }
+        
+        // Initialize the title screen after all games are loaded
+        this.switchGame('game-0');
+        this.updateUI();
     }
 
     createFallbackGame(gameId) {
@@ -81,6 +88,7 @@ class HalloweenGames {
 
     getGameEmoji(gameId) {
         const emojis = {
+            'game-0': '🦇👻🎃',
             'game-1': '🎃🎃🎃',
             'candy-swap': '🍬🍬🍬',
             'game-3': '🕷️🕸️🕷️',
@@ -91,28 +99,44 @@ class HalloweenGames {
     }
 
     async switchGame(gameId) {
-        if (this.currentGame === gameId) return;
+        console.log('=== SWITCH GAME DEBUG ===');
+        console.log('Switching to game:', gameId);
+        console.log('Current game:', this.currentGame);
+        
+        if (this.currentGame === gameId) {
+            console.log('Already on this game, returning');
+            return;
+        }
 
         if (this.games[this.currentGame]) {
+            console.log('Stopping current game:', this.currentGame);
             this.games[this.currentGame].stop();
         }
 
         this.currentGame = gameId;
+        console.log('Set current game to:', gameId);
         
         const gameItems = document.querySelectorAll('.game-item');
+        console.log('Found game items:', gameItems.length);
         gameItems.forEach(item => {
             item.classList.remove('active');
             if (item.getAttribute('data-game') === gameId) {
                 item.classList.add('active');
+                console.log('Activated game item for:', gameId);
             }
         });
 
+        console.log('Rendering current game...');
         this.renderCurrentGame();
         this.updateUI();
 
         if (this.games[gameId]) {
+            console.log('Starting game:', gameId, 'Game object:', this.games[gameId]);
             this.games[gameId].start();
+        } else {
+            console.log('ERROR: No game object found for:', gameId);
         }
+        console.log('=== END SWITCH GAME DEBUG ===');
     }
 
     renderCurrentGame() {
