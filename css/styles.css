@@ -29,18 +29,20 @@ body {
     box-shadow: 
         0 0 30px rgba(255, 102, 0, 0.5),
         inset 0 0 20px rgba(0, 0, 0, 0.5);
-    display: grid;
-    grid-template-columns: 250px 1fr 250px;
-    gap: 0;
-    overflow: hidden;
     position: absolute;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
+    overflow: hidden;
 }
 
 /* Left Navigation */
 .left-nav {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 250px;
+    height: 720px;
     background: linear-gradient(180deg, #3d2817 0%, #2a1810 100%);
     border-right: 2px solid #ff6600;
     padding: 20px;
@@ -106,12 +108,15 @@ body {
 
 /* Center Game Area */
 .center-game {
+    position: absolute;
+    left: 250px;
+    top: 0;
+    width: 780px;
+    height: 720px;
     background: linear-gradient(135deg, #1a1410 0%, #261a10 100%);
-    padding: 20px;
     display: flex;
     align-items: center;
     justify-content: center;
-    position: relative;
 }
 
 #game-content {
@@ -159,6 +164,11 @@ body {
 
 /* Right Navigation */
 .right-nav {
+    position: absolute;
+    left: 1030px;
+    top: 0;
+    width: 250px;
+    height: 720px;
     background: linear-gradient(180deg, #3d2817 0%, #2a1810 100%);
     border-left: 2px solid #ff6600;
     padding: 20px;
