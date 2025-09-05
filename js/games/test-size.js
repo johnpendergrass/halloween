@@ -1,7 +1,7 @@
 export default class TestSize {
     constructor() {
         this.name = 'Test Size';
-        this.description = 'Test to verify exact 780x720 pixel dimensions with corrected absolute positioning';
+        this.description = 'Test to verify exact 905x720 pixel dimensions with sliding panel overlay';
         this.score = 0;
         this.isRunning = false;
     }
@@ -12,10 +12,10 @@ export default class TestSize {
                 position: absolute;
                 left: 0;
                 top: 0;
-                width: 780px;
+                width: 905px;
                 height: 720px;
-                background: url('test-size-780x720-final.svg') no-repeat;
-                background-size: 780px 720px;
+                background: url('test-size-905x720.svg') no-repeat;
+                background-size: 905px 720px;
                 border: none;
                 margin: 0;
                 padding: 0;
@@ -33,20 +33,20 @@ export default class TestSize {
                 font-size: 12px;
                 z-index: 100;
             ">
-                <div>Image: 780x720</div>
+                <div>Game Area: 905x720</div>
                 <div>Position: (0,0)</div>
-                <div>Absolute positioning</div>
-                <div>No border interference</div>
+                <div>Panel overlays rightmost 125px when expanded</div>
+                <div>Use panel toggle to test overlay</div>
             </div>
         `;
     }
 
     start() {
         this.isRunning = true;
-        console.log('Test Size game started - checking 780x720 fit with corrected absolute positioning');
+        console.log('Test Size game started - checking 905x720 fit with sliding panel overlay');
         
         // Update the score to show the test is active
-        this.score = 780720; // Creative way to show dimensions
+        this.score = 905720; // Creative way to show dimensions
         
         // Check if the game area has scrollbars after a brief delay
         setTimeout(() => {

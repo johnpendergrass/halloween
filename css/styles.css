@@ -111,7 +111,7 @@ body {
     position: absolute;
     left: 250px;
     top: 0;
-    width: 780px;
+    width: 905px;
     height: 720px;
     background: linear-gradient(135deg, #1a1410 0%, #261a10 100%);
     display: flex;
@@ -174,6 +174,86 @@ body {
     padding: 20px;
     display: flex;
     flex-direction: column;
+    z-index: 100;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Panel States */
+.right-nav.expanded {
+    width: 250px;
+    left: 1030px;
+    box-shadow: -4px 0 8px rgba(0, 0, 0, 0.3);
+}
+
+.right-nav.collapsed {
+    width: 125px;
+    left: 1155px;
+    box-shadow: none;
+    padding: 20px 10px;
+}
+
+/* Content transitions */
+.right-nav .game-name {
+    transition: opacity 0.2s ease;
+}
+
+.right-nav.collapsed .game-name {
+    display: none;
+}
+
+/* Panel Toggle Button */
+.panel-toggle {
+    margin-top: auto;
+    padding: 20px 0;
+    text-align: center;
+}
+
+.toggle-button {
+    background: transparent;
+    border: none;
+    color: #ff8c42;
+    font-size: 24px;
+    cursor: pointer;
+    padding: 10px 20px;
+    transition: all 0.2s ease;
+    position: relative;
+}
+
+.toggle-button:hover {
+    color: #ffaa66;
+    transform: scale(1.2);
+}
+
+.toggle-button:active {
+    transform: scale(1.1);
+}
+
+/* Arrow direction based on panel state - content will be set by JavaScript */
+.toggle-arrow {
+    display: inline-block;
+    font-family: monospace;
+    font-size: 20px;
+    line-height: 1;
+    letter-spacing: -1px;
+}
+
+/* Collapsed panel behaviors */
+.right-nav.collapsed .game-item {
+    justify-content: center;
+    gap: 0;
+    width: 100%;
+}
+
+.right-nav.collapsed .game-icon {
+    width: auto;
+}
+
+.right-nav.collapsed .games-icon {
+    display: none;
+}
+
+.right-nav.collapsed .games-section h3 {
+    font-size: 1.2em;
 }
 
 .right-nav h3 {
@@ -187,7 +267,7 @@ body {
 }
 
 .title-section {
-    margin-bottom: 30px;
+    margin-bottom: 15px;
 }
 
 .title-section h3 {
@@ -209,7 +289,8 @@ body {
     display: flex;
     align-items: center;
     gap: 12px;
-    padding: 15px;
+    padding: 8px;
+    min-height: 38px;
     background: rgba(0, 0, 0, 0.3);
     border: 1px solid #cc5500;
     border-radius: 8px;
@@ -236,6 +317,10 @@ body {
     font-size: 1.5em;
     width: 30px;
     text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
 }
 
 .game-name {

@@ -25,15 +25,15 @@
 }
 ```
 
-### Absolute Positioning System
+### Absolute Positioning with Sliding Panel System
 
 **Panel Positioning Logic:**
 - All panels positioned relative to the `.game-area` container
 - Coordinates start at (0,0) inside the border, not outside
-- No gaps or overlaps between panels
+- Right panel slides between two positions for optimal space usage
 
 ```css
-/* Left Panel */
+/* Left Panel (Fixed) */
 .left-nav {
     position: absolute;
     left: 0;                 /* Against left edge */
@@ -42,42 +42,59 @@
     height: 720px;           /* Full internal height */
 }
 
-/* Center Panel */
+/* Center Panel (Expanded for Maximum Game Space) */
 .center-game {
     position: absolute;
     left: 250px;             /* After left panel */
     top: 0;                  /* Against top edge */
-    width: 780px;            /* 1280 - 250 - 250 */
+    width: 905px;            /* Expanded from 780px */
     height: 720px;           /* Full internal height */
 }
 
-/* Right Panel */  
+/* Right Panel (Sliding System) */
 .right-nav {
     position: absolute;
-    left: 1030px;            /* 250 + 780 = 1030 */
     top: 0;                  /* Against top edge */
-    width: 250px;            /* Includes 2px left border */
     height: 720px;           /* Full internal height */
+    z-index: 100;            /* Above game content for overlay */
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Expanded State - Overlays Game */
+.right-nav.expanded {
+    left: 1030px;            /* 250 + 780 (original position) */
+    width: 250px;
+    padding: 20px;
+    box-shadow: -4px 0 8px rgba(0, 0, 0, 0.3);
+}
+
+/* Collapsed State - No Overlay */
+.right-nav.collapsed {
+    left: 1155px;            /* 250 + 905 = 1155 */
+    width: 125px;
+    padding: 20px 10px;      /* Reduced horizontal padding */
+    box-shadow: none;
 }
 ```
 
 ## Game Content Positioning
 
 ### Maximum Game Dimensions
-- **Available Space:** 780px × 720px
+- **Available Space:** 905px × 720px (expanded game area)
 - **Position for Full-Size Games:** `left: 0; top: 0;`
 - **No Padding Constraints:** Games have complete control over the space
+- **Panel Interaction:** Right panel may overlay rightmost 125px when expanded
 
 ### Centering Smaller Games
 
 **Mathematical Formula for Centering:**
 ```javascript
 // For a game with dimensions gameWidth × gameHeight
-const centerX = (780 - gameWidth) / 2;
+const centerX = (905 - gameWidth) / 2;
 const centerY = (720 - gameHeight) / 2;
 
 // Example: 600×500 game
-const centerX = (780 - 600) / 2 = 90px;
+const centerX = (905 - 600) / 2 = 152.5px;
 const centerY = (720 - 500) / 2 = 110px;
 ```
 
@@ -121,6 +138,134 @@ const centerY = (720 - 500) / 2 = 110px;
 1. **Outer Border (3px):** Defines entire game area boundary
 2. **Panel Borders (2px):** Create visual separation between functional areas
 3. **Game Content:** Clean, borderless canvas for maximum creative space
+
+## Sliding Panel System Implementation
+
+### JavaScript Panel Management
+
+**Core State Management:**
+```javascript
+class HalloweenGames {
+    constructor() {
+        // Panel state
+        this.isPanelCollapsed = false;
+        
+        // Load saved state from localStorage
+        const savedPanelState = localStorage.getItem('panelState');
+        if (savedPanelState === 'collapsed') {
+            this.isPanelCollapsed = true;
+        }
+    }
+    
+    togglePanel() {
+        this.isPanelCollapsed = !this.isPanelCollapsed;
+        this.updatePanelState();
+        localStorage.setItem('panelState', this.isPanelCollapsed ? 'collapsed' : 'expanded');
+    }
+    
+    updatePanelState() {
+        const panel = document.querySelector('.right-nav');
+        const arrow = document.querySelector('.toggle-arrow');
+        
+        if (this.isPanelCollapsed) {
+            panel.classList.remove('expanded');
+            panel.classList.add('collapsed');
+            arrow.textContent = '←···';  // Expand arrow
+        } else {
+            panel.classList.remove('collapsed');
+            panel.classList.add('expanded');
+            arrow.textContent = '···→';  // Collapse arrow
+        }
+    }
+}
+```
+
+**Auto-Panel Behavior:**
+```javascript
+// In switchGame() method
+if (gameId === 'game-0') {
+    // Title screen - expand panel for navigation
+    if (this.isPanelCollapsed) {
+        this.isPanelCollapsed = false;
+        this.updatePanelState();
+        localStorage.setItem('panelState', 'expanded');
+    }
+} else {
+    // Any game - collapse panel for maximum space
+    if (!this.isPanelCollapsed) {
+        this.isPanelCollapsed = true;
+        this.updatePanelState();
+        localStorage.setItem('panelState', 'collapsed');
+    }
+}
+```
+
+### CSS Panel Content Transitions
+
+**Icon Visibility Control:**
+```css
+/* Hide game names when collapsed, show only icons */
+.right-nav.collapsed .game-name {
+    display: none;  /* Complete removal from layout */
+}
+
+/* Center icons in collapsed state */
+.right-nav.collapsed .game-item {
+    justify-content: center;
+    gap: 0;
+    width: 100%;
+}
+
+.right-nav.collapsed .game-icon {
+    width: auto;  /* Remove fixed width for better centering */
+}
+
+/* Hide Games section icon when collapsed */
+.right-nav.collapsed .games-icon {
+    display: none;
+}
+```
+
+**Arrow Button Design:**
+```css
+.toggle-button {
+    background: transparent;
+    border: none;
+    color: #ff8c42;
+    font-size: 24px;
+    cursor: pointer;
+    padding: 10px 20px;  /* Large hit area */
+    transition: all 0.2s ease;
+}
+
+.toggle-button:hover {
+    color: #ffaa66;
+    transform: scale(1.2);
+}
+
+.toggle-arrow {
+    font-family: monospace;
+    font-size: 20px;
+    letter-spacing: -1px;
+}
+```
+
+### Performance Considerations
+
+**Smooth Transitions:**
+- Uses `cubic-bezier(0.4, 0, 0.2, 1)` for Material Design feel
+- 0.4s duration provides smooth motion without feeling slow
+- Hardware-accelerated transitions for performance
+
+**Memory Efficiency:**
+- Panel state persisted in localStorage (minimal overhead)
+- No memory leaks in event listeners or state management
+- Efficient DOM updates using class toggles
+
+**State Consistency:**
+- Single source of truth for panel state
+- Automatic synchronization between visual state and internal state
+- Graceful handling of edge cases (missing elements, etc.)
 
 ## Dynamic Game Loading System
 

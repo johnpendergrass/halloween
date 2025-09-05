@@ -40,8 +40,8 @@
 - **Border Radius:** 15px
 - **Background:** Dark gradient with Halloween theme colors
 
-### Three-Panel Layout (Absolute Positioning)
-**Updated Layout System:** Converted from CSS Grid to absolute positioning for precise control.
+### Three-Panel Layout with Sliding Panel System
+**Updated Layout System:** Converted from CSS Grid to absolute positioning with intelligent sliding panel.
 
 #### Left Navigation Panel
 - **Position:** absolute at (0, 0)
@@ -56,26 +56,43 @@
 - **Border:** 2px solid #ff6600 (right border only)
 - **Padding:** 20px
 
-#### Center Game Area  
+#### Center Game Area (Expanded)
 - **Position:** absolute at (250px, 0)
-- **Width:** 780px (exact - no border interference)
+- **Width:** 905px (expanded from 780px for maximum game space)
 - **Height:** 720px (full game area height)
-- **Available Game Space:** **780px × 720px** at position (0,0)
+- **Available Game Space:** **905px × 720px** at position (0,0)
 - **Content:** Dynamic game content rendered via innerHTML
 - **Background:** Linear gradient (#1a1410 to #261a10)
-- **Padding:** REMOVED - games have full access to 780×720 space
+- **Padding:** REMOVED - games have full access to 905×720 space
 - **Border:** None - clean game area
 
-#### Right Navigation Panel
-- **Position:** absolute at (1030px, 0)
-- **Width:** 250px (fixed)
+#### Right Navigation Panel (Sliding System)
+- **Base Position:** absolute at (1030px, 0)
 - **Height:** 720px (fixed - full game area height)
-- **Content:**
-  - Menu section with Title Screen
-  - Games section with 6 minigames (including Test Size)
 - **Background:** Linear gradient (#3d2817 to #2a1810)
 - **Border:** 2px solid #ff6600 (left border only)
-- **Padding:** 20px
+- **Transition:** Smooth 0.4s cubic-bezier easing
+
+**Expanded State (250px):**
+- Width: 250px
+- Position: (1030px, 0) - overlays rightmost 125px of game
+- Padding: 20px
+- Content: Full game names with icons, Games header with icon
+- Shadow: Subtle drop shadow when overlaying
+
+**Collapsed State (125px):**
+- Width: 125px  
+- Position: (1155px, 0) - no game overlay
+- Padding: 20px 10px (reduced horizontal padding)
+- Content: Icons only (centered), Games text only (no icon)
+- Shadow: None
+
+**Panel Controls:**
+- Toggle button with directional arrows
+- Auto-collapse when games start (except title screen)
+- Auto-expand when title screen selected
+- Manual toggle always available
+- State persisted in localStorage
 
 ### Element Sizing Details
 
@@ -90,10 +107,11 @@
 - **Layout:** Flexbox justify-content: space-between
 
 #### Game Content Area
-- **Available Space:** **780px × 720px** (full center panel - no padding)
+- **Available Space:** **905px × 720px** (full expanded center panel - no padding)
 - **Positioning:** Absolute positioning for games at (0,0)
 - **Display:** Flex center alignment for smaller games
 - **Flexibility:** Games can use full space or center themselves if smaller
+- **Panel Interaction:** Right panel may overlay rightmost 125px when expanded
 
 ## Minigames Implementation
 
@@ -116,9 +134,10 @@
   - Move counter scoring system
   - Boundary detection (game area limits)
   - Detailed carved pumpkin graphics using CSS
-- **Game Area Bounds (Updated for 780×720):**
-  - minX: 0, maxX: 680px (780px - 100px pumpkin width)
+- **Game Area Bounds (Updated for 905×720):**
+  - minX: 0, maxX: 805px (905px - 100px pumpkin width)
   - minY: 0, maxY: 620px (720px - 100px pumpkin height)
+  - Starting position: (402, 310) - centered in 905×720 area
 - **Movement:** 20px increments per keypress
 
 ### 3. Candy Swap (candy-swap.js) 
@@ -167,13 +186,14 @@
 - **Size:** 75+ lines
 - **Type:** Development testing tool
 - **Features:**
-  - Visual dimension verification with 780×720px test image
-  - Corner markers at (0,0), (779,0), (0,719), (779,719)
+  - Visual dimension verification with 905×720px test image
+  - Corner markers at (0,0), (904,0), (0,719), (904,719)
   - Grid pattern for precise positioning
   - Console logging of scroll detection
   - Real-time dimension reporting
-- **Purpose:** Verify absolute positioning and maximum game area dimensions
-- **Status:** Temporary - for development/testing only
+  - Panel overlay testing functionality
+- **Purpose:** Verify sliding panel system and maximum game area dimensions
+- **Status:** Development tool - can be removed when all games are implemented
 
 ## Responsive Design Status
 
