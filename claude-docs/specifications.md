@@ -246,6 +246,13 @@ Each game must implement:
 - Inline CSS for game-specific styling
 - Template literals for HTML generation
 
+### Code Organization Standards
+- **No backup files:** `.backup`, `.backup2` files should not exist in the codebase
+- **Console logging:** Debug console.log statements should be removed or behind debug flags
+- **Configuration:** Game metadata should be extracted to separate config files
+- **Method length:** Keep methods under 50 lines for maintainability
+- **Single responsibility:** Each method should handle one specific task
+
 ## Development Notes
 
 ### Current Branch Status

@@ -406,6 +406,105 @@ js/
 - **Sound System:** Integrated audio management
 - **Save/Load System:** Persistent game state management
 
+## Refactoring Priorities and Technical Debt
+
+### Immediate Technical Debt
+1. **Debug Output Cleanup**
+   - Remove production console.log statements from main.js (lines 66-68, 72, 125-126, 144-146)
+   - Implement debug configuration flag: `const DEBUG = false;` and conditional logging
+   - Clean up console statements from game files
+
+2. **Code Organization**
+   - Extract hardcoded game configuration from main.js constructor
+   - Create `config/games.config.js` with structured game metadata
+   - Implement proper separation of concerns
+
+### Method Refactoring
+3. **switchGame() Method Decomposition**
+   ```javascript
+   // Current: 56-line monolithic method
+   // Target: Break into focused methods:
+   - handlePanelAutoToggle(gameId)
+   - stopCurrentGame()
+   - activateGameUI(gameId)  
+   - startNewGame(gameId)
+   ```
+
+4. **Panel State Management Consolidation**
+   ```javascript
+   // Replace duplicate localStorage calls with:
+   setPanelState(collapsed, updateStorage = true) {
+       this.isPanelCollapsed = collapsed;
+       this.updatePanelState();
+       if (updateStorage) {
+           localStorage.setItem('panelState', collapsed ? 'collapsed' : 'expanded');
+       }
+   }
+   ```
+
+### Error Handling Improvements
+5. **Robust Game Loading**
+   - Add user-visible error states for failed game loads
+   - Implement retry mechanisms for network/import failures
+   - Create graceful degradation for missing game modules
+
+6. **Event Listener Management**
+   ```javascript
+   // Add cleanup methods to prevent memory leaks
+   destroy() {
+       // Remove all event listeners
+       // Clear intervals/timeouts
+       // Release game references
+   }
+   ```
+
+### Performance and Maintainability
+7. **Constants Extraction**
+   ```javascript
+   // Create constants/dimensions.js
+   export const PANEL_DIMENSIONS = {
+       COLLAPSED_WIDTH: 125,
+       EXPANDED_WIDTH: 250,
+       GAME_AREA_WIDTH: 905,
+       GAME_AREA_HEIGHT: 720
+   };
+   ```
+
+8. **CSS Architecture**
+   - Split styles.css into logical modules:
+     - `css/layout.css` - Panel positioning and game area
+     - `css/components.css` - Buttons, game items, UI components  
+     - `css/animations.css` - Transitions and hover effects
+     - `css/themes.css` - Colors, gradients, Halloween theme
+
+### Type Safety and Documentation
+9. **Interface Documentation**
+   ```javascript
+   /**
+    * @typedef {Object} GameInterface
+    * @property {string} name - Display name of the game
+    * @property {string} description - Game description for UI
+    * @property {number} score - Current game score
+    * @property {Function} render - Returns HTML string
+    * @property {Function} start - Initialize game state
+    * @property {Function} stop - Clean up game state
+    * @property {Function} getScore - Return current score
+    */
+   ```
+
+### Development Tools
+10. **Build Process Considerations**
+    - Implement dev vs production builds
+    - Add test-size game to dev-only mode
+    - Create minification and optimization pipeline
+    - Add code linting and formatting standards
+
+### Implementation Timeline
+- **Session 1:** Debug cleanup, config extraction
+- **Session 2:** Method refactoring, error handling
+- **Session 3:** Constants extraction, CSS organization
+- **Future:** Type safety, build optimization
+
 ---
 
 **Technical Maintenance Notes:**
@@ -413,3 +512,4 @@ js/
 - Test layout changes with the test-size game before implementing new features
 - Maintain absolute positioning calculations when adding new UI elements
 - Document any changes to the game interface contract
+- Prioritize refactoring tasks before adding new features for code health

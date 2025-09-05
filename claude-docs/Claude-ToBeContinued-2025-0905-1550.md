@@ -161,7 +161,56 @@
 - **Feature additions:** Panel system can accommodate new functionality
 - **Code maintainability:** Well-documented, clear separation of concerns
 
+## Refactoring Recommendations
+
+### Immediate Actions (Next Session Priority)
+1. **Remove Debug Console Logs**
+   - Extensive console.log statements throughout main.js and game files
+   - Either implement debug flag or remove entirely for production
+   - Affects: js/main.js (lines 66-68, 72, 125-126, 144-146, etc.)
+
+2. **Extract Game Configuration**
+   - Move hardcoded game metadata from constructor to separate config file
+   - Create `config/games.config.js` for centralized game definitions
+   - Improves maintainability and reduces main.js complexity
+
+### Medium Priority Refactoring
+3. **Consolidate Panel State Logic**
+   - Duplicate localStorage.setItem calls in multiple methods
+   - Create single `setPanelState(collapsed)` method
+   - Reduces code duplication and improves consistency
+
+4. **Refactor switchGame Method**
+   - Method is 56 lines and handles multiple responsibilities
+   - Break into: `handlePanelAutoToggle()`, `stopCurrentGame()`, `activateNewGame()`
+   - Improves readability and maintainability
+
+5. **Improve Error Handling**
+   - Current loadGames() only logs warnings on failure
+   - Add user-friendly error messages and recovery strategies
+   - Consider loading state UI for better user experience
+
+### Future Enhancement Opportunities
+6. **Extract Constants**
+   - Magic values (125px, 250px, 905px) scattered throughout
+   - Create `constants/dimensions.js` and `constants/colors.js`
+   - Improves maintainability and theme consistency
+
+7. **CSS Organization**
+   - Single 330+ line CSS file becoming unwieldy
+   - Consider splitting: layout.css, components.css, animations.css, themes.css
+   - Improves code organization and maintainability
+
+8. **Development Tool Management**
+   - Decide fate of test-size game (remove, dev-mode flag, or keep)
+   - Consider build process for dev vs production variants
+
+### Code Quality Improvements
+- **Backup Files:** Removed .backup files that were cluttering the project
+- **Type Safety:** Consider JSDoc comments for game interface documentation
+- **Event Management:** Add cleanup methods for event listeners
+
 ---
 
 **Next Developer Notes:**
-The sliding panel system is complete and polished. The focus should now shift to implementing the three placeholder games (Spider Web, Bat Cave, Witch's Brew) to take advantage of the expanded 905×720 game area. The test-size game can be kept as a development tool or removed once all games are implemented. The system is ready for creative game development within the established framework.
+The sliding panel system is complete and polished. Before implementing the three placeholder games (Spider Web, Bat Cave, Witch's Brew), consider tackling the immediate refactoring priorities to improve code maintainability. The debug console logs should be addressed first, followed by extracting the game configuration. The expanded 905×720 game area is ready for creative game development within the established framework.
