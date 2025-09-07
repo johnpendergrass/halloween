@@ -1,0 +1,412 @@
+export default class WordSearch {
+    constructor() {
+        this.name = 'Word Search';
+        this.description = 'Find Halloween words hidden in the letter grid!';
+        this.score = 0;
+        this.isRunning = false;
+        
+        // The letter grid as specified
+        this.grid = [
+            ['S', 'H', 'E', 'E', 'C', 'O', 'R', 'E'],
+            ['N', 'E', 'L', 'Y', 'O', 'F', 'I', 'E'],
+            ['A', 'H', 'T', 'R', 'G', 'F', 'E', 'N'],
+            ['B', 'I', 'J', 'A', 'I', 'N', 'R', 'S'],
+            ['A', 'C', 'A', 'N', 'G', 'E', 'D', 'H'],
+            ['R', 'K', 'L', 'A', 'T', 'O', 'U', 'R'],
+            ['W', 'O', 'B', 'E', 'W', 'B', 'C', 'O']
+        ];
+        
+        // Valid words to find
+        this.validWords = [
+            'EERIE',
+            'JACKOLANTERN', 
+            'COBWEB',
+            'BANSHEE',
+            'WRAITH',
+            'SHROUD',
+            'GARGOYLE',
+            'COFFIN'
+        ];
+        
+        // Track selected letters
+        this.selectedLetters = [];
+        this.foundWords = [];
+        
+        // Bind click handler
+        this.handleLetterClick = this.handleLetterClick.bind(this);
+        this.handleSubmit = this.handleSubmit.bind(this);
+        this.handleReset = this.handleReset.bind(this);
+    }
+
+    render() {
+        const gridHTML = this.grid.map((row, rowIndex) => {
+            return row.map((letter, colIndex) => {
+                const isSelected = this.selectedLetters.some(sel => sel.row === rowIndex && sel.col === colIndex);
+                return `
+                    <div class="letter-cell ${isSelected ? 'selected' : ''}" 
+                         data-row="${rowIndex}" 
+                         data-col="${colIndex}"
+                         data-letter="${letter}">
+                        ${letter}
+                    </div>
+                `;
+            }).join('');
+        }).join('');
+
+        const selectedWord = this.selectedLetters.map(sel => sel.letter).join('');
+        
+        const foundWordsHTML = this.foundWords.map(word => 
+            `<div class="found-word">✓ ${word}</div>`
+        ).join('');
+
+        return `
+            <div class="game-screen word-search-game">
+                <h2>🔍 Word Search 🔍</h2>
+                <div class="word-search-container">
+                    <div class="word-search-grid">
+                        ${gridHTML}
+                    </div>
+                    
+                    <div class="word-search-sidebar">
+                        <div class="selected-word-section">
+                            <h3>Selected Word:</h3>
+                            <div class="selected-word">${selectedWord || '(none)'}</div>
+                            <div class="word-controls">
+                                <button id="submit-word" ${selectedWord.length === 0 ? 'disabled' : ''}>Submit</button>
+                                <button id="reset-word" ${selectedWord.length === 0 ? 'disabled' : ''}>Reset</button>
+                            </div>
+                            <div id="word-feedback" class="word-feedback"></div>
+                        </div>
+                        
+                        <div class="words-to-find">
+                            <h3>Words to Find:</h3>
+                            <div class="word-list">
+                                ${this.validWords.map(word => 
+                                    `<div class="target-word ${this.foundWords.includes(word) ? 'found' : ''}">${word}</div>`
+                                ).join('')}
+                            </div>
+                        </div>
+                        
+                        <div class="found-words-section">
+                            <h3>Found Words:</h3>
+                            <div class="found-words">
+                                ${foundWordsHTML || '<div class="no-words">None yet</div>'}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <style>
+                .word-search-game {
+                    padding: 20px;
+                    height: 100%;
+                    overflow-y: auto;
+                }
+                
+                .word-search-container {
+                    display: flex;
+                    gap: 20px;
+                    height: calc(100% - 60px);
+                }
+                
+                .word-search-grid {
+                    display: grid;
+                    grid-template-columns: repeat(8, 40px);
+                    grid-template-rows: repeat(7, 40px);
+                    gap: 2px;
+                    background: #2a1a0a;
+                    padding: 10px;
+                    border-radius: 8px;
+                    border: 2px solid #8b4513;
+                }
+                
+                .letter-cell {
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    background: #f4a460;
+                    color: #2a1a0a;
+                    font-weight: bold;
+                    font-size: 18px;
+                    cursor: pointer;
+                    border-radius: 4px;
+                    border: 2px solid #d2691e;
+                    transition: all 0.2s ease;
+                    user-select: none;
+                }
+                
+                .letter-cell:hover {
+                    background: #ffd700;
+                    transform: scale(1.1);
+                }
+                
+                .letter-cell.selected {
+                    background: #ff6347;
+                    color: white;
+                    border-color: #dc143c;
+                    transform: scale(1.05);
+                }
+                
+                .word-search-sidebar {
+                    flex: 1;
+                    display: flex;
+                    flex-direction: column;
+                    gap: 20px;
+                    max-width: 300px;
+                }
+                
+                .selected-word-section,
+                .words-to-find,
+                .found-words-section {
+                    background: rgba(139, 69, 19, 0.3);
+                    padding: 15px;
+                    border-radius: 8px;
+                    border: 2px solid #8b4513;
+                }
+                
+                .selected-word-section h3,
+                .words-to-find h3,
+                .found-words-section h3 {
+                    margin: 0 0 10px 0;
+                    color: #ffd700;
+                    font-size: 16px;
+                }
+                
+                .selected-word {
+                    background: #2a1a0a;
+                    color: #ffd700;
+                    padding: 10px;
+                    border-radius: 4px;
+                    font-family: monospace;
+                    font-size: 18px;
+                    font-weight: bold;
+                    min-height: 20px;
+                    margin-bottom: 10px;
+                    border: 1px solid #8b4513;
+                }
+                
+                .word-controls {
+                    display: flex;
+                    gap: 10px;
+                    margin-bottom: 10px;
+                }
+                
+                .word-controls button {
+                    flex: 1;
+                    padding: 8px 12px;
+                    background: #8b4513;
+                    color: white;
+                    border: none;
+                    border-radius: 4px;
+                    cursor: pointer;
+                    font-weight: bold;
+                    transition: background 0.2s ease;
+                }
+                
+                .word-controls button:hover:not(:disabled) {
+                    background: #a0522d;
+                }
+                
+                .word-controls button:disabled {
+                    background: #666;
+                    cursor: not-allowed;
+                    opacity: 0.5;
+                }
+                
+                .word-feedback {
+                    padding: 8px;
+                    border-radius: 4px;
+                    font-weight: bold;
+                    text-align: center;
+                    min-height: 20px;
+                }
+                
+                .word-feedback.correct {
+                    background: #90EE90;
+                    color: #006400;
+                }
+                
+                .word-feedback.incorrect {
+                    background: #FFB6C1;
+                    color: #8B0000;
+                }
+                
+                .word-list {
+                    display: flex;
+                    flex-direction: column;
+                    gap: 5px;
+                }
+                
+                .target-word {
+                    padding: 8px;
+                    background: #2a1a0a;
+                    color: #ffd700;
+                    border-radius: 4px;
+                    font-family: monospace;
+                    font-weight: bold;
+                    border: 1px solid #8b4513;
+                }
+                
+                .target-word.found {
+                    background: #228B22;
+                    color: white;
+                    text-decoration: line-through;
+                }
+                
+                .found-word {
+                    padding: 5px 8px;
+                    background: #90EE90;
+                    color: #006400;
+                    border-radius: 4px;
+                    font-family: monospace;
+                    font-weight: bold;
+                    margin-bottom: 5px;
+                }
+                
+                .no-words {
+                    color: #999;
+                    font-style: italic;
+                    text-align: center;
+                    padding: 10px;
+                }
+            </style>
+        `;
+    }
+
+    handleLetterClick(event) {
+        if (!this.isRunning) return;
+        
+        const cell = event.target.closest('.letter-cell');
+        if (!cell) return;
+        
+        const row = parseInt(cell.dataset.row);
+        const col = parseInt(cell.dataset.col);
+        const letter = cell.dataset.letter;
+        
+        // Check if this letter is already selected
+        const existingIndex = this.selectedLetters.findIndex(sel => sel.row === row && sel.col === col);
+        
+        if (existingIndex !== -1) {
+            // If clicking the last selected letter, remove it (backspace behavior)
+            if (existingIndex === this.selectedLetters.length - 1) {
+                this.selectedLetters.pop();
+                this.updateDisplay();
+            }
+            // If clicking a letter in the middle, ignore for now (could implement more complex behavior later)
+        } else {
+            // Add new letter to selection
+            this.selectedLetters.push({ row, col, letter });
+            this.updateDisplay();
+        }
+    }
+
+    handleSubmit() {
+        if (!this.isRunning || this.selectedLetters.length === 0) return;
+        
+        const selectedWord = this.selectedLetters.map(sel => sel.letter).join('');
+        const feedback = document.getElementById('word-feedback');
+        
+        if (this.validWords.includes(selectedWord.toUpperCase()) && !this.foundWords.includes(selectedWord.toUpperCase())) {
+            // Correct word!
+            this.foundWords.push(selectedWord.toUpperCase());
+            this.score += selectedWord.length * 10; // Score based on word length
+            
+            feedback.textContent = 'Correct!';
+            feedback.className = 'word-feedback correct';
+            
+            // Update main game score
+            if (window.gameApp) {
+                window.gameApp.updateScore(this.score);
+            }
+            
+            // Clear selection
+            this.selectedLetters = [];
+            this.updateDisplay();
+        } else {
+            // Incorrect or already found
+            feedback.textContent = this.foundWords.includes(selectedWord.toUpperCase()) ? 'Already found!' : 'No';
+            feedback.className = 'word-feedback incorrect';
+        }
+        
+        // Clear feedback after 2 seconds
+        setTimeout(() => {
+            feedback.textContent = '';
+            feedback.className = 'word-feedback';
+        }, 2000);
+    }
+
+    handleReset() {
+        if (!this.isRunning) return;
+        
+        this.selectedLetters = [];
+        this.updateDisplay();
+        
+        const feedback = document.getElementById('word-feedback');
+        feedback.textContent = '';
+        feedback.className = 'word-feedback';
+    }
+
+    updateDisplay() {
+        // Re-render the entire game to update the display
+        const gameContent = document.getElementById('game-content');
+        if (gameContent) {
+            gameContent.innerHTML = this.render();
+            this.bindEvents();
+        }
+    }
+
+    bindEvents() {
+        // Bind letter click events
+        const letterCells = document.querySelectorAll('.letter-cell');
+        letterCells.forEach(cell => {
+            cell.addEventListener('click', this.handleLetterClick);
+        });
+        
+        // Bind control button events
+        const submitButton = document.getElementById('submit-word');
+        const resetButton = document.getElementById('reset-word');
+        
+        if (submitButton) {
+            submitButton.addEventListener('click', this.handleSubmit);
+        }
+        
+        if (resetButton) {
+            resetButton.addEventListener('click', this.handleReset);
+        }
+    }
+
+    start() {
+        this.isRunning = true;
+        
+        // Use setTimeout to ensure DOM is ready
+        setTimeout(() => {
+            this.bindEvents();
+        }, 100);
+    }
+
+    stop() {
+        this.isRunning = false;
+        
+        // Remove event listeners
+        const letterCells = document.querySelectorAll('.letter-cell');
+        letterCells.forEach(cell => {
+            cell.removeEventListener('click', this.handleLetterClick);
+        });
+        
+        const submitButton = document.getElementById('submit-word');
+        const resetButton = document.getElementById('reset-word');
+        
+        if (submitButton) {
+            submitButton.removeEventListener('click', this.handleSubmit);
+        }
+        
+        if (resetButton) {
+            resetButton.removeEventListener('click', this.handleReset);
+        }
+    }
+
+    getScore() {
+        return this.score;
+    }
+}
