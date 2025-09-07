@@ -43,14 +43,15 @@ function validatePartialWordSearchPuzzle(grid, targetWords) {
         return result;
     }
 
-    // Check if grid is large enough for the longest word
-    const longestWordLength = Math.max(...targetWords.map(word => word.length));
-    if (Math.max(rows, cols) < longestWordLength) {
+    // Check if total word length exceeds grid capacity
+    const totalWordLength = targetWords.reduce((sum, word) => sum + word.length, 0);
+    const gridCapacity = rows * cols;
+    if (totalWordLength > gridCapacity) {
         result.isValid = false;
         result.problems.push({
             word: "GRID",
             count: 0,
-            error: `Grid too small: longest word is ${longestWordLength} letters, but max grid dimension is ${Math.max(rows, cols)}`
+            error: `Total word length (${totalWordLength}) exceeds grid capacity (${gridCapacity})`
         });
         return result;
     }

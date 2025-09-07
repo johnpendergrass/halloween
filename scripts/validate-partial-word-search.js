@@ -3,8 +3,8 @@
 /**
  * Partial Word Search Puzzle Validator Script
  * 
- * Usage: npm run validate-partial-word-search -- --grid <grid-data> --words <word1> <word2> ...
- * Example: npm run validate-partial-word-search -- --grid "ABC,DEF,GHI" --words CAT DOG
+ * Usage: npm run validate-partial-word-search -- --puzzle <puzzle-file-path>
+ * Example: npm run validate-partial-word-search -- --puzzle js/games/word-search/puzzles/word-search-1.js
  */
 
 const { validatePartialWordSearchPuzzle } = require('../js/games/word-search/partial-validator');
@@ -31,10 +31,11 @@ function printSeparator() {
     console.log(colorize('━'.repeat(60), 'dim'));
 }
 
-function printHeader(grid, words) {
-    console.log(colorize(`Validating partial word search puzzle`, 'cyan'));
-    console.log(colorize(`Words to find: ${words.join(', ')}`, 'white'));
-    console.log(colorize(`Grid size: ${grid.length}×${grid[0]?.length || 0}`, 'white'));
+function printHeader(puzzle) {
+    console.log(colorize(`Validating partial word search puzzle: ${puzzle.name}`, 'cyan'));
+    console.log(colorize(`Description: ${puzzle.description}`, 'white'));
+    console.log(colorize(`Words to find: ${puzzle.words.join(', ')}`, 'white'));
+    console.log(colorize(`Grid size: ${puzzle.grid.length}×${puzzle.grid[0]?.length || 0}`, 'white'));
     printSeparator();
 }
 
@@ -84,81 +85,71 @@ function printResults(result) {
     }
 }
 
-function parseGridString(gridString) {
-    // Parse grid format like "ABC,DEF,GHI" or "A B C,D E F,G H I"
-    const rows = gridString.split(',');
-    return rows.map(row => {
-        // Split by spaces if present, otherwise split each character
-        if (row.includes(' ')) {
-            return row.trim().split(/\s+/);
-        } else {
-            return row.trim().split('');
+function loadPuzzleFile(filePath) {
+    // Resolve relative path from current working directory
+    const path = require('path');
+    const resolvedPath = path.resolve(filePath);
+    
+    try {
+        // Clear require cache to ensure fresh load
+        delete require.cache[resolvedPath];
+        const puzzle = require(resolvedPath);
+        
+        // Validate puzzle structure
+        if (!puzzle.grid || !Array.isArray(puzzle.grid)) {
+            throw new Error('Puzzle file must export an object with a "grid" array');
         }
-    });
+        if (!puzzle.words || !Array.isArray(puzzle.words)) {
+            throw new Error('Puzzle file must export an object with a "words" array');
+        }
+        
+        return puzzle;
+    } catch (error) {
+        if (error.code === 'MODULE_NOT_FOUND') {
+            throw new Error(`Puzzle file not found: ${filePath}`);
+        }
+        throw new Error(`Error loading puzzle file: ${error.message}`);
+    }
 }
 
 function parseArguments() {
     // Remove any standalone -- arguments that npm adds
     const args = process.argv.slice(2).filter(arg => arg !== '--');
     
-    const gridIndex = args.indexOf('--grid');
-    const wordsIndex = args.indexOf('--words');
+    const puzzleIndex = args.indexOf('--puzzle');
     
-    if (gridIndex === -1) {
-        throw new Error('Missing required argument: --grid <grid-data>');
+    if (puzzleIndex === -1) {
+        throw new Error('Missing required argument: --puzzle <puzzle-file-path>');
     }
     
-    if (wordsIndex === -1) {
-        throw new Error('Missing required argument: --words <word1> <word2> ...');
+    if (puzzleIndex + 1 >= args.length) {
+        throw new Error('--puzzle requires a file path');
     }
     
-    // Parse grid
-    if (gridIndex + 1 >= args.length) {
-        throw new Error('--grid requires grid data (e.g., "ABC,DEF,GHI")');
-    }
+    const puzzleFilePath = args[puzzleIndex + 1];
     
-    const gridString = args[gridIndex + 1];
-    let grid;
     try {
-        grid = parseGridString(gridString);
+        const puzzle = loadPuzzleFile(puzzleFilePath);
+        return { puzzle };
     } catch (error) {
-        throw new Error(`Invalid grid format: ${error.message}`);
+        throw new Error(error.message);
     }
-    
-    // Parse words
-    if (wordsIndex + 1 >= args.length) {
-        throw new Error('--words requires at least one word');
-    }
-    
-    const wordsStart = wordsIndex + 1;
-    const words = [];
-    
-    // Collect all words after --words (until end or next flag)
-    for (let i = wordsStart; i < args.length; i++) {
-        if (args[i].startsWith('--')) break;
-        words.push(args[i]);
-    }
-    
-    if (words.length === 0) {
-        throw new Error('No words provided after --words flag');
-    }
-    
-    return { grid, words };
 }
 
 function printUsage() {
     console.log(colorize('Usage:', 'yellow'));
-    console.log('  npm run validate-partial-word-search -- --grid <grid-data> --words <word1> <word2> ...');
+    console.log('  npm run validate-partial-word-search -- --puzzle <puzzle-file-path>');
     console.log();
-    console.log(colorize('Grid Format:', 'yellow'));
-    console.log('  • Comma-separated rows: "ABC,DEF,GHI"');
-    console.log('  • Space-separated cells: "A B C,D E F,G H I"');
-    console.log('  • Empty cells as spaces: "A  C,D E F" (double space for empty)');
+    console.log(colorize('Puzzle File Format:', 'yellow'));
+    console.log('  The puzzle file should export an object with:');
+    console.log('  • grid: 2D array of letters [["A", "B"], ["C", "D"]]');
+    console.log('  • words: Array of target words ["AB", "CD"]');
+    console.log('  • name: (optional) Puzzle name');
+    console.log('  • description: (optional) Puzzle description');
     console.log();
     console.log(colorize('Examples:', 'yellow'));
-    console.log('  npm run validate-partial-word-search -- --grid "CAT,DOG,RAT" --words CAT DOG RAT');
-    console.log('  npm run validate-partial-word-search -- --grid "C A T,D O G,R A T" --words CAT DOG');
-    console.log('  npm run validate-partial-word-search -- --grid "HELLO,WORLD" --words HELLO WORLD');
+    console.log('  npm run validate-partial-word-search -- --puzzle js/games/word-search/puzzles/word-search-1.js');
+    console.log('  npm run validate-partial-word-search -- --puzzle path/to/my-puzzle.js');
     console.log();
     console.log(colorize('Features:', 'yellow'));
     console.log('  • Accepts grids larger than word list');
@@ -184,17 +175,17 @@ function main() {
         process.exit(1);
     }
     
-    const { grid, words } = config;
+    const { puzzle } = config;
     
     try {
         // Print header
-        printHeader(grid, words);
+        printHeader(puzzle);
         
         // Show the grid
-        printGrid(grid);
+        printGrid(puzzle.grid);
         
         // Validate the puzzle
-        const result = validatePartialWordSearchPuzzle(grid, words);
+        const result = validatePartialWordSearchPuzzle(puzzle.grid, puzzle.words);
         
         // Print results
         printResults(result);
