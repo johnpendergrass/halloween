@@ -5,7 +5,9 @@
       "Bash(python3:*)",
       "Bash(cp:*)",
       "Bash(npm test)",
-      "Bash(npm run test-puzzle:*)"
+      "Bash(npm run test-puzzle:*)",
+      "Bash(mv:*)",
+      "Bash(npm run test-word-search:*)"
     ],
     "deny": [],
     "ask": []

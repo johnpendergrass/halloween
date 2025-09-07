@@ -6,7 +6,7 @@
   "scripts": {
     "test": "jest",
     "test:watch": "jest --watch",
-    "test-puzzle": "node scripts/test-puzzle.js",
+    "test-word-search": "node scripts/test-word-search.js",
     "serve": "python3 -m http.server 8000"
   },
   "devDependencies": {

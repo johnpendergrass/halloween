@@ -1,6 +1,6 @@
-const { validateWordSearchPuzzle, findWordPlacements, tryPlaceWord } = require('./puzzle-validator');
-const testPuzzles = require('../../puzzles/test-basic');
-const halloweenPuzzle = require('../../puzzles/word-search-1');
+const { validateWordSearchPuzzle, findWordPlacements, tryPlaceWord } = require('./validator');
+const testPuzzles = require('./puzzles/test-basic');
+const halloweenPuzzle = require('./puzzles/word-search-1');
 
 describe('Word Search Puzzle Validator', () => {
   

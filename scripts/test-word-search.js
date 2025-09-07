@@ -9,7 +9,7 @@
 
 const fs = require('fs');
 const path = require('path');
-const { validateWordSearchPuzzle } = require('../js/utils/puzzle-validator');
+const { validateWordSearchPuzzle } = require('../js/games/word-search/validator');
 
 // ANSI color codes for console output
 const colors = {
@@ -109,15 +109,15 @@ function printError(message) {
 
 function printUsage() {
     console.log(colorize('Usage:', 'yellow'));
-    console.log('  npm run test-puzzle <puzzlename.js>');
+    console.log('  npm run test-word-search <puzzlename.js>');
     console.log();
     console.log(colorize('Examples:', 'yellow'));
-    console.log('  npm run test-puzzle word-search-1.js');
-    console.log('  npm run test-puzzle test-basic.js');
+    console.log('  npm run test-word-search word-search-1.js');
+    console.log('  npm run test-word-search test-basic.js');
 }
 
 function loadPuzzle(puzzleName) {
-    const puzzlePath = path.resolve(__dirname, '..', 'puzzles', puzzleName);
+    const puzzlePath = path.resolve(__dirname, '..', 'js', 'games', 'word-search', 'puzzles', puzzleName);
     
     // Check if file exists
     if (!fs.existsSync(puzzlePath)) {
@@ -182,7 +182,7 @@ function main() {
             console.log(colorize('Available puzzles:', 'yellow'));
             
             try {
-                const puzzlesDir = path.resolve(__dirname, '..', 'puzzles');
+                const puzzlesDir = path.resolve(__dirname, '..', 'js', 'games', 'word-search', 'puzzles');
                 const files = fs.readdirSync(puzzlesDir)
                     .filter(file => file.endsWith('.js'))
                     .sort();
