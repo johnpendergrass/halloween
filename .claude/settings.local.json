@@ -3,7 +3,9 @@
     "allow": [
       "Bash(mkdir:*)",
       "Bash(python3:*)",
-      "Bash(cp:*)"
+      "Bash(cp:*)",
+      "Bash(npm test)",
+      "Bash(npm run test-puzzle:*)"
     ],
     "deny": [],
     "ask": []

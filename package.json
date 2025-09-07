@@ -1,0 +1,18 @@
+{
+  "name": "halloween-minigames",
+  "version": "1.0.0",
+  "description": "Halloween-themed minigames collection with word search puzzle validation",
+  "main": "index.html",
+  "scripts": {
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "test-puzzle": "node scripts/test-puzzle.js",
+    "serve": "python3 -m http.server 8000"
+  },
+  "devDependencies": {
+    "jest": "^29.7.0"
+  },
+  "jest": {
+    "testEnvironment": "node"
+  }
+}

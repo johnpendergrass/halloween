@@ -1,39 +1,27 @@
 export default class WordSearch {
-    constructor() {
-        this.name = 'Word Search';
-        this.description = 'Find Halloween words hidden in the letter grid!';
+    constructor(puzzle = null) {
+        // Load puzzle data
+        this.puzzle = puzzle || this.getDefaultPuzzle();
+        
+        this.name = this.puzzle.name || 'Word Search';
+        this.description = this.puzzle.description || 'Find words hidden in the letter grid!';
         this.score = 0;
         this.isRunning = false;
         
-        // The letter grid as specified
-        this.grid = [
-            ['S', 'H', 'E', 'E', 'C', 'O', 'R', 'E'],
-            ['N', 'E', 'L', 'Y', 'O', 'F', 'I', 'E'],
-            ['A', 'H', 'T', 'R', 'G', 'F', 'E', 'N'],
-            ['B', 'I', 'J', 'A', 'I', 'N', 'R', 'S'],
-            ['A', 'C', 'A', 'N', 'G', 'E', 'D', 'H'],
-            ['R', 'K', 'L', 'A', 'T', 'O', 'U', 'R'],
-            ['W', 'O', 'B', 'E', 'W', 'B', 'C', 'O']
-        ];
+        // Use puzzle data
+        this.grid = this.puzzle.grid;
+        this.validWords = this.puzzle.words;
         
-        // Valid words to find
-        this.validWords = [
-            'EERIE',
-            'JACKOLANTERN', 
-            'COBWEB',
-            'BANSHEE',
-            'WRAITH',
-            'SHROUD',
-            'GARGOYLE',
-            'COFFIN'
-        ];
+        // Initialize dynamic grid dimensions based on puzzle
+        const rows = this.grid.length;
+        const cols = this.grid[0]?.length || 0;
         
         // Track selected letters
         this.selectedLetters = [];
         this.foundWords = [];
         
-        // Track letter colors for found words
-        this.letterColors = Array(7).fill(null).map(() => Array(8).fill(null));
+        // Track letter colors for found words (dynamic sizing)
+        this.letterColors = Array(rows).fill(null).map(() => Array(cols).fill(null));
         this.availableColors = ['orange', 'purple', 'green', 'red', 'blue', 'yellow', 'pink', 'cyan'];
         this.currentColorIndex = 0;
         
@@ -442,5 +430,32 @@ export default class WordSearch {
 
     getScore() {
         return this.score;
+    }
+    
+    getDefaultPuzzle() {
+        // Default Halloween puzzle (fallback if no puzzle provided)
+        return {
+            name: 'Halloween Word Search',
+            description: 'Find Halloween words hidden in the letter grid!',
+            grid: [
+                ['S', 'H', 'E', 'E', 'C', 'O', 'R', 'E'],
+                ['N', 'E', 'L', 'Y', 'O', 'F', 'I', 'E'],
+                ['A', 'H', 'T', 'R', 'G', 'F', 'E', 'N'],
+                ['B', 'I', 'J', 'A', 'I', 'N', 'R', 'S'],
+                ['A', 'C', 'A', 'N', 'G', 'E', 'D', 'H'],
+                ['R', 'K', 'L', 'A', 'T', 'O', 'U', 'R'],
+                ['W', 'O', 'B', 'E', 'W', 'B', 'C', 'O']
+            ],
+            words: [
+                'EERIE',
+                'JACKOLANTERN', 
+                'COBWEB',
+                'BANSHEE',
+                'WRAITH',
+                'SHROUD',
+                'GARGOYLE',
+                'COFFIN'
+            ]
+        };
     }
 }
