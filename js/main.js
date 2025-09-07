@@ -7,17 +7,13 @@ class HalloweenGames {
             'game-0': 'Title Screen',
             'game-1': 'Find the Pumpkin',
             'candy-swap': 'Candy Swap',
-            'word-search': 'Word Search',
-            'game-4': 'Bat Cave',
-            'game-5': "Witch's Brew"
+            'word-search': 'Word Search'
         };
         this.gameDescriptions = {
             'game-0': 'Welcome to Halloween Minigames! Select a game to start playing.',
             'game-1': 'Use WASD keys to move the pumpkin around the screen!',
             'candy-swap': 'Trade candy with friends to build the best collection!',
-            'word-search': 'Find Halloween words hidden in the letter grid!',
-            'game-4': 'Explore the mysterious depths of the bat cave.',
-            'game-5': 'Mix magical potions with the witch!'
+            'word-search': 'Find Halloween words hidden in the letter grid!'
         };
         
         this.init();
@@ -39,7 +35,7 @@ class HalloweenGames {
     }
 
     async loadGames() {
-        const gameIds = ['game-0', 'game-1', 'candy-swap', 'word-search', 'game-4', 'game-5'];
+        const gameIds = ['game-0', 'game-1', 'candy-swap', 'word-search'];
         
         for (const gameId of gameIds) {
             try {
