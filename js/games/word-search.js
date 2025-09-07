@@ -68,9 +68,24 @@ export default class WordSearch {
         }).join('');
 
         const selectedWord = this.selectedLetters.map(sel => sel.letter).join('');
+        
+        // Get the color that will be used for the next found word
+        const currentColor = this.availableColors[this.currentColorIndex];
+        const colorMap = {
+            'orange': '#ff8c00',
+            'purple': '#9932cc', 
+            'green': '#228b22',
+            'red': '#dc143c',
+            'blue': '#1e3a8a',
+            'yellow': '#eab308',
+            'pink': '#ec4899',
+            'cyan': '#0891b2'
+        };
+        const currentHoverColor = colorMap[currentColor];
+        const currentTextColor = currentColor === 'yellow' ? 'black' : 'white';
 
         return `
-            <div class="game-screen word-search-game">
+            <div class="game-screen word-search-game" style="--hover-color: ${currentHoverColor}; --hover-text-color: ${currentTextColor};">
                 <h2>🔍 Word Search 🔍</h2>
                 <div class="word-search-container">
                     <div class="word-search-grid">
@@ -135,14 +150,14 @@ export default class WordSearch {
                 }
                 
                 .letter-cell:hover:not(.found-word-orange):not(.found-word-purple):not(.found-word-green):not(.found-word-red):not(.found-word-blue):not(.found-word-yellow):not(.found-word-pink):not(.found-word-cyan) {
-                    background: #ffd700;
+                    background: var(--hover-color);
                     transform: scale(1.1);
                 }
                 
                 .letter-cell.selected {
-                    background: #ff6347 !important;
-                    color: white !important;
-                    border-color: #dc143c !important;
+                    background: var(--hover-color);
+                    color: var(--hover-text-color);
+                    border-color: var(--hover-color);
                     transform: scale(1.05);
                 }
                 
