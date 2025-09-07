@@ -145,8 +145,6 @@ export default class WordSearch {
                 .letter-cell.selected {
                     background: var(--hover-color);
                     color: var(--hover-text-color);
-                    border-color: var(--hover-color);
-                    transform: scale(1.05);
                 }
                 
                 /* Found word colors - Halloween themed */
