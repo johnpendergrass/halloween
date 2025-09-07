@@ -54,10 +54,6 @@ export default class WordSearch {
         }).join('');
 
         const selectedWord = this.selectedLetters.map(sel => sel.letter).join('');
-        
-        const foundWordsHTML = this.foundWords.map(word => 
-            `<div class="found-word">✓ ${word}</div>`
-        ).join('');
 
         return `
             <div class="game-screen word-search-game">
@@ -78,20 +74,8 @@ export default class WordSearch {
                             <div id="word-feedback" class="word-feedback"></div>
                         </div>
                         
-                        <div class="words-to-find">
-                            <h3>Words to Find:</h3>
-                            <div class="word-list">
-                                ${this.validWords.map(word => 
-                                    `<div class="target-word ${this.foundWords.includes(word) ? 'found' : ''}">${word}</div>`
-                                ).join('')}
-                            </div>
-                        </div>
-                        
                         <div class="found-words-section">
-                            <h3>Found Words:</h3>
-                            <div class="found-words">
-                                ${foundWordsHTML || '<div class="no-words">None yet</div>'}
-                            </div>
+                            <h3>Found Words: ${this.foundWords.length}/${this.validWords.length}</h3>
                         </div>
                     </div>
                 </div>
@@ -157,7 +141,6 @@ export default class WordSearch {
                 }
                 
                 .selected-word-section,
-                .words-to-find,
                 .found-words-section {
                     background: rgba(139, 69, 19, 0.3);
                     padding: 15px;
@@ -166,7 +149,6 @@ export default class WordSearch {
                 }
                 
                 .selected-word-section h3,
-                .words-to-find h3,
                 .found-words-section h3 {
                     margin: 0 0 10px 0;
                     color: #ffd700;
@@ -232,44 +214,6 @@ export default class WordSearch {
                     color: #8B0000;
                 }
                 
-                .word-list {
-                    display: flex;
-                    flex-direction: column;
-                    gap: 5px;
-                }
-                
-                .target-word {
-                    padding: 8px;
-                    background: #2a1a0a;
-                    color: #ffd700;
-                    border-radius: 4px;
-                    font-family: monospace;
-                    font-weight: bold;
-                    border: 1px solid #8b4513;
-                }
-                
-                .target-word.found {
-                    background: #228B22;
-                    color: white;
-                    text-decoration: line-through;
-                }
-                
-                .found-word {
-                    padding: 5px 8px;
-                    background: #90EE90;
-                    color: #006400;
-                    border-radius: 4px;
-                    font-family: monospace;
-                    font-weight: bold;
-                    margin-bottom: 5px;
-                }
-                
-                .no-words {
-                    color: #999;
-                    font-style: italic;
-                    text-align: center;
-                    padding: 10px;
-                }
             </style>
         `;
     }
