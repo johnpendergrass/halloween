@@ -32,6 +32,11 @@ export default class WordSearch {
         this.selectedLetters = [];
         this.foundWords = [];
         
+        // Track letter colors for found words
+        this.letterColors = Array(7).fill(null).map(() => Array(8).fill(null));
+        this.availableColors = ['orange', 'purple', 'green', 'red', 'blue', 'yellow', 'pink', 'cyan'];
+        this.currentColorIndex = 0;
+        
         // Bind click handler
         this.handleLetterClick = this.handleLetterClick.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
@@ -42,8 +47,17 @@ export default class WordSearch {
         const gridHTML = this.grid.map((row, rowIndex) => {
             return row.map((letter, colIndex) => {
                 const isSelected = this.selectedLetters.some(sel => sel.row === rowIndex && sel.col === colIndex);
+                const letterColor = this.letterColors[rowIndex][colIndex];
+                
+                let cellClasses = 'letter-cell';
+                if (isSelected) {
+                    cellClasses += ' selected';
+                } else if (letterColor) {
+                    cellClasses += ` found-word-${letterColor}`;
+                }
+                
                 return `
-                    <div class="letter-cell ${isSelected ? 'selected' : ''}" 
+                    <div class="${cellClasses}" 
                          data-row="${rowIndex}" 
                          data-col="${colIndex}"
                          data-letter="${letter}">
@@ -120,16 +134,65 @@ export default class WordSearch {
                     user-select: none;
                 }
                 
-                .letter-cell:hover {
+                .letter-cell:hover:not(.found-word-orange):not(.found-word-purple):not(.found-word-green):not(.found-word-red):not(.found-word-blue):not(.found-word-yellow):not(.found-word-pink):not(.found-word-cyan) {
                     background: #ffd700;
                     transform: scale(1.1);
                 }
                 
                 .letter-cell.selected {
-                    background: #ff6347;
-                    color: white;
-                    border-color: #dc143c;
+                    background: #ff6347 !important;
+                    color: white !important;
+                    border-color: #dc143c !important;
                     transform: scale(1.05);
+                }
+                
+                /* Found word colors - Halloween themed */
+                .found-word-orange {
+                    background: #ff8c00;
+                    color: white;
+                    border-color: #ff6600;
+                }
+                
+                .found-word-purple {
+                    background: #9932cc;
+                    color: white;
+                    border-color: #7b2cbf;
+                }
+                
+                .found-word-green {
+                    background: #228b22;
+                    color: white;
+                    border-color: #006400;
+                }
+                
+                .found-word-red {
+                    background: #dc143c;
+                    color: white;
+                    border-color: #b91c3c;
+                }
+                
+                .found-word-blue {
+                    background: #1e3a8a;
+                    color: white;
+                    border-color: #1e40af;
+                }
+                
+                .found-word-yellow {
+                    background: #eab308;
+                    color: black;
+                    border-color: #ca8a04;
+                }
+                
+                .found-word-pink {
+                    background: #ec4899;
+                    color: white;
+                    border-color: #db2777;
+                }
+                
+                .found-word-cyan {
+                    background: #0891b2;
+                    color: white;
+                    border-color: #0e7490;
                 }
                 
                 .word-search-sidebar {
@@ -228,6 +291,11 @@ export default class WordSearch {
         const col = parseInt(cell.dataset.col);
         const letter = cell.dataset.letter;
         
+        // Check if this letter is already part of a found word (off-limits)
+        if (this.letterColors[row][col] !== null) {
+            return; // Ignore clicks on already found letters
+        }
+        
         // Check if this letter is already selected
         const existingIndex = this.selectedLetters.findIndex(sel => sel.row === row && sel.col === col);
         
@@ -255,6 +323,13 @@ export default class WordSearch {
             // Correct word!
             this.foundWords.push(selectedWord.toUpperCase());
             this.score += selectedWord.length * 10; // Score based on word length
+            
+            // Color the letters with the next available color
+            const currentColor = this.availableColors[this.currentColorIndex];
+            for (const letter of this.selectedLetters) {
+                this.letterColors[letter.row][letter.col] = currentColor;
+            }
+            this.currentColorIndex = (this.currentColorIndex + 1) % this.availableColors.length;
             
             feedback.textContent = 'Correct!';
             feedback.className = 'word-feedback correct';
