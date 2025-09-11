@@ -1,0 +1,31 @@
+{
+  "viewBox": [
+    0,
+    0,
+    200,
+    350
+  ],
+  "anchors": {
+    "HEAD_TOP": 35,
+    "EYE_LINE": 60,
+    "CHIN": 85,
+    "NECK": 95,
+    "SHOULDERS": 110,
+    "CHEST": 140,
+    "WAIST": 200,
+    "HIPS": 210,
+    "KNEES": 280,
+    "ANKLES": 330,
+    "GROUND": 340
+  },
+  "layer_order": [
+    "base_figure.svg",
+    "witch_bottom.svg",
+    "witch_top.svg",
+    "witch_belt.svg",
+    "witch_boots.svg",
+    "accessory_broom.svg",
+    "witch_hat.svg",
+    "witch_makeup.svg"
+  ]
+}

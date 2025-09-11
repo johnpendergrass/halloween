@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 342 450" width="342" height="450">
+
+  <g id="witch_makeup" fill="none" stroke-linecap="round">
+    <path d="M 155 88 Q 165 90 175 88" stroke="#111" stroke-width="2"/>
+    <path d="M 179 88 Q 189 90 199 88" stroke="#111" stroke-width="2"/>
+    <path d="M 149 102 q 6 4 0 8 q -6 4 0 8" stroke="#6a1b9a" stroke-width="2"/>
+    <path d="M 205 102 q -6 4 0 8 q 6 4 0 8" stroke="#6a1b9a" stroke-width="2"/>
+    <path d="M 165 135 q 12 8 24 0 q -12 8 -24 0" stroke="#b71c1c" stroke-width="2" fill="#c62828"/>
+  </g>
+
+</svg>

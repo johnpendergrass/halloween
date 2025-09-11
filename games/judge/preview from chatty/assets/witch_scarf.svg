@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 342 450" width="342" height="450">
+
+  <g id="witch_scarf" stroke="#111" stroke-width="2" fill="#c62828">
+    <path d="M 157 151 Q 177 163 197 151 Q 177 169 157 151 Z" />
+    <path d="M 169 159 L 163 199 L 177 203 L 179 165 Z" fill="#b71c1c"/>
+    <path d="M 185 159 L 191 199 L 177 203 L 175 165 Z" fill="#b71c1c"/>
+  </g>
+
+</svg>

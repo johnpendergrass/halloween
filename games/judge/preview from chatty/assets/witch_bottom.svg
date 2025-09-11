@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 342 450" width="342" height="450">
+
+  <g id="witch_bottom" stroke="#111" stroke-width="2" fill="#2e2e2e">
+    <path d="M 122 249 L 232 249
+             L 249 317
+             Q 177 339 105 317 Z"/>
+    <path d="M 141 249 L 141 319
+             M 165 249 L 165 323
+             M 189 249 L 189 323
+             M 213 249 L 213 319" stroke="#1f1f1f"/>
+  </g>
+
+</svg>

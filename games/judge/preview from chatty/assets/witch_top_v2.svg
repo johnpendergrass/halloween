@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 342 450" width="342" height="450">
+
+  <g stroke="#111" stroke-width="2" fill="#2e2e2e">
+    <path d="M 122 155 Q 182 173 242 155
+             L 252 219 L 230 251
+             Q 182 263 134 251
+             L 112 219 Z" />
+    <path d="M 122 155 Q 182 173 242 155" stroke="#6a1b9a" stroke-width="3" fill="none"/>
+    <g stroke="#6a1b9a" stroke-width="2">
+      <line x1="180" y1="167" x2="184" y2="237"/>
+      <path d="M 164 179 L 200 187
+               M 164 199 L 200 207
+               M 164 219 L 200 227"/>
+    </g>
+  </g>
+
+</svg>

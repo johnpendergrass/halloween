@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 350" width="200" height="350">
+  <g id="witch_gloves_v3" stroke="#111" stroke-width="2" fill="#2e2e2e">
+    <!-- Right glove (subject's right, image-left) at raised hand -->
+    <path d="M70 100 Q75 105 78 110 Q80 115 76 120 Q70 118 68 112 Q66 106 70 100 Z" />
+    <!-- Left glove (subject's left, image-right) at hanging hand -->
+    <path d="M138 198 Q142 200 145 205 Q146 210 142 212 Q138 210 135 206 Q134 202 138 198 Z" />
+    <!-- Trim accents -->
+    <path d="M72 114 L80 114" stroke="#6a1b9a"/>
+    <path d="M136 207 L144 207" stroke="#6a1b9a"/>
+  </g>
+</svg>

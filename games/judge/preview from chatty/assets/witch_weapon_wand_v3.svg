@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 342 450" width="342" height="450">
+
+  <g id="witch_weapon_wand_v3" stroke="#4e342e" stroke-width="3" stroke-linecap="round">
+    <line x1="52" y1="128" x2="10" y2="60" />
+  </g>
+  <g fill="#f0c419" stroke="#ffeb3b" stroke-width="1">
+    <polygon points="10,60 16,78 10,74 4,78" />
+    <circle cx="10" cy="60" r="6" fill="none" stroke="#fbc02d"/>
+  </g>
+
+</svg>

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 342 450" width="342" height="450">
+
+  <g id="witch_boots" stroke="#111" stroke-width="2" fill="#1f1f1f">
+    <path d="M 99 368 L 131 368
+             L 131 406 Q 123 414 107 414
+             L 93 414 Q 99 402 99 388 Z"/>
+    <path d="M 223 368 L 255 368
+             L 255 406 Q 247 414 231 414
+             L 217 414 Q 223 402 223 388 Z"/>
+    <rect x="125" y="374" width="10" height="8" fill="#f0c419" stroke="#111" stroke-width="1.5"/>
+    <rect x="219" y="374" width="10" height="8" fill="#f0c419" stroke="#111" stroke-width="1.5"/>
+  </g>
+
+</svg>

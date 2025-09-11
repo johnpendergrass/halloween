@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 342 450" width="342" height="450">
+
+  <g id="robot_top" stroke="#263238" stroke-width="2" fill="#b0bec5">
+    <!-- Torso box -->
+    <path d="M 107 155 L 247 155 L 257 229
+             L 233 255 L 121 255 L 97 229 Z" />
+    <!-- Chest panel -->
+    <rect x="131" y="173" width="92" height="54" rx="6" fill="#eceff1" stroke="#37474f"/>
+    <!-- Gauges/dials -->
+    <circle cx="149" cy="200" r="10" fill="#ffecb3" stroke="#5d4037"/>
+    <circle cx="177" cy="200" r="10" fill="#ffcdd2" stroke="#b71c1c"/>
+    <rect x="193" y="190" width="24" height="20" rx="3" fill="#c5e1a5" stroke="#558b2f"/>
+    <!-- Rivets -->
+    <g fill="#90a4ae" stroke="none">
+      <circle cx="113" cy="161" r="2"/>
+      <circle cx="241" cy="161" r="2"/>
+      <circle cx="113" cy="241" r="2"/>
+      <circle cx="241" cy="241" r="2"/>
+    </g>
+    <!-- Shoulder cuffs (do not occlude hands) -->
+    <rect x="89" y="149" width="20" height="22" rx="4" fill="#90a4ae" />
+    <rect x="245" y="149" width="20" height="22" rx="4" fill="#90a4ae" />
+  </g>
+
+</svg>

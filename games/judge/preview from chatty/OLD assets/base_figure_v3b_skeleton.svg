@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 350" width="200" height="350">
+  <rect x="0" y="0" width="200" height="350" fill="none"/>
+  <g id="base_figure_v3b_skeleton" stroke="#000" stroke-width="2" fill="none" stroke-linecap="round">
+    <!-- Skull -->
+    <circle cx="100" cy="60" r="25" fill="#fff"/>
+    <circle cx="90" cy="55" r="5" fill="#000"/>
+    <circle cx="110" cy="55" r="5" fill="#000"/>
+    <path d="M98 65 L102 65 L100 72 Z" fill="#000"/>
+    <path d="M85 75 Q100 85 115 75"/>
+    <line x1="100" y1="95" x2="100" y2="210" stroke-width="3"/>
+    <path d="M72 110 Q100 100 128 110"/>
+    <path d="M70 125 Q100 115 130 125"/>
+    <path d="M68 140 Q100 125 132 140"/>
+    <ellipse cx="100" cy="210" rx="25" ry="12"/>
+    <!-- Right arm bones (outstretched, image-left) -->
+    <line x1="100" y1="120" x2="70" y2="150"/>
+    <line x1="70" y1="150" x2="50" y2="100"/>
+    <circle cx="50" cy="100" r="4" fill="#000"/>
+    <!-- Left arm bones (outward, image-right) -->
+    <line x1="100" y1="120" x2="145" y2="170"/>
+    <line x1="145" y1="170" x2="155" y2="215"/>
+    <circle cx="155" cy="215" r="4" fill="#000"/>
+    <!-- Legs -->
+    <line x1="90" y1="210" x2="80" y2="320"/>
+    <line x1="110" y1="210" x2="120" y2="320"/>
+    <circle cx="85" cy="265" r="5" fill="#000"/>
+    <circle cx="115" cy="265" r="5" fill="#000"/>
+    <rect x="70" y="320" width="20" height="8" fill="#000"/>
+    <rect x="110" y="320" width="20" height="8" fill="#000"/>
+  </g>
+</svg>

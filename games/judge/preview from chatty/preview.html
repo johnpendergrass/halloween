@@ -1,0 +1,185 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Halloween Costume Builder – Preview (robust theme switch)</title>
+<style>
+  :root {
+    --cw: 342px;
+    --ch: 450px;
+    --base-x: 50px;
+    --base-y: 50px;
+    --base-w: 242px;
+    --base-h: 350px;
+  }
+  body { font-family: system-ui, Arial, sans-serif; padding: 16px; }
+  .stage { position: relative; width: var(--cw); height: var(--ch);
+           border: 1px solid #ccc; margin-bottom: 12px;
+           background: conic-gradient(from 45deg, #f7f7f7 0 25%, #f0f0f0 0 50%) 0 0 / 16px 16px; }
+  .stage img, .stage object { position: absolute; left: 0; top: 0; width: var(--cw); height: var(--ch); }
+  .stage img.base { left: var(--base-x); top: var(--base-y); width: var(--base-w); height: var(--base-h); }
+  .grid { display: grid; grid-template-columns: 1fr 360px; gap: 16px; }
+  @media (max-width: 900px) { .grid { grid-template-columns: 1fr; } }
+  .panel { border: 1px solid #ddd; border-radius: 8px; padding: 12px; }
+  .row { display:flex; gap: 8px; align-items:center; margin: 6px 0;}
+  label { user-select: none; }
+  .hint { color:#666; font-size:12px; margin-top:4px; }
+  select, button { padding: 6px 8px; }
+  .group { margin: 10px 0; padding: 8px; background: #fafafa; border: 1px solid #eee; border-radius: 6px; }
+  .debug { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace; font-size: 12px; color:#444; }
+  .debug code { background:#f3f3f3; padding:2px 4px; border-radius:4px; }
+</style>
+</head>
+<body>
+<h1>Halloween Costume Builder – 342×450 Preview</h1>
+<p class="hint">Base PNG is positioned at (50,50). Layers use the 342×450 canvas and can extend up to 50px into margins.</p>
+
+<div class="grid">
+  <div class="panel">
+    <div class="stage" id="stage">
+      <!-- Base -->
+      <img id="layer-base" class="base" src="assets/BASE_FIGURE_242x350.png" alt="base figure" />
+
+      <!-- Costume layers (ordered back-to-front) -->
+      <object id="layer-bottom"   data="assets/witch_bottom.svg" type="image/svg+xml"></object>
+      <object id="layer-top"      data="assets/witch_top.svg" type="image/svg+xml"></object>
+      <object id="layer-belt"     data="assets/witch_belt.svg" type="image/svg+xml"></object>
+      <object id="layer-boots"    data="assets/witch_boots.svg" type="image/svg+xml"></object>
+      <object id="layer-scarf"    data="assets/witch_scarf.svg" type="image/svg+xml"></object>
+      <object id="layer-gloves"   data="assets/witch_gloves_v3.svg" type="image/svg+xml"></object>
+      <object id="layer-weapon"   data="assets/witch_weapon_wand_v3.svg" type="image/svg+xml"></object>
+      <object id="layer-accessory"data="assets/witch_accessory_broom.svg" type="image/svg+xml"></object>
+      <object id="layer-hat"      data="assets/witch_hat.svg" type="image/svg+xml"></object>
+      <object id="layer-makeup"   data="assets/witch_makeup.svg" type="image/svg+xml"></object>
+    </div>
+  </div>
+
+  <div class="panel">
+    <div class="group">
+      <strong>Theme</strong><br/>
+      <label for="theme">Switch asset set:</label>
+      <select id="theme">
+        <option value="witch" selected>Witch</option>
+        <option value="robot">Robot</option>
+      </select>
+    </div>
+
+    <div class="group">
+      <strong>Version</strong><br/>
+      <label><input type="checkbox" id="use-v2" /> Use v2 assets</label>
+    </div>
+
+    <h3>Layers</h3>
+    <div class="row"><label><input type="checkbox" data-layer="bottom" checked> Bottom</label></div>
+    <div class="row"><label><input type="checkbox" data-layer="top" checked> Top</label></div>
+    <div class="row"><label><input type="checkbox" data-layer="belt" checked> Belt</label></div>
+    <div class="row"><label><input type="checkbox" data-layer="boots" checked> Boots</label></div>
+    <div class="row"><label><input type="checkbox" data-layer="scarf" checked> Scarf</label></div>
+    <div class="row"><label><input type="checkbox" data-layer="gloves" checked> Gloves</label></div>
+    <div class="row"><label><input type="checkbox" data-layer="weapon" checked> Weapon</label></div>
+    <div class="row"><label><input type="checkbox" data-layer="accessory" checked> Accessory</label></div>
+    <div class="row"><label><input type="checkbox" data-layer="hat" checked> Hat</label></div>
+    <div class="row"><label><input type="checkbox" data-layer="makeup" checked> Makeup</label></div>
+
+    <h3>Utilities</h3>
+    <div class="row"><button id="btn-reload">Reload (force reinsert)</button></div>
+    <div class="hint">Forces each layer to re-create its <object> element with a cache-busted URL.</div>
+
+    <div class="group debug" id="debug"></div>
+  </div>
+</div>
+
+<script>
+const LAYER_IDS = ["bottom","top","belt","boots","scarf","gloves","weapon","accessory","hat","makeup"];
+
+const LAYER_FILES = {
+  witch: {
+    bottom:   ["assets/witch_bottom.svg","assets/witch_bottom_v2.svg"],
+    top:      ["assets/witch_top.svg","assets/witch_top_v2.svg"],
+    belt:     ["assets/witch_belt.svg","assets/witch_belt_v2.svg"],
+    boots:    ["assets/witch_boots.svg","assets/witch_boots_v2.svg"],
+    scarf:    ["assets/witch_scarf.svg","assets/witch_scarf_v2.svg"],
+    gloves:   ["assets/witch_gloves_v3.svg","assets/witch_gloves_v3.svg"],
+    weapon:   ["assets/witch_weapon_wand_v3.svg","assets/witch_weapon_wand_v3.svg"],
+    accessory:["assets/witch_accessory_broom.svg","assets/witch_accessory_broom.svg"],
+    hat:      ["assets/witch_hat.svg","assets/witch_hat_v2.svg"],
+    makeup:   ["assets/witch_makeup.svg","assets/witch_makeup.svg"]
+  },
+  robot: {
+    bottom:   ["assets/robot_bottom.svg","assets/robot_bottom_v2.svg"],
+    top:      ["assets/robot_top.svg","assets/robot_top_v2.svg"],
+    belt:     ["assets/robot_belt.svg","assets/robot_belt_v2.svg"],
+    boots:    ["assets/robot_boots.svg","assets/robot_boots_v2.svg"],
+    scarf:    ["assets/robot_scarf.svg","assets/robot_scarf_v2.svg"],
+    gloves:   ["assets/robot_gloves.svg","assets/robot_gloves.svg"],
+    weapon:   ["assets/robot_weapon_raygun.svg","assets/robot_weapon_raygun.svg"],
+    accessory:["assets/robot_accessory_key.svg","assets/robot_accessory_key.svg"],
+    hat:      ["assets/robot_hat.svg","assets/robot_hat_v2.svg"],
+    makeup:   ["assets/robot_makeup.svg","assets/robot_makeup.svg"]
+  }
+};
+
+const themeSel = document.getElementById('theme');
+const v2Chk = document.getElementById('use-v2');
+const debugEl = document.getElementById('debug');
+
+function cacheBust(url) {
+  const u = new URL(url, window.location.href);
+  u.searchParams.set('v', Date.now().toString());
+  return u.toString();
+}
+
+function replaceObject(id, url) {
+  const oldEl = document.getElementById('layer-' + id);
+  if (!oldEl) return;
+  const parent = oldEl.parentNode;
+  const newEl = document.createElement('object');
+  newEl.id = 'layer-' + id;
+  newEl.type = 'image/svg+xml';
+  newEl.setAttribute('data', cacheBust(url));
+  newEl.style.position = 'absolute';
+  newEl.style.left = '0';
+  newEl.style.top = '0';
+  newEl.style.width = 'var(--cw)';
+  newEl.style.height = 'var(--ch)';
+  // Respect current visibility checkbox
+  const cb = document.querySelector('input[type="checkbox"][data-layer="'+id+'"]');
+  if (cb && !cb.checked) newEl.style.display = 'none';
+  parent.replaceChild(newEl, oldEl);
+}
+
+function refresh() {
+  const theme = themeSel.value;
+  const useV2 = v2Chk.checked;
+  const files = LAYER_FILES[theme];
+  const applied = [];
+  LAYER_IDS.forEach(key => {
+    const arr = files[key];
+    if (!arr) return;
+    const url = useV2 ? arr[1] : arr[0];
+    replaceObject(key, url);
+    applied.push(`${key}: ${url}`);
+  });
+  debugEl.innerHTML = "<strong>Applied:</strong><br><code>" + applied.join("<br>") + "</code>";
+}
+
+themeSel.addEventListener('change', refresh);
+v2Chk.addEventListener('change', refresh);
+document.getElementById('btn-reload').addEventListener('click', refresh);
+
+// Layer toggling visibility
+document.querySelectorAll('input[type="checkbox"][data-layer]').forEach(cb => {
+  cb.addEventListener('change', (e) => {
+    const id = 'layer-' + e.target.getAttribute('data-layer');
+    const el = document.getElementById(id);
+    if (el) el.style.display = e.target.checked ? 'block' : 'none';
+  });
+});
+
+// Initialize
+refresh();
+</script>
+</body>
+</html>

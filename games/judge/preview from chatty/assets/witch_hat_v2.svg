@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 342 450" width="342" height="450">
+
+  <g stroke="#111" stroke-width="3" fill="#222">
+    <ellipse cx="182" cy="51" rx="110" ry="12" />
+    <path d="M 182 -9 L 142 51 Q 182 26 222 51 Z" />
+    <rect x="146" y="45" width="72" height="7" fill="#6a1b9a" stroke="none"/>
+    <rect x="176" y="45.5" width="12" height="6" fill="#f0c419" stroke="#111" stroke-width="1.5"/>
+  </g>
+
+</svg>

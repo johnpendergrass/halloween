@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 342 450" width="342" height="450">
+
+  <g id="witch_top" stroke="#111" stroke-width="2" fill="#2e2e2e">
+    <path d="M 117 155 Q 177 173 237 155
+             L 247 219 L 225 251
+             Q 177 263 129 251
+             L 107 219 Z" />
+    <path d="M 117 155 Q 177 173 237 155" stroke="#6a1b9a" stroke-width="3" fill="none"/>
+    <g stroke="#6a1b9a" stroke-width="2">
+      <line x1="175" y1="167" x2="179" y2="237"/>
+      <path d="M 159 179 L 195 187
+               M 159 199 L 195 207
+               M 159 219 L 195 227"/>
+    </g>
+  </g>
+
+</svg>

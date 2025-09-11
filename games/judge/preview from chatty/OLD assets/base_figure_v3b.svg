@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 350" width="200" height="350">
+  <rect x="0" y="0" width="200" height="350" fill="none"/>
+  <g id="base_figure_v3b" stroke="#333" stroke-width="4" stroke-linecap="round" fill="none">
+    <!-- Head -->
+    <circle cx="100" cy="60" r="25"/>
+    <!-- Torso -->
+    <line x1="100" y1="95" x2="100" y2="210"/>
+    <!-- Right arm (subject's right, image-left) more outstretched -->
+    <line x1="100" y1="120" x2="70" y2="150"/> <!-- upper arm -->
+    <line x1="70" y1="150" x2="50" y2="100"/> <!-- forearm raised out -->
+    <circle cx="50" cy="100" r="4" fill="#333"/> <!-- hand -->
+    <!-- Left arm (subject's left, image-right) further from body -->
+    <line x1="100" y1="120" x2="145" y2="170"/> <!-- upper arm -->
+    <line x1="145" y1="170" x2="155" y2="215"/> <!-- forearm -->
+    <circle cx="155" cy="215" r="4" fill="#333"/> <!-- hand -->
+    <!-- Legs -->
+    <line x1="100" y1="210" x2="75" y2="330"/>
+    <line x1="100" y1="210" x2="125" y2="330"/>
+    <line x1="40" y1="340" x2="160" y2="340" stroke="#888" stroke-width="2" stroke-linecap="butt"/>
+  </g>
+</svg>

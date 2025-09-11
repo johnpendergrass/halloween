@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 342 450" width="342" height="450">
+
+  <g stroke="#111" stroke-width="2" fill="#c62828">
+    <path d="M 162 151 Q 182 163 202 151 Q 182 169 162 151 Z" />
+    <path d="M 174 159 L 168 199 L 182 203 L 184 165 Z" fill="#b71c1c"/>
+    <path d="M 190 159 L 196 199 L 182 203 L 180 165 Z" fill="#b71c1c"/>
+  </g>
+
+</svg>

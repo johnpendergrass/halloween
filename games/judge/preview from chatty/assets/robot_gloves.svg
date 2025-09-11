@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 342 450" width="342" height="450">
+
+  <g id="robot_gloves" stroke="#263238" stroke-width="2" fill="#b0bec5">
+    <!-- Raised hand clamp -->
+    <rect x="42" y="120" width="20" height="16" rx="3"/>
+    <path d="M 62 128 l 10 -8 l 0 16 z" fill="#cfd8dc" />
+    <!-- Hanging hand clamp -->
+    <rect x="280" y="235" width="20" height="16" rx="3"/>
+    <path d="M 280 243 l -10 -8 l 0 16 z" fill="#cfd8dc" />
+  </g>
+
+</svg>

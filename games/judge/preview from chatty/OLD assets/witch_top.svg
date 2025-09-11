@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 350" width="200" height="350">
+  <g id="guides" style="display:none"><line x1="0" y1="35" x2="200" y2="35" stroke="#00a" stroke-width="0.5" stroke-dasharray="3,2" /><text x="4" y="33" font-size="8" fill="#00a">HEAD_TOP</text><line x1="0" y1="60" x2="200" y2="60" stroke="#00a" stroke-width="0.5" stroke-dasharray="3,2" /><text x="4" y="58" font-size="8" fill="#00a">EYE_LINE</text><line x1="0" y1="85" x2="200" y2="85" stroke="#00a" stroke-width="0.5" stroke-dasharray="3,2" /><text x="4" y="83" font-size="8" fill="#00a">CHIN</text><line x1="0" y1="95" x2="200" y2="95" stroke="#00a" stroke-width="0.5" stroke-dasharray="3,2" /><text x="4" y="93" font-size="8" fill="#00a">NECK</text><line x1="0" y1="110" x2="200" y2="110" stroke="#00a" stroke-width="0.5" stroke-dasharray="3,2" /><text x="4" y="108" font-size="8" fill="#00a">SHOULDERS</text><line x1="0" y1="140" x2="200" y2="140" stroke="#00a" stroke-width="0.5" stroke-dasharray="3,2" /><text x="4" y="138" font-size="8" fill="#00a">CHEST</text><line x1="0" y1="200" x2="200" y2="200" stroke="#00a" stroke-width="0.5" stroke-dasharray="3,2" /><text x="4" y="198" font-size="8" fill="#00a">WAIST</text><line x1="0" y1="210" x2="200" y2="210" stroke="#00a" stroke-width="0.5" stroke-dasharray="3,2" /><text x="4" y="208" font-size="8" fill="#00a">HIPS</text><line x1="0" y1="280" x2="200" y2="280" stroke="#00a" stroke-width="0.5" stroke-dasharray="3,2" /><text x="4" y="278" font-size="8" fill="#00a">KNEES</text><line x1="0" y1="330" x2="200" y2="330" stroke="#00a" stroke-width="0.5" stroke-dasharray="3,2" /><text x="4" y="328" font-size="8" fill="#00a">ANKLES</text><line x1="0" y1="340" x2="200" y2="340" stroke="#00a" stroke-width="0.5" stroke-dasharray="3,2" /><text x="4" y="338" font-size="8" fill="#00a">GROUND</text></g>
+  <g id="witch_top" stroke="#111" stroke-width="2" fill="#2e2e2e">
+    <!-- Neck opening -->
+    <path d="M85 100 Q100 95 115 100 Q113 108 87 108 Z" fill="#1f1f1f" />
+    <!-- Shoulders and torso down to WAIST (200) -->
+    <path d="M60 110 Q100 120 140 110 L150 140 L140 200 Q100 210 60 200 L50 140 Z" />
+    <!-- Decorative trim -->
+    <path d="M60 110 Q100 120 140 110" stroke="#6a1b9a" stroke-width="3" fill="none"/>
+    <!-- Lacing -->
+    <g stroke="#6a1b9a" stroke-width="2">
+      <line x1="98" y1="120" x2="102" y2="180"/>
+      <path d="M90 130 L110 140 M90 150 L110 160 M90 170 L110 180"/>
+    </g>
+    <!-- Sleeves (float over arms) -->
+    <path d="M60 120 L40 155 L52 165 L68 135 Z" />
+    <path d="M140 120 L160 155 L148 165 L132 135 Z" />
+  </g>
+</svg>

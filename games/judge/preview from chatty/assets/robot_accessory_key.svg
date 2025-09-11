@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 342 450" width="342" height="450">
+
+  <g id="robot_accessory_key" stroke="#795548" stroke-width="3" fill="#d7ccc8">
+    <!-- Shaft near upper back (behind shoulders); angled slightly -->
+    <line x1="167" y1="165" x2="187" y2="151" />
+    <!-- Key loops -->
+    <ellipse cx="149" cy="161" rx="16" ry="10"/>
+    <ellipse cx="205" cy="155" rx="16" ry="10"/>
+    <!-- Hub -->
+    <circle cx="177" cy="159" r="6" fill="#efebe9" stroke="#5d4037"/>
+  </g>
+
+</svg>

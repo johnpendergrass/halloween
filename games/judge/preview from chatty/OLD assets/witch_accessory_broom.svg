@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 350" width="200" height="350">
+  <g id="guides" style="display:none"><line x1="0" y1="35" x2="200" y2="35" stroke="#00a" stroke-width="0.5" stroke-dasharray="3,2" /><text x="4" y="33" font-size="8" fill="#00a">HEAD_TOP</text><line x1="0" y1="60" x2="200" y2="60" stroke="#00a" stroke-width="0.5" stroke-dasharray="3,2" /><text x="4" y="58" font-size="8" fill="#00a">EYE_LINE</text><line x1="0" y1="85" x2="200" y2="85" stroke="#00a" stroke-width="0.5" stroke-dasharray="3,2" /><text x="4" y="83" font-size="8" fill="#00a">CHIN</text><line x1="0" y1="95" x2="200" y2="95" stroke="#00a" stroke-width="0.5" stroke-dasharray="3,2" /><text x="4" y="93" font-size="8" fill="#00a">NECK</text><line x1="0" y1="110" x2="200" y2="110" stroke="#00a" stroke-width="0.5" stroke-dasharray="3,2" /><text x="4" y="108" font-size="8" fill="#00a">SHOULDERS</text><line x1="0" y1="140" x2="200" y2="140" stroke="#00a" stroke-width="0.5" stroke-dasharray="3,2" /><text x="4" y="138" font-size="8" fill="#00a">CHEST</text><line x1="0" y1="200" x2="200" y2="200" stroke="#00a" stroke-width="0.5" stroke-dasharray="3,2" /><text x="4" y="198" font-size="8" fill="#00a">WAIST</text><line x1="0" y1="210" x2="200" y2="210" stroke="#00a" stroke-width="0.5" stroke-dasharray="3,2" /><text x="4" y="208" font-size="8" fill="#00a">HIPS</text><line x1="0" y1="280" x2="200" y2="280" stroke="#00a" stroke-width="0.5" stroke-dasharray="3,2" /><text x="4" y="278" font-size="8" fill="#00a">KNEES</text><line x1="0" y1="330" x2="200" y2="330" stroke="#00a" stroke-width="0.5" stroke-dasharray="3,2" /><text x="4" y="328" font-size="8" fill="#00a">ANKLES</text><line x1="0" y1="340" x2="200" y2="340" stroke="#00a" stroke-width="0.5" stroke-dasharray="3,2" /><text x="4" y="338" font-size="8" fill="#00a">GROUND</text></g>
+  <g id="accessory_broom" stroke="#5d4037" stroke-width="4" fill="none" stroke-linecap="round">
+    <!-- Handle angled across the body -->
+    <line x1="140" y1="160" x2="60" y2="310"/>
+  </g>
+  <g fill="#8d6e63" stroke="#4e342e" stroke-width="1.5">
+    <!-- Bristles at the lower end -->
+    <ellipse cx="58" cy="315" rx="14" ry="7"/>
+    <path d="M48 312 L68 318 M48 318 L68 312" />
+    <!-- Binding -->
+    <rect x="52" y="309" width="12" height="4" fill="#f0c419" stroke="#4e342e" stroke-width="1"/>
+  </g>
+</svg>

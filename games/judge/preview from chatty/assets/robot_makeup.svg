@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 342 450" width="342" height="450">
+
+  <g id="robot_makeup" stroke="#262626" stroke-width="2" fill="none">
+    <!-- Speaker grill mouth between chin and eye line -->
+    <rect x="147" y="107" width="60" height="16" rx="4" fill="#cfd8dc" />
+    <g stroke="#455a64">
+      <line x1="152" y1="111" x2="202" y2="111" />
+      <line x1="152" y1="115" x2="202" y2="115" />
+      <line x1="152" y1="119" x2="202" y2="119" />
+    </g>
+    <!-- Small rivets at corners -->
+    <circle cx="144" cy="115" r="2" fill="#78909c" stroke="none"/>
+    <circle cx="210" cy="115" r="2" fill="#78909c" stroke="none"/>
+  </g>
+
+</svg>

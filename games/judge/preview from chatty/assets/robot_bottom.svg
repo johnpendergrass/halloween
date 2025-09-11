@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 342 450" width="342" height="450">
+
+  <g id="robot_bottom" stroke="#263238" stroke-width="2" fill="#b0bec5">
+    <!-- Hip plate -->
+    <rect x="119" y="249" width="116" height="16" rx="4" />
+    <!-- Square tube legs -->
+    <rect x="137" y="265" width="32" height="68" rx="6" />
+    <rect x="185"  y="265" width="32" height="68" rx="6" />
+    <!-- Knee caps -->
+    <rect x="137" y="323" width="32" height="10" rx="3" fill="#cfd8dc"/>
+    <rect x="185"  y="323" width="32" height="10" rx="3" fill="#cfd8dc"/>
+    <!-- Rivet rows -->
+    <g fill="#90a4ae" stroke="none">
+      <circle cx="153" cy="273" r="2"/><circle cx="153" cy="293" r="2"/><circle cx="153" cy="313" r="2"/><circle cx="153" cy="333" r="2"/><circle cx="153" cy="353" r="2"/><circle cx="153" cy="373" r="2"/><circle cx="153" cy="393" r="2"/>
+      <circle cx="201" cy="273" r="2"/><circle cx="201" cy="293" r="2"/><circle cx="201" cy="313" r="2"/><circle cx="201" cy="333" r="2"/><circle cx="201" cy="353" r="2"/><circle cx="201" cy="373" r="2"/><circle cx="201" cy="393" r="2"/>
+    </g>
+  </g>
+
+</svg>

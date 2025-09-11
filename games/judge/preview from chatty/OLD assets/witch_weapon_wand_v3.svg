@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 350" width="200" height="350">
+  <g id="witch_weapon_wand_v3" stroke="#4e342e" stroke-width="3" stroke-linecap="round">
+    <!-- Wand held at right raised hand: from near hand (76,110) upward/left -->
+    <line x1="76" y1="110" x2="60" y2="70" />
+  </g>
+  <g fill="#f0c419" stroke="#ffeb3b" stroke-width="1">
+    <!-- Sparkle/star at tip -->
+    <polygon points="60,70 63,78 60,75 57,78" />
+    <circle cx="60" cy="70" r="5" fill="none" stroke="#fbc02d"/>
+  </g>
+</svg>

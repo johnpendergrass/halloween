@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 350" width="200" height="350">
+  <rect x="0" y="0" width="200" height="350" fill="none"/>
+  <!-- guides hidden; same anchors as v1/v2 -->
+  <g id="base_figure_v3" stroke="#333" stroke-width="4" stroke-linecap="round" fill="none">
+    <!-- Head -->
+    <circle cx="100" cy="60" r="25"/>
+    <!-- Torso -->
+    <line x1="100" y1="95" x2="100" y2="210"/>
+    <!-- Arms (subject's RIGHT = image-left) bent upward -->
+    <!-- Upper arm: shoulder to elbow -->
+    <line x1="100" y1="120" x2="82" y2="150"/>
+    <!-- Forearm: elbow to hand (raised) -->
+    <line x1="82" y1="150" x2="76" y2="110"/>
+    <!-- Hand (simple dot) -->
+    <circle cx="76" cy="110" r="4" fill="#333"/>
+    <!-- Subject's LEFT arm (image-right) hanging -->
+    <!-- Upper arm -->
+    <line x1="100" y1="120" x2="138" y2="170"/>
+    <!-- Forearm down -->
+    <line x1="138" y1="170" x2="142" y2="205"/>
+    <!-- Hand -->
+    <circle cx="142" cy="205" r="4" fill="#333"/>
+    <!-- Legs -->
+    <line x1="100" y1="210" x2="75" y2="330"/>
+    <line x1="100" y1="210" x2="125" y2="330"/>
+    <!-- Feet baseline -->
+    <line x1="40" y1="340" x2="160" y2="340" stroke="#888" stroke-width="2" stroke-linecap="butt"/>
+  </g>
+</svg>

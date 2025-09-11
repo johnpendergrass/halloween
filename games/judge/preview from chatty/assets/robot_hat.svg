@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 342 450" width="342" height="450">
+
+  <g id="robot_hat" stroke="#262626" stroke-width="2" fill="#9ea7ad">
+    <!-- Main head band above head top -->
+    <rect x="117" y="37" width="120" height="20" rx="6" />
+    <!-- Side "ear" dishes -->
+    <circle cx="105" cy="47" r="10" fill="#b0b7bc" />
+    <circle cx="249" cy="47" r="10" fill="#b0b7bc" />
+    <!-- Dome cap rising into margin -->
+    <path d="M 137 37 Q 177 -9 217 37 Z" fill="#c4ccd2" />
+    <!-- Antenna -->
+    <line x1="177" y1="-9" x2="177" y2="-39" stroke="#444" stroke-width="3" />
+    <circle cx="177" cy="-47" r="6" fill="#ff5252" stroke="#262626" />
+  </g>
+
+</svg>
