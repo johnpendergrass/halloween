@@ -1,17 +1,27 @@
+// No longer need fs and path since we're using inline data
 
-const fs = require('fs');
-const path = require('path');
-
-// Get the content of ./puzzle.csv
-const csvPath = path.join(__dirname, 'partial-2.csv');
-const csvInput = fs.readFileSync(csvPath, 'utf8');
-console.log( csvInput)
+// Sample puzzle data from Google Sheets copy/paste format
+const txtInput = `
+R	I	E	L	A	N	T	E
+E			O				R
+E		C	K				N
+J	A
+B
+E	B	O
+W			C
+`;
+console.log( txtInput)
 
 const process = (input) => {
+  // Parse tab-separated format from Google Sheets copy/paste
+  // Format: characters separated by tabs, rows separated by newlines
+  // Filters out empty cells and empty rows that may result from sparse data
   const result = input.split(/\r?\n/);
-  return result.map((row) => row.split(','));
+  return result
+    .filter(row => row.trim() !== '')
+    .map((row) => row.split('\t').filter(cell => cell !== ''));
 }
-const processedCsv = process(csvInput);
+const processedGrid = process(txtInput);
 
 const word1 = 'EERIE';
 
@@ -57,11 +67,11 @@ const search = (grid, firstChar, rest, row, col, usedLetter) => {
     + search(grid, nextFirstChar, nextRest, row + 1, col + 1, usedLetter);
 }
 
-findWord(processedCsv, 'EERIE')
-findWord(processedCsv, 'JACKOLANTERN')
-findWord(processedCsv, 'COBWEB')
-findWord(processedCsv, 'BANSHEE')
-findWord(processedCsv, 'WRAITH')
-findWord(processedCsv, 'SHROUD')
-findWord(processedCsv, 'GARGOYLE')
-findWord(processedCsv, 'COFFIN')
+findWord(processedGrid, 'EERIE')
+findWord(processedGrid, 'JACKOLANTERN')
+findWord(processedGrid, 'COBWEB')
+findWord(processedGrid, 'BANSHEE')
+findWord(processedGrid, 'WRAITH')
+findWord(processedGrid, 'SHROUD')
+findWord(processedGrid, 'GARGOYLE')
+findWord(processedGrid, 'COFFIN')
