@@ -83,7 +83,7 @@
 - **Available Space:** 905px × 720px (expanded game area)
 - **Position for Full-Size Games:** `left: 0; top: 0;`
 - **No Padding Constraints:** Games have complete control over the space
-- **Panel Interaction:** Right panel may overlay rightmost 125px when expanded
+- **Panel Interaction:** Right panel may overlay rightmost 80px when collapsed
 
 ### Centering Smaller Games
 

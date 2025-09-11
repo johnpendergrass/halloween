@@ -58,9 +58,9 @@
 
 #### Center Game Area (Expanded)
 - **Position:** absolute at (250px, 0)
-- **Width:** 905px (expanded from 780px for maximum game space)
+- **Width:** 950px (expanded from 905px for maximum game space)
 - **Height:** 720px (full game area height)
-- **Available Game Space:** **905px × 720px** at position (0,0)
+- **Available Game Space:** **950px × 720px** at position (0,0)
 - **Content:** Dynamic game content rendered via innerHTML
 - **Background:** Linear gradient (#1a1410 to #261a10)
 - **Padding:** REMOVED - games have full access to 905×720 space
@@ -80,10 +80,10 @@
 - Content: Full game names with icons, Games header with icon
 - Shadow: Subtle drop shadow when overlaying
 
-**Collapsed State (125px):**
-- Width: 125px  
-- Position: (1155px, 0) - no game overlay
-- Padding: 20px 10px (reduced horizontal padding)
+**Collapsed State (80px):**
+- Width: 80px  
+- Position: (1200px, 0) - no game overlay
+- Padding: 20px 5px (minimal horizontal padding for centering)
 - Content: Icons only (centered), Games text only (no icon)
 - Shadow: None
 
@@ -107,11 +107,11 @@
 - **Layout:** Flexbox justify-content: space-between
 
 #### Game Content Area
-- **Available Space:** **905px × 720px** (full expanded center panel - no padding)
+- **Available Space:** **950px × 720px** (full expanded center panel - no padding)
 - **Positioning:** Absolute positioning for games at (0,0)
 - **Display:** Flex center alignment for smaller games
 - **Flexibility:** Games can use full space or center themselves if smaller
-- **Panel Interaction:** Right panel may overlay rightmost 125px when expanded
+- **Panel Interaction:** Right panel may overlay rightmost 80px when collapsed
 
 ## Minigames Implementation
 
@@ -134,10 +134,10 @@
   - Move counter scoring system
   - Boundary detection (game area limits)
   - Detailed carved pumpkin graphics using CSS
-- **Game Area Bounds (Updated for 905×720):**
-  - minX: 0, maxX: 805px (905px - 100px pumpkin width)
+- **Game Area Bounds (Updated for 950×720):**
+  - minX: 0, maxX: 850px (950px - 100px pumpkin width)
   - minY: 0, maxY: 620px (720px - 100px pumpkin height)
-  - Starting position: (402, 310) - centered in 905×720 area
+  - Starting position: (425, 310) - centered in 950×720 area
 - **Movement:** 20px increments per keypress
 
 ### 3. Candy Swap (candy-swap.js) 
@@ -186,8 +186,8 @@
 - **Size:** 75+ lines
 - **Type:** Development testing tool
 - **Features:**
-  - Visual dimension verification with 905×720px test image
-  - Corner markers at (0,0), (904,0), (0,719), (904,719)
+  - Visual dimension verification with 950×720px test image
+  - Corner markers at (0,0), (949,0), (0,719), (949,719)
   - Grid pattern for precise positioning
   - Console logging of scroll detection
   - Real-time dimension reporting
