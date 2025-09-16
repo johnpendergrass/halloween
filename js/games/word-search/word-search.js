@@ -436,13 +436,13 @@ export default class WordSearch {
             name: 'Halloween Word Search',
             description: 'Find Halloween words hidden in the letter grid!',
             grid: [
-                ['S', 'H', 'E', 'E', 'C', 'O', 'R', 'E'],
-                ['N', 'E', 'L', 'Y', 'O', 'F', 'I', 'E'],
-                ['A', 'H', 'T', 'R', 'G', 'F', 'E', 'N'],
-                ['B', 'I', 'J', 'A', 'I', 'N', 'R', 'S'],
-                ['A', 'C', 'A', 'N', 'G', 'E', 'D', 'H'],
-                ['R', 'K', 'L', 'A', 'T', 'O', 'U', 'R'],
-                ['W', 'O', 'B', 'E', 'W', 'B', 'C', 'O']
+                ['R', 'N', 'O', 'B', 'W', 'E', 'F', 'F'],
+                ['E', 'C', 'E', 'G', 'C', 'O', 'B', 'I'],
+                ['T', 'N', 'A', 'E', 'H', 'S', 'D', 'N'],
+                ['G', 'R', 'A', 'L', 'O', 'K', 'N', 'U'],
+                ['Y', 'O', 'I', 'A', 'B', 'A', 'C', 'O'],
+                ['L', 'T', 'W', 'R', 'R', 'A', 'H', 'R'],
+                ['E', 'H', 'E', 'E', 'J', 'I', 'E', 'S']
             ],
             words: [
                 'EERIE',

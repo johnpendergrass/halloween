@@ -1,35 +1,46 @@
-// No longer need fs and path since we're using inline data
+/**
+ * With this validator we are going for a shaky sort of validation. It is not a complete picture of whether a given word search
+ * puzzle is valid but merely a helpful tool. It prints the number of times each word can be found in a given puzzle,
+ * independently of the other words. This can be helpful because it clues you in to when you add multiple ways to find the
+ * same word accidentally from when words overlap each other. Finding all words in the puzzle exactly once isn't a guarantee
+ * it's valid (and having some of them found more than once doesn't mean the puzzle isn't valid either), but it's a start.
+ *
+ * Usage:
+ * - Replace txtInput with grid to test
+ * - Replace words at bottom with target words
+ * - Run with command like `node js/games/word-search/puzzles/validate.js`
+ */
 
-// Sample puzzle data from Google Sheets copy/paste format
+
 const txtInput = `
-R	I	E	L	A	N	T	E
-E			O				R
-E		C	K				N
-J	A
-B
-E	B	O
-W			C
+R N O B W E F F
+E C E G C O B I
+T N A E H S D N
+G R A L O K N U
+Y O I A B A C O
+L T W R R A H R
+E H E E J I E S
 `;
 console.log( txtInput)
 
 const process = (input) => {
-  // Parse tab-separated format from Google Sheets copy/paste
-  // Format: characters separated by tabs, rows separated by newlines
-  // Filters out empty cells and empty rows that may result from sparse data
-  const result = input.split(/\r?\n/);
-  return result
-    .filter(row => row.trim() !== '')
-    .map((row) => row.split('\t').filter(cell => cell !== ''));
+  const result = input.split(/\n/);
+  const processRow = (row) => row.split(' ');
+  return result.map((row) => row.split(' '));
 }
 const processedGrid = process(txtInput);
 
-const word1 = 'EERIE';
+// Debug: print the parsed grid
+console.log('Parsed grid:');
 
 function findWord(grid, word) {
   let found = 0;
+  // Find the maximum column length for the usedLetter array
+  const maxCols = Math.max(...grid.map(row => row.length));
+
   for (let row = 0; row < grid.length; row++) {
-    for (let col = 0; col < grid[0].length; col++) {
-      const usedLetter = new Array(grid.length).fill(null).map((foo) => (new Array(grid[0].length).fill(false)));
+    for (let col = 0; col < grid[row].length; col++) {
+      const usedLetter = new Array(grid.length).fill(null).map((foo) => (new Array(maxCols).fill(false)));
       const firstChar = word.charAt(0);
       const rest = word.slice(1);
       const foundHere = search(grid, firstChar, rest, row, col, usedLetter);
@@ -42,7 +53,7 @@ function findWord(grid, word) {
 
 const search = (grid, firstChar, rest, row, col, usedLetter) => {
   // Searching out of bounds
-  if (row < 0 || row >= grid.length || col < 0 || col >= grid[0].length) {
+  if (row < 0 || row >= grid.length || col < 0 || !grid[row] || col >= grid[row].length) {
     return 0;
   }
   // Can't use the place we've been sent in the word
