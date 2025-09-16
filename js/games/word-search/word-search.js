@@ -20,6 +20,9 @@ export default class WordSearch {
         this.selectedLetters = [];
         this.foundWords = [];
         
+        // Victory state
+        this.gameWon = false;
+        
         // Track letter colors for found words (dynamic sizing)
         this.letterColors = Array(rows).fill(null).map(() => Array(cols).fill(null));
         this.availableColors = ['orange', 'purple', 'green', 'red', 'blue', 'yellow', 'pink', 'cyan'];
@@ -71,33 +74,9 @@ export default class WordSearch {
         };
         const currentHoverColor = colorMap[currentColor];
         const currentTextColor = currentColor === 'yellow' ? 'black' : 'white';
-
-        return `
-            <div class="game-screen word-search-game" style="--hover-color: ${currentHoverColor}; --hover-text-color: ${currentTextColor};">
-                <h2>🔍 Word Search 🔍</h2>
-                <div class="word-search-container">
-                    <div class="word-search-grid">
-                        ${gridHTML}
-                    </div>
-                    
-                    <div class="word-search-sidebar">
-                        <div class="selected-word-section">
-                            <h3>Selected Word:</h3>
-                            <div class="selected-word">${selectedWord || '(none)'}</div>
-                            <div class="word-controls">
-                                <button id="submit-word" ${selectedWord.length === 0 ? 'disabled' : ''}>Submit</button>
-                                <button id="reset-word" ${selectedWord.length === 0 ? 'disabled' : ''}>Reset</button>
-                            </div>
-                            <div id="word-feedback" class="word-feedback"></div>
-                        </div>
-                        
-                        <div class="found-words-section">
-                            <h3>Found Words: ${this.foundWords.length}/${this.validWords.length}</h3>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            
+        
+        // CSS styles for both game states
+        const styles = `
             <style>
                 .word-search-game {
                     padding: 20px;
@@ -278,7 +257,150 @@ export default class WordSearch {
                     color: #8B0000;
                 }
                 
+                /* Victory Screen Styles */
+                .victory-overlay {
+                    position: absolute;
+                    top: 0;
+                    left: 0;
+                    right: 0;
+                    bottom: 0;
+                    background: rgba(0, 0, 0, 0.8);
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    z-index: 1000;
+                    backdrop-filter: blur(5px);
+                }
+                
+                .victory-content {
+                    background: linear-gradient(45deg, #ff6600, #8b4513);
+                    color: white;
+                    padding: 40px;
+                    border-radius: 20px;
+                    text-align: center;
+                    box-shadow: 0 0 30px rgba(255, 102, 0, 0.5);
+                    border: 3px solid #ffd700;
+                    animation: victoryPulse 2s ease-in-out infinite alternate;
+                }
+                
+                .victory-content h2 {
+                    font-size: 28px;
+                    margin: 0 0 20px 0;
+                    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+                    line-height: 1.3;
+                }
+                
+                .victory-score {
+                    font-size: 24px;
+                    font-weight: bold;
+                    color: #ffd700;
+                    margin: 20px 0;
+                    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.7);
+                }
+                
+                .play-again-btn {
+                    background: #228b22;
+                    color: white;
+                    border: none;
+                    padding: 15px 30px;
+                    font-size: 18px;
+                    font-weight: bold;
+                    border-radius: 10px;
+                    cursor: pointer;
+                    transition: all 0.3s ease;
+                    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+                }
+                
+                .play-again-btn:hover {
+                    background: #32cd32;
+                    transform: translateY(-2px);
+                    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.4);
+                }
+                
+                .game-background-blur {
+                    filter: blur(3px);
+                    opacity: 0.5;
+                }
+                
+                @keyframes victoryPulse {
+                    0% {
+                        transform: scale(1);
+                        box-shadow: 0 0 30px rgba(255, 102, 0, 0.5);
+                    }
+                    100% {
+                        transform: scale(1.05);
+                        box-shadow: 0 0 40px rgba(255, 102, 0, 0.8);
+                    }
+                }
             </style>
+        `;
+
+        // Victory screen content
+        if (this.gameWon) {
+            return `
+                <div class="game-screen word-search-game">
+                    <div class="victory-overlay">
+                        <div class="victory-content">
+                            <h2>🎉 CONGRATULATIONS! 🎉<br>You found all the words!</h2>
+                            <div class="victory-score">Final Score: ${this.score}</div>
+                            <button id="play-again" class="play-again-btn">🎃 Play Again 🎃</button>
+                        </div>
+                    </div>
+                    <div class="game-background-blur">
+                        <h2>🔍 Word Search 🔍</h2>
+                        <div class="word-search-container">
+                            <div class="word-search-grid">
+                                ${gridHTML}
+                            </div>
+                            
+                            <div class="word-search-sidebar">
+                                <div class="selected-word-section">
+                                    <h3>Selected Word:</h3>
+                                    <div class="selected-word">${selectedWord || '(none)'}</div>
+                                    <div class="word-controls">
+                                        <button id="submit-word" disabled>Submit</button>
+                                        <button id="reset-word" disabled>Reset</button>
+                                    </div>
+                                    <div id="word-feedback" class="word-feedback"></div>
+                                </div>
+                                
+                                <div class="found-words-section">
+                                    <h3>Found Words: ${this.foundWords.length}/${this.validWords.length}</h3>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    ${styles}
+                </div>
+            `;
+        }
+
+        return `
+            <div class="game-screen word-search-game" style="--hover-color: ${currentHoverColor}; --hover-text-color: ${currentTextColor};">
+                <h2>🔍 Word Search 🔍</h2>
+                <div class="word-search-container">
+                    <div class="word-search-grid">
+                        ${gridHTML}
+                    </div>
+                    
+                    <div class="word-search-sidebar">
+                        <div class="selected-word-section">
+                            <h3>Selected Word:</h3>
+                            <div class="selected-word">${selectedWord || '(none)'}</div>
+                            <div class="word-controls">
+                                <button id="submit-word" ${selectedWord.length === 0 ? 'disabled' : ''}>Submit</button>
+                                <button id="reset-word" ${selectedWord.length === 0 ? 'disabled' : ''}>Reset</button>
+                            </div>
+                            <div id="word-feedback" class="word-feedback"></div>
+                        </div>
+                        
+                        <div class="found-words-section">
+                            <h3>Found Words: ${this.foundWords.length}/${this.validWords.length}</h3>
+                        </div>
+                    </div>
+                </div>
+                ${styles}
+            </div>
         `;
     }
 
@@ -315,7 +437,24 @@ export default class WordSearch {
     }
 
     handleSubmit() {
-        if (!this.isRunning || this.selectedLetters.length === 0) return;
+        if (!this.isRunning || this.selectedLetters.length === 0 || this.gameWon) return;
+        
+        // Check for victory conditions first
+        const victoryType = this.checkVictoryConditions();
+        if (victoryType) {
+            this.gameWon = true;
+            if (victoryType === 'cheat') {
+                this.score += 1000; // Bonus for finding cheat code
+            }
+            
+            // Update main game score
+            if (window.gameApp) {
+                window.gameApp.updateScore(this.score);
+            }
+            
+            this.showVictoryScreen(victoryType);
+            return;
+        }
         
         const selectedWord = this.selectedLetters.map(sel => sel.letter).join('');
         const feedback = document.getElementById('word-feedback');
@@ -343,6 +482,14 @@ export default class WordSearch {
             // Clear selection
             this.selectedLetters = [];
             this.updateDisplay();
+            
+            // Check for normal victory after finding a word
+            const normalVictory = this.checkVictoryConditions();
+            if (normalVictory === 'normal') {
+                this.gameWon = true;
+                this.showVictoryScreen('normal');
+                return;
+            }
         } else {
             // Incorrect or already found
             feedback.textContent = this.foundWords.includes(selectedWord.toUpperCase()) ? 'Already found!' : 'No';
@@ -386,6 +533,7 @@ export default class WordSearch {
         // Bind control button events
         const submitButton = document.getElementById('submit-word');
         const resetButton = document.getElementById('reset-word');
+        const playAgainButton = document.getElementById('play-again');
         
         if (submitButton) {
             submitButton.addEventListener('click', this.handleSubmit);
@@ -393,6 +541,10 @@ export default class WordSearch {
         
         if (resetButton) {
             resetButton.addEventListener('click', this.handleReset);
+        }
+        
+        if (playAgainButton) {
+            playAgainButton.addEventListener('click', () => this.resetGame());
         }
     }
 
@@ -428,6 +580,59 @@ export default class WordSearch {
 
     getScore() {
         return this.score;
+    }
+    
+    checkVictoryConditions() {
+        // Check for cheat code: all 4 corners selected
+        if (this.selectedLetters.length === 4) {
+            const corners = [
+                {row: 0, col: 0}, // top-left
+                {row: 0, col: this.grid[0].length - 1}, // top-right  
+                {row: this.grid.length - 1, col: 0}, // bottom-left
+                {row: this.grid.length - 1, col: this.grid[0].length - 1} // bottom-right
+            ];
+            
+            const selectedPositions = this.selectedLetters.map(sel => ({row: sel.row, col: sel.col}));
+            const isCheatCode = corners.every(corner => 
+                selectedPositions.some(pos => pos.row === corner.row && pos.col === corner.col)
+            ) && selectedPositions.length === 4;
+            
+            if (isCheatCode) {
+                return 'cheat';
+            }
+        }
+        
+        // Check for normal victory: all words found
+        if (this.foundWords.length === this.validWords.length) {
+            return 'normal';
+        }
+        
+        return false;
+    }
+    
+    showVictoryScreen(victoryType) {
+        // Clear existing UI and show victory screen
+        this.updateDisplay();
+    }
+    
+    resetGame() {
+        this.gameWon = false;
+        this.selectedLetters = [];
+        this.foundWords = [];
+        this.score = 0;
+        this.currentColorIndex = 0;
+        
+        // Reset letter colors
+        const rows = this.grid.length;
+        const cols = this.grid[0]?.length || 0;
+        this.letterColors = Array(rows).fill(null).map(() => Array(cols).fill(null));
+        
+        // Update main game score
+        if (window.gameApp) {
+            window.gameApp.updateScore(this.score);
+        }
+        
+        this.updateDisplay();
     }
     
     getDefaultPuzzle() {
