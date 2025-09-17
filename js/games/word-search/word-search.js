@@ -28,10 +28,17 @@ export default class WordSearch {
         this.availableColors = ['orange', 'purple', 'green', 'red', 'blue', 'yellow', 'pink', 'cyan'];
         this.currentColorIndex = 0;
         
-        // Bind click handler
+        // Drag selection state
+        this.isDragging = false;
+        
+        // Bind handlers
         this.handleLetterClick = this.handleLetterClick.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
         this.handleReset = this.handleReset.bind(this);
+        this.handleMouseDown = this.handleMouseDown.bind(this);
+        this.handleMouseUp = this.handleMouseUp.bind(this);
+        this.handleMouseMove = this.handleMouseMove.bind(this);
+        this.handleMouseEnter = this.handleMouseEnter.bind(this);
     }
     
     isAdjacent(row1, col1, row2, col2) {
@@ -411,7 +418,7 @@ export default class WordSearch {
     }
 
     handleLetterClick(event) {
-        if (!this.isRunning) return;
+        if (!this.isRunning || this.isDragging) return;
         
         const cell = event.target.closest('.letter-cell');
         if (!cell) return;
@@ -544,7 +551,19 @@ export default class WordSearch {
         const letterCells = document.querySelectorAll('.letter-cell');
         letterCells.forEach(cell => {
             cell.addEventListener('click', this.handleLetterClick);
+            cell.addEventListener('mousedown', this.handleMouseDown);
+            cell.addEventListener('mouseenter', this.handleMouseEnter);
         });
+        
+        // Bind drag events to document to handle mouse movement outside grid
+        document.addEventListener('mouseup', this.handleMouseUp);
+        document.addEventListener('mousemove', this.handleMouseMove);
+        
+        // Prevent text selection during drag
+        const grid = document.querySelector('.word-search-grid');
+        if (grid) {
+            grid.addEventListener('selectstart', (e) => e.preventDefault());
+        }
         
         // Bind control button events
         const submitButton = document.getElementById('submit-word');
@@ -580,7 +599,13 @@ export default class WordSearch {
         const letterCells = document.querySelectorAll('.letter-cell');
         letterCells.forEach(cell => {
             cell.removeEventListener('click', this.handleLetterClick);
+            cell.removeEventListener('mousedown', this.handleMouseDown);
+            cell.removeEventListener('mouseenter', this.handleMouseEnter);
         });
+        
+        // Remove document-level event listeners
+        document.removeEventListener('mouseup', this.handleMouseUp);
+        document.removeEventListener('mousemove', this.handleMouseMove);
         
         const submitButton = document.getElementById('submit-word');
         const resetButton = document.getElementById('reset-word');
@@ -637,6 +662,7 @@ export default class WordSearch {
         this.foundWords = [];
         this.score = 0;
         this.currentColorIndex = 0;
+        this.isDragging = false;
         
         // Reset letter colors
         const rows = this.grid.length;
@@ -648,6 +674,93 @@ export default class WordSearch {
             window.gameApp.updateScore(this.score);
         }
         
+        this.updateDisplay();
+    }
+    
+    // Mouse event handlers for drag selection
+    handleMouseDown(event) {
+        if (!this.isRunning) return;
+        
+        const cell = event.target.closest('.letter-cell');
+        if (!cell) return;
+        
+        const row = parseInt(cell.dataset.row);
+        const col = parseInt(cell.dataset.col);
+        const letter = cell.dataset.letter;
+        
+        // Check if this letter is already part of a found word (off-limits)
+        if (this.letterColors[row][col] !== null) {
+            return; // Ignore clicks on already found letters
+        }
+        
+        // Start dragging and initialize selection with this letter
+        this.isDragging = true;
+        this.selectedLetters = [{ row, col, letter }];
+        this.updateDisplay();
+        
+        // Prevent default to avoid text selection during drag
+        event.preventDefault();
+    }
+    
+    handleMouseMove(event) {
+        // Just prevent text selection during drag
+        if (this.isDragging) {
+            event.preventDefault();
+        }
+    }
+    
+    handleMouseUp(event) {
+        // End dragging
+        this.isDragging = false;
+    }
+    
+    handleMouseEnter(event) {
+        if (!this.isRunning || !this.isDragging) return;
+        
+        const cell = event.target.closest('.letter-cell');
+        if (!cell) return;
+        
+        const row = parseInt(cell.dataset.row);
+        const col = parseInt(cell.dataset.col);
+        const letter = cell.dataset.letter;
+        
+        // Check if this letter is already part of a found word (off-limits)
+        if (this.letterColors[row][col] !== null) {
+            return; // Ignore drags over already found letters
+        }
+        
+        // If no letters selected yet (safety check), add this one
+        if (this.selectedLetters.length === 0) {
+            this.selectedLetters.push({ row, col, letter });
+            this.updateDisplay();
+            return;
+        }
+        
+        // Check if this cell is the second-to-last in our selection (backtracking)
+        if (this.selectedLetters.length >= 2) {
+            const secondToLastLetter = this.selectedLetters[this.selectedLetters.length - 2];
+            if (row === secondToLastLetter.row && col === secondToLastLetter.col) {
+                // Backtracking: Remove the last letter
+                this.selectedLetters.pop();
+                this.updateDisplay();
+                return;
+            }
+        }
+        
+        // Check if this letter is already selected (ignore if already in path)
+        const isAlreadySelected = this.selectedLetters.some(sel => sel.row === row && sel.col === col);
+        if (isAlreadySelected) {
+            return;
+        }
+        
+        // Check adjacency to the last selected letter
+        const lastLetter = this.selectedLetters[this.selectedLetters.length - 1];
+        if (!this.isAdjacent(lastLetter.row, lastLetter.col, row, col)) {
+            return; // Not adjacent, ignore selection
+        }
+        
+        // Add new letter to selection
+        this.selectedLetters.push({ row, col, letter });
         this.updateDisplay();
     }
     
