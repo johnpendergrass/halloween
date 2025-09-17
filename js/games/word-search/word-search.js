@@ -33,6 +33,12 @@ export default class WordSearch {
         this.handleSubmit = this.handleSubmit.bind(this);
         this.handleReset = this.handleReset.bind(this);
     }
+    
+    isAdjacent(row1, col1, row2, col2) {
+        const rowDiff = Math.abs(row1 - row2);
+        const colDiff = Math.abs(col1 - col2);
+        return rowDiff <= 1 && colDiff <= 1 && (rowDiff + colDiff > 0);
+    }
 
     render() {
         const gridHTML = this.grid.map((row, rowIndex) => {
@@ -430,6 +436,16 @@ export default class WordSearch {
             }
             // If clicking a letter in the middle, ignore for now (could implement more complex behavior later)
         } else {
+            // Check adjacency if not the first letter
+            if (this.selectedLetters.length > 0) {
+                const lastLetter = this.selectedLetters[this.selectedLetters.length - 1];
+                
+                // Only allow selection if the new letter is adjacent to the last selected letter
+                if (!this.isAdjacent(lastLetter.row, lastLetter.col, row, col)) {
+                    return; // Not adjacent, ignore selection
+                }
+            }
+            
             // Add new letter to selection
             this.selectedLetters.push({ row, col, letter });
             this.updateDisplay();
