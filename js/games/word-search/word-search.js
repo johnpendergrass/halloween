@@ -441,7 +441,11 @@ export default class WordSearch {
                 this.selectedLetters.pop();
                 this.updateDisplay();
             }
-            // If clicking a letter in the middle, ignore for now (could implement more complex behavior later)
+            // If clicking a letter in the middle, truncate the selection to this point
+            else {
+                this.selectedLetters = this.selectedLetters.slice(0, existingIndex + 1);
+                this.updateDisplay();
+            }
         } else {
             // Check adjacency if not the first letter
             if (this.selectedLetters.length > 0) {
@@ -449,7 +453,10 @@ export default class WordSearch {
                 
                 // Only allow selection if the new letter is adjacent to the last selected letter
                 if (!this.isAdjacent(lastLetter.row, lastLetter.col, row, col)) {
-                    return; // Not adjacent, ignore selection
+                    // Not adjacent, start a new selection
+                    this.selectedLetters = [{ row, col, letter }];
+                    this.updateDisplay();
+                    return;
                 }
             }
             
@@ -693,10 +700,37 @@ export default class WordSearch {
             return; // Ignore clicks on already found letters
         }
         
-        // Start dragging and initialize selection with this letter
+        // Start dragging
         this.isDragging = true;
-        this.selectedLetters = [{ row, col, letter }];
-        this.updateDisplay();
+        
+        // Check if this letter is already selected
+        const existingIndex = this.selectedLetters.findIndex(sel => sel.row === row && sel.col === col);
+        
+        if (existingIndex !== -1) {
+            // If it's already selected, just start dragging from this point
+            // Truncate the selection if clicking in the middle of the path
+            if (existingIndex < this.selectedLetters.length - 1) {
+                this.selectedLetters = this.selectedLetters.slice(0, existingIndex + 1);
+                this.updateDisplay();
+            }
+        } else if (this.selectedLetters.length === 0) {
+            // If no existing selection, start fresh with this letter
+            this.selectedLetters = [{ row, col, letter }];
+            this.updateDisplay();
+        } else {
+            // Check if the clicked letter is adjacent to the last selected letter
+            const lastLetter = this.selectedLetters[this.selectedLetters.length - 1];
+            
+            if (this.isAdjacent(lastLetter.row, lastLetter.col, row, col)) {
+                // If adjacent, add it to the selection
+                this.selectedLetters.push({ row, col, letter });
+                this.updateDisplay();
+            } else {
+                // If not adjacent, start fresh with this letter
+                this.selectedLetters = [{ row, col, letter }];
+                this.updateDisplay();
+            }
+        }
         
         // Prevent default to avoid text selection during drag
         event.preventDefault();
@@ -747,9 +781,15 @@ export default class WordSearch {
             }
         }
         
-        // Check if this letter is already selected (ignore if already in path)
-        const isAlreadySelected = this.selectedLetters.some(sel => sel.row === row && sel.col === col);
-        if (isAlreadySelected) {
+        // Check if this letter is already in the selection
+        const existingIndex = this.selectedLetters.findIndex(sel => sel.row === row && sel.col === col);
+        if (existingIndex !== -1) {
+            // If it's already in the path (but not the second-to-last letter), 
+            // truncate the selection to this point if it's not at the end
+            if (existingIndex < this.selectedLetters.length - 1) {
+                this.selectedLetters = this.selectedLetters.slice(0, existingIndex + 1);
+                this.updateDisplay();
+            }
             return;
         }
         
