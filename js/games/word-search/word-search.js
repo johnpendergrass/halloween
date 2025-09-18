@@ -105,11 +105,11 @@ export default class WordSearch {
                 
                 .word-search-grid {
                     display: grid;
-                    grid-template-columns: repeat(8, 40px);
-                    grid-template-rows: repeat(7, 40px);
-                    gap: 2px;
+                    grid-template-columns: repeat(8, 45px);
+                    grid-template-rows: repeat(7, 45px);
+                    gap: 8px;
                     background: #2a1a0a;
-                    padding: 10px;
+                    padding: 15px;
                     border-radius: 8px;
                     border: 2px solid #8b4513;
                 }
@@ -121,9 +121,9 @@ export default class WordSearch {
                     background: #f4a460;
                     color: #2a1a0a;
                     font-weight: bold;
-                    font-size: 18px;
+                    font-size: 22px;
                     cursor: pointer;
-                    border-radius: 4px;
+                    border-radius: 6px;
                     border: 2px solid #d2691e;
                     transition: all 0.2s ease;
                     user-select: none;
@@ -501,9 +501,6 @@ export default class WordSearch {
             }
             this.currentColorIndex = (this.currentColorIndex + 1) % this.availableColors.length;
             
-            feedback.textContent = 'Correct!';
-            feedback.className = 'word-feedback correct';
-            
             // Update main game score
             if (window.gameApp) {
                 window.gameApp.updateScore(this.score);
@@ -512,6 +509,11 @@ export default class WordSearch {
             // Clear selection
             this.selectedLetters = [];
             this.updateDisplay();
+            
+            // Set feedback AFTER updating display so it doesn't get overwritten
+            const feedbackAfterUpdate = document.getElementById('word-feedback');
+            feedbackAfterUpdate.textContent = 'Correct!';
+            feedbackAfterUpdate.className = 'word-feedback correct';
             
             // Check for normal victory after finding a word
             const normalVictory = this.checkVictoryConditions();
@@ -527,9 +529,13 @@ export default class WordSearch {
         }
         
         // Clear feedback after 2 seconds
+        // Using a new reference to ensure we're manipulating the current DOM element
         setTimeout(() => {
-            feedback.textContent = '';
-            feedback.className = 'word-feedback';
+            const currentFeedback = document.getElementById('word-feedback');
+            if (currentFeedback) {
+                currentFeedback.textContent = '';
+                currentFeedback.className = 'word-feedback';
+            }
         }, 2000);
     }
 
