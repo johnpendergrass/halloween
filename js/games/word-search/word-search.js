@@ -2,35 +2,35 @@ export default class WordSearch {
     constructor(puzzle = null) {
         // Load puzzle data
         this.puzzle = puzzle || this.getDefaultPuzzle();
-        
+
         this.name = this.puzzle.name || 'Word Search';
         this.description = this.puzzle.description || 'Find words hidden in the letter grid!';
         this.score = 0;
         this.isRunning = false;
-        
+
         // Use puzzle data
         this.grid = this.puzzle.grid;
         this.validWords = this.puzzle.words;
-        
+
         // Initialize dynamic grid dimensions based on puzzle
         const rows = this.grid.length;
         const cols = this.grid[0]?.length || 0;
-        
+
         // Track selected letters
         this.selectedLetters = [];
         this.foundWords = [];
-        
+
         // Victory state
         this.gameWon = false;
-        
+
         // Track letter colors for found words (dynamic sizing)
         this.letterColors = Array(rows).fill(null).map(() => Array(cols).fill(null));
         this.availableColors = ['orange', 'purple', 'green', 'red', 'blue', 'yellow', 'pink', 'cyan'];
         this.currentColorIndex = 0;
-        
+
         // Drag selection state
         this.isDragging = false;
-        
+
         // Bind handlers
         this.handleLetterClick = this.handleLetterClick.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
@@ -40,7 +40,7 @@ export default class WordSearch {
         this.handleMouseMove = this.handleMouseMove.bind(this);
         this.handleMouseEnter = this.handleMouseEnter.bind(this);
     }
-    
+
     isAdjacent(row1, col1, row2, col2) {
         const rowDiff = Math.abs(row1 - row2);
         const colDiff = Math.abs(col1 - col2);
@@ -52,17 +52,17 @@ export default class WordSearch {
             return row.map((letter, colIndex) => {
                 const isSelected = this.selectedLetters.some(sel => sel.row === rowIndex && sel.col === colIndex);
                 const letterColor = this.letterColors[rowIndex][colIndex];
-                
+
                 let cellClasses = 'letter-cell';
                 if (isSelected) {
                     cellClasses += ' selected';
                 } else if (letterColor) {
                     cellClasses += ` found-word-${letterColor}`;
                 }
-                
+
                 return `
-                    <div class="${cellClasses}" 
-                         data-row="${rowIndex}" 
+                    <div class="${cellClasses}"
+                         data-row="${rowIndex}"
                          data-col="${colIndex}"
                          data-letter="${letter}">
                         ${letter}
@@ -72,12 +72,12 @@ export default class WordSearch {
         }).join('');
 
         const selectedWord = this.selectedLetters.map(sel => sel.letter).join('');
-        
+
         // Get the color that will be used for the next found word
         const currentColor = this.availableColors[this.currentColorIndex];
         const colorMap = {
             'orange': '#ff8c00',
-            'purple': '#9932cc', 
+            'purple': '#9932cc',
             'green': '#228b22',
             'red': '#dc143c',
             'blue': '#1e3a8a',
@@ -87,7 +87,7 @@ export default class WordSearch {
         };
         const currentHoverColor = colorMap[currentColor];
         const currentTextColor = currentColor === 'yellow' ? 'black' : 'white';
-        
+
         // CSS styles for both game states
         const styles = `
             <style>
@@ -96,13 +96,13 @@ export default class WordSearch {
                     height: 100%;
                     overflow-y: auto;
                 }
-                
+
                 .word-search-container {
                     display: flex;
                     gap: 20px;
                     height: calc(100% - 60px);
                 }
-                
+
                 .word-search-grid {
                     display: grid;
                     grid-template-columns: repeat(8, 45px);
@@ -113,7 +113,7 @@ export default class WordSearch {
                     border-radius: 8px;
                     border: 2px solid #8b4513;
                 }
-                
+
                 .letter-cell {
                     display: flex;
                     align-items: center;
@@ -128,66 +128,66 @@ export default class WordSearch {
                     transition: all 0.2s ease;
                     user-select: none;
                 }
-                
+
                 .letter-cell:hover:not(.found-word-orange):not(.found-word-purple):not(.found-word-green):not(.found-word-red):not(.found-word-blue):not(.found-word-yellow):not(.found-word-pink):not(.found-word-cyan) {
                     background: var(--hover-color);
                     transform: scale(1.1);
                 }
-                
+
                 .letter-cell.selected {
                     background: var(--hover-color);
                     color: var(--hover-text-color);
                 }
-                
+
                 /* Found word colors - Halloween themed */
                 .found-word-orange {
                     background: #ff8c00;
                     color: white;
                     border-color: #ff6600;
                 }
-                
+
                 .found-word-purple {
                     background: #9932cc;
                     color: white;
                     border-color: #7b2cbf;
                 }
-                
+
                 .found-word-green {
                     background: #228b22;
                     color: white;
                     border-color: #006400;
                 }
-                
+
                 .found-word-red {
                     background: #dc143c;
                     color: white;
                     border-color: #b91c3c;
                 }
-                
+
                 .found-word-blue {
                     background: #1e3a8a;
                     color: white;
                     border-color: #1e40af;
                 }
-                
+
                 .found-word-yellow {
                     background: #eab308;
                     color: black;
                     border-color: #ca8a04;
                 }
-                
+
                 .found-word-pink {
                     background: #ec4899;
                     color: white;
                     border-color: #db2777;
                 }
-                
+
                 .found-word-cyan {
                     background: #0891b2;
                     color: white;
                     border-color: #0e7490;
                 }
-                
+
                 .word-search-sidebar {
                     flex: 1;
                     display: flex;
@@ -195,7 +195,7 @@ export default class WordSearch {
                     gap: 20px;
                     max-width: 300px;
                 }
-                
+
                 .selected-word-section,
                 .found-words-section {
                     background: rgba(139, 69, 19, 0.3);
@@ -203,14 +203,14 @@ export default class WordSearch {
                     border-radius: 8px;
                     border: 2px solid #8b4513;
                 }
-                
+
                 .selected-word-section h3,
                 .found-words-section h3 {
                     margin: 0 0 10px 0;
                     color: #ffd700;
                     font-size: 16px;
                 }
-                
+
                 .selected-word {
                     background: #2a1a0a;
                     color: #ffd700;
@@ -223,13 +223,13 @@ export default class WordSearch {
                     margin-bottom: 10px;
                     border: 1px solid #8b4513;
                 }
-                
+
                 .word-controls {
                     display: flex;
                     gap: 10px;
                     margin-bottom: 10px;
                 }
-                
+
                 .word-controls button {
                     flex: 1;
                     padding: 8px 12px;
@@ -241,17 +241,17 @@ export default class WordSearch {
                     font-weight: bold;
                     transition: background 0.2s ease;
                 }
-                
+
                 .word-controls button:hover:not(:disabled) {
                     background: #a0522d;
                 }
-                
+
                 .word-controls button:disabled {
                     background: #666;
                     cursor: not-allowed;
                     opacity: 0.5;
                 }
-                
+
                 .word-feedback {
                     padding: 8px;
                     border-radius: 4px;
@@ -259,17 +259,17 @@ export default class WordSearch {
                     text-align: center;
                     min-height: 20px;
                 }
-                
+
                 .word-feedback.correct {
                     background: #90EE90;
                     color: #006400;
                 }
-                
+
                 .word-feedback.incorrect {
                     background: #FFB6C1;
                     color: #8B0000;
                 }
-                
+
                 /* Victory Screen Styles */
                 .victory-overlay {
                     position: absolute;
@@ -284,7 +284,7 @@ export default class WordSearch {
                     z-index: 1000;
                     backdrop-filter: blur(5px);
                 }
-                
+
                 .victory-content {
                     background: linear-gradient(45deg, #ff6600, #8b4513);
                     color: white;
@@ -295,14 +295,14 @@ export default class WordSearch {
                     border: 3px solid #ffd700;
                     animation: victoryPulse 2s ease-in-out infinite alternate;
                 }
-                
+
                 .victory-content h2 {
                     font-size: 28px;
                     margin: 0 0 20px 0;
                     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
                     line-height: 1.3;
                 }
-                
+
                 .victory-score {
                     font-size: 24px;
                     font-weight: bold;
@@ -310,7 +310,7 @@ export default class WordSearch {
                     margin: 20px 0;
                     text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.7);
                 }
-                
+
                 .play-again-btn {
                     background: #228b22;
                     color: white;
@@ -323,18 +323,18 @@ export default class WordSearch {
                     transition: all 0.3s ease;
                     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
                 }
-                
+
                 .play-again-btn:hover {
                     background: #32cd32;
                     transform: translateY(-2px);
                     box-shadow: 0 6px 12px rgba(0, 0, 0, 0.4);
                 }
-                
+
                 .game-background-blur {
                     filter: blur(3px);
                     opacity: 0.5;
                 }
-                
+
                 @keyframes victoryPulse {
                     0% {
                         transform: scale(1);
@@ -365,7 +365,7 @@ export default class WordSearch {
                             <div class="word-search-grid">
                                 ${gridHTML}
                             </div>
-                            
+
                             <div class="word-search-sidebar">
                                 <div class="selected-word-section">
                                     <h3>Selected Word:</h3>
@@ -376,7 +376,7 @@ export default class WordSearch {
                                     </div>
                                     <div id="word-feedback" class="word-feedback"></div>
                                 </div>
-                                
+
                                 <div class="found-words-section">
                                     <h3>Found Words: ${this.foundWords.length}/${this.validWords.length}</h3>
                                 </div>
@@ -395,7 +395,7 @@ export default class WordSearch {
                     <div class="word-search-grid">
                         ${gridHTML}
                     </div>
-                    
+
                     <div class="word-search-sidebar">
                         <div class="selected-word-section">
                             <h3>Selected Word:</h3>
@@ -406,7 +406,7 @@ export default class WordSearch {
                             </div>
                             <div id="word-feedback" class="word-feedback"></div>
                         </div>
-                        
+
                         <div class="found-words-section">
                             <h3>Found Words: ${this.foundWords.length}/${this.validWords.length}</h3>
                         </div>
@@ -419,22 +419,22 @@ export default class WordSearch {
 
     handleLetterClick(event) {
         if (!this.isRunning || this.isDragging) return;
-        
+
         const cell = event.target.closest('.letter-cell');
         if (!cell) return;
-        
+
         const row = parseInt(cell.dataset.row);
         const col = parseInt(cell.dataset.col);
         const letter = cell.dataset.letter;
-        
+
         // Check if this letter is already part of a found word (off-limits)
         if (this.letterColors[row][col] !== null) {
             return; // Ignore clicks on already found letters
         }
-        
+
         // Check if this letter is already selected
         const existingIndex = this.selectedLetters.findIndex(sel => sel.row === row && sel.col === col);
-        
+
         if (existingIndex !== -1) {
             // If clicking the last selected letter, remove it (backspace behavior)
             if (existingIndex === this.selectedLetters.length - 1) {
@@ -450,7 +450,7 @@ export default class WordSearch {
             // Check adjacency if not the first letter
             if (this.selectedLetters.length > 0) {
                 const lastLetter = this.selectedLetters[this.selectedLetters.length - 1];
-                
+
                 // Only allow selection if the new letter is adjacent to the last selected letter
                 if (!this.isAdjacent(lastLetter.row, lastLetter.col, row, col)) {
                     // Not adjacent, start a new selection
@@ -459,7 +459,7 @@ export default class WordSearch {
                     return;
                 }
             }
-            
+
             // Add new letter to selection
             this.selectedLetters.push({ row, col, letter });
             this.updateDisplay();
@@ -468,7 +468,7 @@ export default class WordSearch {
 
     handleSubmit() {
         if (!this.isRunning || this.selectedLetters.length === 0 || this.gameWon) return;
-        
+
         // Check for victory conditions first
         const victoryType = this.checkVictoryConditions();
         if (victoryType) {
@@ -476,45 +476,45 @@ export default class WordSearch {
             if (victoryType === 'cheat') {
                 this.score += 1000; // Bonus for finding cheat code
             }
-            
+
             // Update main game score
             if (window.gameApp) {
                 window.gameApp.updateScore(this.score);
             }
-            
+
             this.showVictoryScreen(victoryType);
             return;
         }
-        
+
         const selectedWord = this.selectedLetters.map(sel => sel.letter).join('');
         const feedback = document.getElementById('word-feedback');
-        
+
         if (this.validWords.includes(selectedWord.toUpperCase()) && !this.foundWords.includes(selectedWord.toUpperCase())) {
             // Correct word!
             this.foundWords.push(selectedWord.toUpperCase());
             this.score += selectedWord.length * 10; // Score based on word length
-            
+
             // Color the letters with the next available color
             const currentColor = this.availableColors[this.currentColorIndex];
             for (const letter of this.selectedLetters) {
                 this.letterColors[letter.row][letter.col] = currentColor;
             }
             this.currentColorIndex = (this.currentColorIndex + 1) % this.availableColors.length;
-            
+
             // Update main game score
             if (window.gameApp) {
                 window.gameApp.updateScore(this.score);
             }
-            
+
             // Clear selection
             this.selectedLetters = [];
             this.updateDisplay();
-            
+
             // Set feedback AFTER updating display so it doesn't get overwritten
             const feedbackAfterUpdate = document.getElementById('word-feedback');
             feedbackAfterUpdate.textContent = 'Correct!';
             feedbackAfterUpdate.className = 'word-feedback correct';
-            
+
             // Check for normal victory after finding a word
             const normalVictory = this.checkVictoryConditions();
             if (normalVictory === 'normal') {
@@ -527,7 +527,7 @@ export default class WordSearch {
             feedback.textContent = this.foundWords.includes(selectedWord.toUpperCase()) ? 'Already found!' : 'No';
             feedback.className = 'word-feedback incorrect';
         }
-        
+
         // Clear feedback after 2 seconds
         // Using a new reference to ensure we're manipulating the current DOM element
         setTimeout(() => {
@@ -541,10 +541,10 @@ export default class WordSearch {
 
     handleReset() {
         if (!this.isRunning) return;
-        
+
         this.selectedLetters = [];
         this.updateDisplay();
-        
+
         const feedback = document.getElementById('word-feedback');
         feedback.textContent = '';
         feedback.className = 'word-feedback';
@@ -567,30 +567,30 @@ export default class WordSearch {
             cell.addEventListener('mousedown', this.handleMouseDown);
             cell.addEventListener('mouseenter', this.handleMouseEnter);
         });
-        
+
         // Bind drag events to document to handle mouse movement outside grid
         document.addEventListener('mouseup', this.handleMouseUp);
         document.addEventListener('mousemove', this.handleMouseMove);
-        
+
         // Prevent text selection during drag
         const grid = document.querySelector('.word-search-grid');
         if (grid) {
             grid.addEventListener('selectstart', (e) => e.preventDefault());
         }
-        
+
         // Bind control button events
         const submitButton = document.getElementById('submit-word');
         const resetButton = document.getElementById('reset-word');
         const playAgainButton = document.getElementById('play-again');
-        
+
         if (submitButton) {
             submitButton.addEventListener('click', this.handleSubmit);
         }
-        
+
         if (resetButton) {
             resetButton.addEventListener('click', this.handleReset);
         }
-        
+
         if (playAgainButton) {
             playAgainButton.addEventListener('click', () => this.resetGame());
         }
@@ -598,7 +598,7 @@ export default class WordSearch {
 
     start() {
         this.isRunning = true;
-        
+
         // Use setTimeout to ensure DOM is ready
         setTimeout(() => {
             this.bindEvents();
@@ -607,7 +607,7 @@ export default class WordSearch {
 
     stop() {
         this.isRunning = false;
-        
+
         // Remove event listeners
         const letterCells = document.querySelectorAll('.letter-cell');
         letterCells.forEach(cell => {
@@ -615,18 +615,18 @@ export default class WordSearch {
             cell.removeEventListener('mousedown', this.handleMouseDown);
             cell.removeEventListener('mouseenter', this.handleMouseEnter);
         });
-        
+
         // Remove document-level event listeners
         document.removeEventListener('mouseup', this.handleMouseUp);
         document.removeEventListener('mousemove', this.handleMouseMove);
-        
+
         const submitButton = document.getElementById('submit-word');
         const resetButton = document.getElementById('reset-word');
-        
+
         if (submitButton) {
             submitButton.removeEventListener('click', this.handleSubmit);
         }
-        
+
         if (resetButton) {
             resetButton.removeEventListener('click', this.handleReset);
         }
@@ -635,40 +635,40 @@ export default class WordSearch {
     getScore() {
         return this.score;
     }
-    
+
     checkVictoryConditions() {
         // Check for cheat code: all 4 corners selected
         if (this.selectedLetters.length === 4) {
             const corners = [
                 {row: 0, col: 0}, // top-left
-                {row: 0, col: this.grid[0].length - 1}, // top-right  
+                {row: 0, col: this.grid[0].length - 1}, // top-right
                 {row: this.grid.length - 1, col: 0}, // bottom-left
                 {row: this.grid.length - 1, col: this.grid[0].length - 1} // bottom-right
             ];
-            
+
             const selectedPositions = this.selectedLetters.map(sel => ({row: sel.row, col: sel.col}));
-            const isCheatCode = corners.every(corner => 
+            const isCheatCode = corners.every(corner =>
                 selectedPositions.some(pos => pos.row === corner.row && pos.col === corner.col)
             ) && selectedPositions.length === 4;
-            
+
             if (isCheatCode) {
                 return 'cheat';
             }
         }
-        
+
         // Check for normal victory: all words found
         if (this.foundWords.length === this.validWords.length) {
             return 'normal';
         }
-        
+
         return false;
     }
-    
+
     showVictoryScreen(victoryType) {
         // Clear existing UI and show victory screen
         this.updateDisplay();
     }
-    
+
     resetGame() {
         this.gameWon = false;
         this.selectedLetters = [];
@@ -676,42 +676,42 @@ export default class WordSearch {
         this.score = 0;
         this.currentColorIndex = 0;
         this.isDragging = false;
-        
+
         // Reset letter colors
         const rows = this.grid.length;
         const cols = this.grid[0]?.length || 0;
         this.letterColors = Array(rows).fill(null).map(() => Array(cols).fill(null));
-        
+
         // Update main game score
         if (window.gameApp) {
             window.gameApp.updateScore(this.score);
         }
-        
+
         this.updateDisplay();
     }
-    
+
     // Mouse event handlers for drag selection
     handleMouseDown(event) {
         if (!this.isRunning) return;
-        
+
         const cell = event.target.closest('.letter-cell');
         if (!cell) return;
-        
+
         const row = parseInt(cell.dataset.row);
         const col = parseInt(cell.dataset.col);
         const letter = cell.dataset.letter;
-        
+
         // Check if this letter is already part of a found word (off-limits)
         if (this.letterColors[row][col] !== null) {
             return; // Ignore clicks on already found letters
         }
-        
+
         // Start dragging
         this.isDragging = true;
-        
+
         // Check if this letter is already selected
         const existingIndex = this.selectedLetters.findIndex(sel => sel.row === row && sel.col === col);
-        
+
         if (existingIndex !== -1) {
             // If it's already selected, just start dragging from this point
             // Truncate the selection if clicking in the middle of the path
@@ -726,7 +726,7 @@ export default class WordSearch {
         } else {
             // Check if the clicked letter is adjacent to the last selected letter
             const lastLetter = this.selectedLetters[this.selectedLetters.length - 1];
-            
+
             if (this.isAdjacent(lastLetter.row, lastLetter.col, row, col)) {
                 // If adjacent, add it to the selection
                 this.selectedLetters.push({ row, col, letter });
@@ -737,45 +737,45 @@ export default class WordSearch {
                 this.updateDisplay();
             }
         }
-        
+
         // Prevent default to avoid text selection during drag
         event.preventDefault();
     }
-    
+
     handleMouseMove(event) {
         // Just prevent text selection during drag
         if (this.isDragging) {
             event.preventDefault();
         }
     }
-    
+
     handleMouseUp(event) {
         // End dragging
         this.isDragging = false;
     }
-    
+
     handleMouseEnter(event) {
         if (!this.isRunning || !this.isDragging) return;
-        
+
         const cell = event.target.closest('.letter-cell');
         if (!cell) return;
-        
+
         const row = parseInt(cell.dataset.row);
         const col = parseInt(cell.dataset.col);
         const letter = cell.dataset.letter;
-        
+
         // Check if this letter is already part of a found word (off-limits)
         if (this.letterColors[row][col] !== null) {
             return; // Ignore drags over already found letters
         }
-        
+
         // If no letters selected yet (safety check), add this one
         if (this.selectedLetters.length === 0) {
             this.selectedLetters.push({ row, col, letter });
             this.updateDisplay();
             return;
         }
-        
+
         // Check if this cell is the second-to-last in our selection (backtracking)
         if (this.selectedLetters.length >= 2) {
             const secondToLastLetter = this.selectedLetters[this.selectedLetters.length - 2];
@@ -786,11 +786,11 @@ export default class WordSearch {
                 return;
             }
         }
-        
+
         // Check if this letter is already in the selection
         const existingIndex = this.selectedLetters.findIndex(sel => sel.row === row && sel.col === col);
         if (existingIndex !== -1) {
-            // If it's already in the path (but not the second-to-last letter), 
+            // If it's already in the path (but not the second-to-last letter),
             // truncate the selection to this point if it's not at the end
             if (existingIndex < this.selectedLetters.length - 1) {
                 this.selectedLetters = this.selectedLetters.slice(0, existingIndex + 1);
@@ -798,18 +798,18 @@ export default class WordSearch {
             }
             return;
         }
-        
+
         // Check adjacency to the last selected letter
         const lastLetter = this.selectedLetters[this.selectedLetters.length - 1];
         if (!this.isAdjacent(lastLetter.row, lastLetter.col, row, col)) {
             return; // Not adjacent, ignore selection
         }
-        
+
         // Add new letter to selection
         this.selectedLetters.push({ row, col, letter });
         this.updateDisplay();
     }
-    
+
     getDefaultPuzzle() {
         // Default Halloween puzzle (fallback if no puzzle provided)
         return {
@@ -826,7 +826,7 @@ export default class WordSearch {
             ],
             words: [
                 'EERIE',
-                'JACKOLANTERN', 
+                'JACKOLANTERN',
                 'COBWEB',
                 'BANSHEE',
                 'WRAITH',

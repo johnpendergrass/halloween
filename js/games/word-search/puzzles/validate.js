@@ -11,18 +11,7 @@
  * - Run with command like `node js/games/word-search/puzzles/validate.js`
  */
 
-const txtInput = require('./hard');
-console.log( txtInput)
-
-const process = (input) => {
-  const result = input.split(/\n/);
-  const processRow = (row) => row.split(' ');
-  return result.map((row) => row.split(' '));
-}
-const processedGrid = process(txtInput);
-
-// Debug: print the parsed grid
-console.log('Parsed grid:');
+const processedGrid = require('./hard');
 
 function findWord(grid, word) {
   let found = 0;
