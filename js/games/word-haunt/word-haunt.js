@@ -270,6 +270,10 @@ export default class WordSearch {
         const currentHoverColor = colorMap[currentColor];
         const currentTextColor = currentColor === 'yellow' ? 'black' : 'white';
 
+        // Get current puzzle grid dimensions for dynamic CSS
+        const gridCols = this.grid[0]?.length || 8; // fallback to 8
+        const gridRows = this.grid.length || 7;     // fallback to 7
+
         // CSS styles for both game states
         const styles = `
             <style>
@@ -287,8 +291,8 @@ export default class WordSearch {
 
                 .word-search-grid {
                     display: grid;
-                    grid-template-columns: repeat(8, 45px);
-                    grid-template-rows: repeat(7, 45px);
+                    grid-template-columns: repeat(${gridCols}, 45px);
+                    grid-template-rows: repeat(${gridRows}, 45px);
                     gap: 8px;
                     background: #2a1a0a;
                     padding: 15px;
