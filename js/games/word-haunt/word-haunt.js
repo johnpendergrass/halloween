@@ -837,21 +837,17 @@ export default class WordSearch {
     }
 
     checkVictoryConditions() {
-        // Check for cheat code: all 4 corners selected
-        if (this.selectedLetters.length === 4) {
-            const corners = [
-                {row: 0, col: 0}, // top-left
-                {row: 0, col: this.grid[0].length - 1}, // top-right
-                {row: this.grid.length - 1, col: 0}, // bottom-left
-                {row: this.grid.length - 1, col: this.grid[0].length - 1} // bottom-right
-            ];
-
-            const selectedPositions = this.selectedLetters.map(sel => ({row: sel.row, col: sel.col}));
-            const isCheatCode = corners.every(corner =>
-                selectedPositions.some(pos => pos.row === corner.row && pos.col === corner.col)
-            ) && selectedPositions.length === 4;
-
-            if (isCheatCode) {
+        // Check for cheat code: entire bottom row selected left-to-right
+        const bottomRowLength = this.grid[0].length;
+        if (this.selectedLetters.length === bottomRowLength) {
+            const bottomRowIndex = this.grid.length - 1;
+            
+            // Check if all selected letters are in bottom row, ordered left-to-right
+            const isBottomRowCheat = this.selectedLetters.every((letter, index) => 
+                letter.row === bottomRowIndex && letter.col === index
+            );
+            
+            if (isBottomRowCheat) {
                 return 'cheat';
             }
         }
