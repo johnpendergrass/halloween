@@ -11,7 +11,8 @@
  * - Run with command like `node js/games/word-search/puzzles/validate.js`
  */
 
-const processedGrid = require('./hard');
+const puzzle = require('./hard');
+const processedGrid = puzzle.grid;
 
 function findWord(grid, word) {
   let found = 0;
@@ -58,11 +59,33 @@ const search = (grid, firstChar, rest, row, col, usedLetter) => {
     + search(grid, nextFirstChar, nextRest, row + 1, col + 1, usedLetter);
 }
 
-findWord(processedGrid, 'EERIE')
-findWord(processedGrid, 'JACKOLANTERN')
-findWord(processedGrid, 'COBWEB')
-findWord(processedGrid, 'BANSHEE')
-findWord(processedGrid, 'WRAITH')
-findWord(processedGrid, 'SHROUD')
-findWord(processedGrid, 'GARGOYLE')
-findWord(processedGrid, 'COFFIN')
+// Validate all words from the puzzle data
+console.log('\n=== WORD SEARCH PUZZLE VALIDATION ===');
+console.log('Puzzle:', puzzle.name);
+console.log('Grid size:', processedGrid.length + 'x' + processedGrid[0].length);
+console.log('Target words:', puzzle.words.length);
+console.log('\n=== INDIVIDUAL WORD VALIDATION ===');
+
+let totalFinds = 0;
+let wordsFoundOnce = 0;
+let wordsFoundMultiple = 0;
+let wordsNotFound = 0;
+
+puzzle.words.forEach(word => {
+  const found = findWord(processedGrid, word);
+  totalFinds += found;
+  if (found === 1) {
+    wordsFoundOnce++;
+  } else if (found > 1) {
+    wordsFoundMultiple++;
+  } else {
+    wordsNotFound++;
+  }
+});
+
+console.log('\n=== VALIDATION SUMMARY ===');
+console.log('Words found exactly once:', wordsFoundOnce + '/' + puzzle.words.length);
+console.log('Words found multiple times:', wordsFoundMultiple);
+console.log('Words not found:', wordsNotFound);
+console.log('Total word instances found:', totalFinds);
+console.log('\nValidation result:', (wordsFoundOnce === puzzle.words.length && wordsNotFound === 0) ? 'GOOD ✓' : 'NEEDS REVIEW ⚠️');
