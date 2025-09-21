@@ -3,6 +3,34 @@ export default class WordSearch {
         // Set default difficulty
         this.currentDifficulty = 'easy';
         
+        // Initialize separate states for each difficulty
+        this.difficultyStates = {
+            easy: {
+                selectedLetters: [],
+                foundWords: [],
+                gameWon: false,
+                letterColors: null,
+                currentColorIndex: 0,
+                isDragging: false
+            },
+            medium: {
+                selectedLetters: [],
+                foundWords: [],
+                gameWon: false,
+                letterColors: null,
+                currentColorIndex: 0,
+                isDragging: false
+            },
+            hard: {
+                selectedLetters: [],
+                foundWords: [],
+                gameWon: false,
+                letterColors: null,
+                currentColorIndex: 0,
+                isDragging: false
+            }
+        };
+        
         // Load puzzle data
         this.puzzle = puzzle || this.getDefaultPuzzle();
 
@@ -26,13 +54,15 @@ export default class WordSearch {
         // Victory state
         this.gameWon = false;
 
-        // Track letter colors for found words (dynamic sizing)
-        this.letterColors = Array(rows).fill(null).map(() => Array(cols).fill(null));
+        // Initialize letter colors for current difficulty if not set
+        if (!this.difficultyStates[this.currentDifficulty].letterColors) {
+            this.difficultyStates[this.currentDifficulty].letterColors = Array(rows).fill(null).map(() => Array(cols).fill(null));
+        }
+        
         this.availableColors = ['orange', 'purple', 'green', 'red', 'blue', 'yellow', 'pink', 'cyan'];
-        this.currentColorIndex = 0;
-
-        // Drag selection state
-        this.isDragging = false;
+        
+        // Load initial state from current difficulty
+        this.loadDifficultyState(this.currentDifficulty);
 
         // Bind handlers
         this.handleLetterClick = this.handleLetterClick.bind(this);
@@ -98,6 +128,15 @@ export default class WordSearch {
             return;
         }
         
+        // Don't switch if already on this difficulty
+        if (this.currentDifficulty === difficulty) {
+            return;
+        }
+        
+        // Save current state before switching
+        this.saveCurrentState();
+        
+        // Switch to new difficulty
         this.currentDifficulty = difficulty;
         this.puzzle = this.getDefaultPuzzle();
         
@@ -107,18 +146,8 @@ export default class WordSearch {
         this.grid = this.puzzle.grid;
         this.validWords = this.puzzle.words;
         
-        // Reset all game state
-        this.gameWon = false;
-        this.selectedLetters = [];
-        this.foundWords = [];
-        this.score = 0;
-        this.currentColorIndex = 0;
-        this.isDragging = false;
-
-        // Reset letter colors with new grid dimensions
-        const rows = this.grid.length;
-        const cols = this.grid[0]?.length || 0;
-        this.letterColors = Array(rows).fill(null).map(() => Array(cols).fill(null));
+        // Load state for new difficulty
+        this.loadDifficultyState(difficulty);
 
         // Update main game score
         if (window.gameApp) {
@@ -134,6 +163,64 @@ export default class WordSearch {
         if (difficulty) {
             this.switchDifficulty(difficulty);
         }
+    }
+
+    saveCurrentState() {
+        const state = this.difficultyStates[this.currentDifficulty];
+        
+        // Save current game state (deep clone arrays to prevent reference issues)
+        state.selectedLetters = this.selectedLetters.map(letter => ({...letter}));
+        state.foundWords = [...this.foundWords];
+        state.gameWon = this.gameWon;
+        state.currentColorIndex = this.currentColorIndex;
+        state.isDragging = this.isDragging;
+        
+        // Save letter colors (deep clone 2D array)
+        if (this.letterColors) {
+            state.letterColors = this.letterColors.map(row => [...row]);
+        }
+    }
+
+    loadDifficultyState(difficulty) {
+        const state = this.difficultyStates[difficulty];
+        
+        // Load state into current game properties
+        this.selectedLetters = state.selectedLetters.map(letter => ({...letter}));
+        this.foundWords = [...state.foundWords];
+        this.gameWon = state.gameWon;
+        this.currentColorIndex = state.currentColorIndex;
+        this.isDragging = state.isDragging;
+        
+        // Load or initialize letter colors for current grid dimensions
+        const rows = this.grid.length;
+        const cols = this.grid[0]?.length || 0;
+        
+        if (state.letterColors && 
+            state.letterColors.length === rows && 
+            state.letterColors[0]?.length === cols) {
+            // Grid dimensions match, restore saved colors
+            this.letterColors = state.letterColors.map(row => [...row]);
+        } else {
+            // Grid dimensions changed or not initialized, create new array
+            this.letterColors = Array(rows).fill(null).map(() => Array(cols).fill(null));
+            state.letterColors = this.letterColors.map(row => [...row]);
+        }
+    }
+
+    initializeDifficultyState(difficulty) {
+        const puzzles = this.getPuzzleData();
+        const puzzle = puzzles[difficulty];
+        const rows = puzzle.grid.length;
+        const cols = puzzle.grid[0]?.length || 0;
+        
+        this.difficultyStates[difficulty] = {
+            selectedLetters: [],
+            foundWords: [],
+            gameWon: false,
+            letterColors: Array(rows).fill(null).map(() => Array(cols).fill(null)),
+            currentColorIndex: 0,
+            isDragging: false
+        };
     }
 
     isAdjacent(row1, col1, row2, col2) {
