@@ -1,5 +1,8 @@
 export default class WordSearch {
     constructor(puzzle = null) {
+        // Set default difficulty
+        this.currentDifficulty = 'easy';
+        
         // Load puzzle data
         this.puzzle = puzzle || this.getDefaultPuzzle();
 
@@ -39,6 +42,98 @@ export default class WordSearch {
         this.handleMouseUp = this.handleMouseUp.bind(this);
         this.handleMouseMove = this.handleMouseMove.bind(this);
         this.handleMouseEnter = this.handleMouseEnter.bind(this);
+        this.handleDifficultyChange = this.handleDifficultyChange.bind(this);
+    }
+
+    getPuzzleData() {
+        const puzzles = {
+            easy: {
+                name: "Easy Halloween Puzzle",
+                description: "Find simple spooky words in this beginner-friendly grid!",
+                grid: [
+                    ['G', 'H', 'O', 'S', 'T', 'M'],
+                    ['O', 'A', 'R', 'A', 'N', 'U'],
+                    ['B', 'T', 'I', 'C', 'K', 'M'],
+                    ['L', 'K', 'N', 'G', 'L', 'M'],
+                    ['I', 'C', 'A', 'T', 'S', 'Y'],
+                    ['N', 'E', 'B', 'A', 'T', 'S']
+                ],
+                words: ['GHOST', 'HAT', 'CATS', 'BATS', 'TRICK']
+            },
+            medium: {
+                name: "Medium Halloween Puzzle",
+                description: "Find spooky words with moderate challenge!",
+                grid: [
+                    ['W', 'I', 'T', 'C', 'H', 'E', 'S'],
+                    ['A', 'R', 'A', 'M', 'U', 'N', 'P'],
+                    ['R', 'D', 'K', 'G', 'M', 'M', 'I'],
+                    ['L', 'C', 'A', 'N', 'D', 'Y', 'D'],
+                    ['O', 'A', 'S', 'T', 'L', 'E', 'R'],
+                    ['C', 'U', 'L', 'D', 'R', 'O', 'N'],
+                    ['K', 'S', 'P', 'O', 'O', 'K', 'Y']
+                ],
+                words: ['WITCHES', 'SPOOKY', 'CANDY', 'CASTLE', 'CAULDRON', 'WARD']
+            },
+            hard: {
+                name: 'Halloween Word Search',
+                description: 'Find Halloween words hidden in the letter grid!',
+                grid: [
+                    ['R', 'N', 'O', 'B', 'W', 'E', 'F', 'F'],
+                    ['E', 'C', 'E', 'G', 'C', 'O', 'B', 'I'],
+                    ['T', 'N', 'A', 'E', 'H', 'S', 'D', 'N'],
+                    ['G', 'R', 'A', 'L', 'O', 'K', 'N', 'U'],
+                    ['Y', 'O', 'I', 'A', 'B', 'A', 'C', 'O'],
+                    ['L', 'T', 'W', 'R', 'R', 'A', 'H', 'R'],
+                    ['E', 'H', 'E', 'E', 'J', 'I', 'E', 'S']
+                ],
+                words: ['EERIE', 'JACKOLANTERN', 'COBWEB', 'BANSHEE', 'WRAITH', 'SHROUD', 'GARGOYLE', 'COFFIN']
+            }
+        };
+        return puzzles;
+    }
+
+    switchDifficulty(difficulty) {
+        if (!['easy', 'medium', 'hard'].includes(difficulty)) {
+            console.warn('Invalid difficulty:', difficulty);
+            return;
+        }
+        
+        this.currentDifficulty = difficulty;
+        this.puzzle = this.getDefaultPuzzle();
+        
+        // Update puzzle-dependent properties
+        this.name = this.puzzle.name;
+        this.description = this.puzzle.description;
+        this.grid = this.puzzle.grid;
+        this.validWords = this.puzzle.words;
+        
+        // Reset all game state
+        this.gameWon = false;
+        this.selectedLetters = [];
+        this.foundWords = [];
+        this.score = 0;
+        this.currentColorIndex = 0;
+        this.isDragging = false;
+
+        // Reset letter colors with new grid dimensions
+        const rows = this.grid.length;
+        const cols = this.grid[0]?.length || 0;
+        this.letterColors = Array(rows).fill(null).map(() => Array(cols).fill(null));
+
+        // Update main game score
+        if (window.gameApp) {
+            window.gameApp.updateScore(this.score);
+        }
+
+        // Refresh the display
+        this.updateDisplay();
+    }
+
+    handleDifficultyChange(event) {
+        const difficulty = event.target.dataset.difficulty;
+        if (difficulty) {
+            this.switchDifficulty(difficulty);
+        }
     }
 
     isAdjacent(row1, col1, row2, col2) {
@@ -360,6 +455,12 @@ export default class WordSearch {
                         </div>
                     </div>
                     <div class="game-background-blur">
+                        <div class="difficulty-selector">
+                            <label>Difficulty: </label>
+                            <button data-difficulty="easy" class="difficulty-btn ${this.currentDifficulty === 'easy' ? 'active' : ''}">Easy</button>
+                            <button data-difficulty="medium" class="difficulty-btn ${this.currentDifficulty === 'medium' ? 'active' : ''}">Medium</button>
+                            <button data-difficulty="hard" class="difficulty-btn ${this.currentDifficulty === 'hard' ? 'active' : ''}">Hard</button>
+                        </div>
                         <h2>🔍 Word Search 🔍</h2>
                         <div class="word-search-container">
                             <div class="word-search-grid">
@@ -390,6 +491,12 @@ export default class WordSearch {
 
         return `
             <div class="game-screen word-search-game" style="--hover-color: ${currentHoverColor}; --hover-text-color: ${currentTextColor};">
+                <div class="difficulty-selector">
+                    <label>Difficulty: </label>
+                    <button data-difficulty="easy" class="difficulty-btn ${this.currentDifficulty === 'easy' ? 'active' : ''}">Easy</button>
+                    <button data-difficulty="medium" class="difficulty-btn ${this.currentDifficulty === 'medium' ? 'active' : ''}">Medium</button>
+                    <button data-difficulty="hard" class="difficulty-btn ${this.currentDifficulty === 'hard' ? 'active' : ''}">Hard</button>
+                </div>
                 <h2>🔍 Word Search 🔍</h2>
                 <div class="word-search-container">
                     <div class="word-search-grid">
@@ -594,6 +701,12 @@ export default class WordSearch {
         if (playAgainButton) {
             playAgainButton.addEventListener('click', () => this.resetGame());
         }
+        
+        // Bind difficulty button events
+        const difficultyButtons = document.querySelectorAll('.difficulty-btn');
+        difficultyButtons.forEach(button => {
+            button.addEventListener('click', this.handleDifficultyChange);
+        });
     }
 
     start() {
@@ -811,29 +924,8 @@ export default class WordSearch {
     }
 
     getDefaultPuzzle() {
-        // Default Halloween puzzle (fallback if no puzzle provided)
-        return {
-            name: 'Halloween Word Search',
-            description: 'Find Halloween words hidden in the letter grid!',
-            grid: [
-                ['R', 'N', 'O', 'B', 'W', 'E', 'F', 'F'],
-                ['E', 'C', 'E', 'G', 'C', 'O', 'B', 'I'],
-                ['T', 'N', 'A', 'E', 'H', 'S', 'D', 'N'],
-                ['G', 'R', 'A', 'L', 'O', 'K', 'N', 'U'],
-                ['Y', 'O', 'I', 'A', 'B', 'A', 'C', 'O'],
-                ['L', 'T', 'W', 'R', 'R', 'A', 'H', 'R'],
-                ['E', 'H', 'E', 'E', 'J', 'I', 'E', 'S']
-            ],
-            words: [
-                'EERIE',
-                'JACKOLANTERN',
-                'COBWEB',
-                'BANSHEE',
-                'WRAITH',
-                'SHROUD',
-                'GARGOYLE',
-                'COFFIN'
-            ]
-        };
+        // Get puzzle based on current difficulty
+        const puzzles = this.getPuzzleData();
+        return puzzles[this.currentDifficulty] || puzzles.easy;
     }
 }
