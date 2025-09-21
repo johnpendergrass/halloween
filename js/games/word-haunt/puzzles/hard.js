@@ -1,11 +1,11 @@
 /**
- * Halloween Word Search Puzzle #1
+ * Halloween Word Haunt Puzzle #1
  * 
  * A 7x8 grid containing Halloween-themed words
  */
 
 module.exports = {
-    name: "Halloween Word Search",
+    name: "Halloween Word Haunt",
     description: "Find Halloween words hidden in the letter grid!",
     
     // 7 rows x 8 columns grid

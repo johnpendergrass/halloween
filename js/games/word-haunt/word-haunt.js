@@ -34,7 +34,7 @@ export default class WordSearch {
         // Load puzzle data
         this.puzzle = puzzle || this.getDefaultPuzzle();
 
-        this.name = this.puzzle.name || 'Word Search';
+        this.name = this.puzzle.name || 'Word Haunt';
         this.description = this.puzzle.description || 'Find words hidden in the letter grid!';
         this.score = 0;
         this.isRunning = false;
@@ -105,7 +105,7 @@ export default class WordSearch {
                 words: ['WITCHES', 'SPOOKY', 'CANDY', 'CASTLE', 'CAULDRON', 'WARD']
             },
             hard: {
-                name: 'Halloween Word Search',
+                name: 'Halloween Word Haunt',
                 description: 'Find Halloween words hidden in the letter grid!',
                 grid: [
                     ['R', 'N', 'O', 'B', 'W', 'E', 'F', 'F'],
@@ -548,7 +548,7 @@ export default class WordSearch {
                             <button data-difficulty="medium" class="difficulty-btn ${this.currentDifficulty === 'medium' ? 'active' : ''}">Medium</button>
                             <button data-difficulty="hard" class="difficulty-btn ${this.currentDifficulty === 'hard' ? 'active' : ''}">Hard</button>
                         </div>
-                        <h2>🔍 Word Search 🔍</h2>
+                        <h2>🔍 Word Haunt 🔍</h2>
                         <div class="word-search-container">
                             <div class="word-search-grid">
                                 ${gridHTML}
@@ -584,7 +584,7 @@ export default class WordSearch {
                     <button data-difficulty="medium" class="difficulty-btn ${this.currentDifficulty === 'medium' ? 'active' : ''}">Medium</button>
                     <button data-difficulty="hard" class="difficulty-btn ${this.currentDifficulty === 'hard' ? 'active' : ''}">Hard</button>
                 </div>
-                <h2>🔍 Word Search 🔍</h2>
+                <h2>🔍 Word Haunt 🔍</h2>
                 <div class="word-search-container">
                     <div class="word-search-grid">
                         ${gridHTML}

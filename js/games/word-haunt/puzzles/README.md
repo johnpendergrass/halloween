@@ -1,10 +1,10 @@
-# Word Search Puzzles
+# Word Haunt Puzzles
 
-This directory contains word search puzzle definitions and validation tools for the Halloween word search game.
+This directory contains word haunt puzzle definitions and validation tools for the Halloween word haunt game.
 
 ## Puzzle Format
 
-Word search puzzles are defined as CommonJS modules that export a puzzle object with the following structure:
+Word haunt puzzles are defined as CommonJS modules that export a puzzle object with the following structure:
 
 ```javascript
 module.exports = {
@@ -91,7 +91,7 @@ The validator searches for each target word in the grid and reports:
 
 ```
 === WORD SEARCH PUZZLE VALIDATION ===
-Puzzle: Halloween Word Search
+Puzzle: Halloween Word Haunt
 Grid size: 7x8
 Target words: 8
 

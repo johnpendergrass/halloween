@@ -7,7 +7,7 @@ class HalloweenGames {
             'game-0': 'Title Screen',
             'game-1': 'Find the Pumpkin',
             'candy-swap': 'Candy Swap',
-            'word-search': 'Word Search'
+            'word-search': 'Word Haunt'
         };
         this.gameDescriptions = {
             'game-0': 'Welcome to Halloween Minigames! Select a game to start playing.',
@@ -39,7 +39,7 @@ class HalloweenGames {
         
         for (const gameId of gameIds) {
             try {
-                const module = await import(`./games/${gameId === 'word-search' ? 'word-search/word-search' : gameId}.js`);
+                const module = await import(`./games/${gameId === 'word-search' ? 'word-haunt/word-haunt' : gameId}.js`);
                 console.log(`Successfully loaded module for ${gameId}:`, module);
                 this.games[gameId] = new module.default();
                 console.log(`Successfully instantiated game ${gameId}:`, this.games[gameId]);

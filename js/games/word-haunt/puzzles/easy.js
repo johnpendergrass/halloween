@@ -1,12 +1,12 @@
 /**
- * Easy Halloween Word Search Puzzle
+ * Easy Halloween Word Haunt Puzzle
  * 
  * A 6x6 grid with simple, short Halloween words
  * Perfect for beginners or quick games
  */
 
 module.exports = {
-    name: "Easy Halloween Puzzle",
+    name: "Easy Halloween Haunt",
     description: "Find simple spooky words in this beginner-friendly grid!",
     
     // 6 rows x 6 columns grid

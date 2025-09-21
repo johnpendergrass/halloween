@@ -1,12 +1,12 @@
 /**
- * Medium Halloween Word Search Puzzle
+ * Medium Halloween Word Haunt Puzzle
  * 
  * A 7x7 grid with moderate difficulty Halloween words
  * Mix of horizontal, vertical, and diagonal placements
  */
 
 module.exports = {
-    name: "Medium Halloween Puzzle",
+    name: "Medium Halloween Haunt",
     description: "Find spooky words with moderate challenge!",
     
     // 7 rows x 7 columns grid

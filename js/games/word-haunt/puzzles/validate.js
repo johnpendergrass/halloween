@@ -60,7 +60,7 @@ const search = (grid, firstChar, rest, row, col, usedLetter) => {
 }
 
 // Validate all words from the puzzle data
-console.log('\n=== WORD SEARCH PUZZLE VALIDATION ===');
+console.log('\n=== WORD HAUNT PUZZLE VALIDATION ===');
 console.log('Puzzle:', puzzle.name);
 console.log('Grid size:', processedGrid.length + 'x' + processedGrid[0].length);
 console.log('Target words:', puzzle.words.length);
