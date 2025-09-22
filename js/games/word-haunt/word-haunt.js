@@ -242,11 +242,23 @@ export default class WordSearch {
                     cellClasses += ` found-word-${letterColor}`;
                 }
 
+                // Add ghost animation when player wins
+                const shouldAnimate = this.gameWon;
+                if (shouldAnimate) {
+                    cellClasses += ' ghost-materializing';
+                }
+
+                // Calculate staggered animation delay based on position
+                const gridCols = this.grid[0]?.length || 0;
+                const animationDelay = shouldAnimate ? `${(rowIndex * gridCols + colIndex) * 100}ms` : '';
+                const delayStyle = shouldAnimate ? `animation-delay: ${animationDelay};` : '';
+
                 return `
                     <div class="${cellClasses}"
                          data-row="${rowIndex}"
                          data-col="${colIndex}"
-                         data-letter="${letter}">
+                         data-letter="${letter}"
+                         style="${delayStyle}">
                         ${letter}
                     </div>
                 `;
@@ -456,129 +468,74 @@ export default class WordSearch {
                     color: #8B0000;
                 }
 
-                /* Victory Screen Styles */
-                .victory-overlay {
+
+                /* Ghost Shimmer Animation */
+                @keyframes ghostMaterialize {
+                    0% {
+                        opacity: 0;
+                        transform: scale(0.8);
+                        box-shadow: 0 0 15px rgba(255, 255, 255, 0.8), 
+                                    0 0 30px rgba(255, 255, 255, 0.4),
+                                    inset 0 0 10px rgba(255, 255, 255, 0.2);
+                    }
+                    25% {
+                        opacity: 0.3;
+                        transform: scale(0.9);
+                        box-shadow: 0 0 20px rgba(255, 255, 255, 0.9), 
+                                    0 0 40px rgba(255, 255, 255, 0.6),
+                                    inset 0 0 15px rgba(255, 255, 255, 0.3);
+                    }
+                    75% {
+                        opacity: 0.8;
+                        transform: scale(1.05);
+                        box-shadow: 0 0 25px rgba(255, 255, 255, 1), 
+                                    0 0 50px rgba(255, 255, 255, 0.8),
+                                    inset 0 0 20px rgba(255, 255, 255, 0.4);
+                    }
+                    100% {
+                        opacity: 1;
+                        transform: scale(1);
+                        box-shadow: none;
+                    }
+                }
+
+                @keyframes shimmerEffect {
+                    0% {
+                        background-position: -200% 0;
+                    }
+                    100% {
+                        background-position: 200% 0;
+                    }
+                }
+
+                .letter-cell.ghost-materializing {
+                    animation: ghostMaterialize 1.5s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+                    position: relative;
+                    overflow: hidden;
+                }
+
+                .letter-cell.ghost-materializing::before {
+                    content: '';
                     position: absolute;
                     top: 0;
                     left: 0;
                     right: 0;
                     bottom: 0;
-                    background: rgba(0, 0, 0, 0.8);
-                    display: flex;
-                    align-items: center;
-                    justify-content: center;
-                    z-index: 1000;
-                    backdrop-filter: blur(5px);
-                }
-
-                .victory-content {
-                    background: linear-gradient(45deg, #ff6600, #8b4513);
-                    color: white;
-                    padding: 40px;
-                    border-radius: 20px;
-                    text-align: center;
-                    box-shadow: 0 0 30px rgba(255, 102, 0, 0.5);
-                    border: 3px solid #ffd700;
-                    animation: victoryPulse 2s ease-in-out infinite alternate;
-                }
-
-                .victory-content h2 {
-                    font-size: 28px;
-                    margin: 0 0 20px 0;
-                    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
-                    line-height: 1.3;
-                }
-
-                .victory-score {
-                    font-size: 24px;
-                    font-weight: bold;
-                    color: #ffd700;
-                    margin: 20px 0;
-                    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.7);
-                }
-
-                .play-again-btn {
-                    background: #228b22;
-                    color: white;
-                    border: none;
-                    padding: 15px 30px;
-                    font-size: 18px;
-                    font-weight: bold;
-                    border-radius: 10px;
-                    cursor: pointer;
-                    transition: all 0.3s ease;
-                    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
-                }
-
-                .play-again-btn:hover {
-                    background: #32cd32;
-                    transform: translateY(-2px);
-                    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.4);
-                }
-
-                .game-background-blur {
-                    filter: blur(3px);
-                    opacity: 0.5;
-                }
-
-                @keyframes victoryPulse {
-                    0% {
-                        transform: scale(1);
-                        box-shadow: 0 0 30px rgba(255, 102, 0, 0.5);
-                    }
-                    100% {
-                        transform: scale(1.05);
-                        box-shadow: 0 0 40px rgba(255, 102, 0, 0.8);
-                    }
+                    background: linear-gradient(
+                        90deg,
+                        transparent,
+                        rgba(255, 255, 255, 0.6),
+                        transparent
+                    );
+                    background-size: 200% 100%;
+                    animation: shimmerEffect 2s ease-in-out infinite;
+                    animation-delay: 0.5s;
+                    border-radius: 6px;
+                    pointer-events: none;
                 }
             </style>
         `;
 
-        // Victory screen content
-        if (this.gameWon) {
-            return `
-                <div class="game-screen word-search-game">
-                    <div class="victory-overlay">
-                        <div class="victory-content">
-                            <h2>🎉 CONGRATULATIONS! 🎉<br>You found all the words!</h2>
-                            <div class="victory-score">Final Score: ${this.score}</div>
-                            <button id="play-again" class="play-again-btn">🎃 Play Again 🎃</button>
-                        </div>
-                    </div>
-                    <div class="game-background-blur">
-                        <div class="difficulty-selector">
-                            <label>Difficulty: </label>
-                            <button data-difficulty="easy" class="difficulty-btn ${this.currentDifficulty === 'easy' ? 'active' : ''}">Easy</button>
-                            <button data-difficulty="medium" class="difficulty-btn ${this.currentDifficulty === 'medium' ? 'active' : ''}">Medium</button>
-                            <button data-difficulty="hard" class="difficulty-btn ${this.currentDifficulty === 'hard' ? 'active' : ''}">Hard</button>
-                        </div>
-                        <h2>🔍 Word Haunt 🔍</h2>
-                        <div class="word-search-container">
-                            <div class="word-search-grid">
-                                ${gridHTML}
-                            </div>
-
-                            <div class="word-search-sidebar">
-                                <div class="selected-word-section">
-                                    <h3>Selected Word:</h3>
-                                    <div class="selected-word">${selectedWord || '(none)'}</div>
-                                    <div class="word-controls">
-                                        <button id="submit-word" disabled>Submit</button>
-                                        <button id="reset-word" disabled>Reset</button>
-                                    </div>
-                                    <div id="word-feedback" class="word-feedback"></div>
-                                </div>
-
-                                <div class="found-words-section">
-                                    <h3>Found Words: ${this.foundWords.length}/${this.validWords.length}</h3>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    ${styles}
-                </div>
-            `;
-        }
 
         return `
             <div class="game-screen word-search-game" style="--hover-color: ${currentHoverColor}; --hover-text-color: ${currentTextColor};">
@@ -599,8 +556,8 @@ export default class WordSearch {
                             <h3>Selected Word:</h3>
                             <div class="selected-word">${selectedWord || '(none)'}</div>
                             <div class="word-controls">
-                                <button id="submit-word" ${selectedWord.length === 0 ? 'disabled' : ''}>Submit</button>
-                                <button id="reset-word" ${selectedWord.length === 0 ? 'disabled' : ''}>Reset</button>
+                                <button id="submit-word" ${selectedWord.length === 0 || this.gameWon ? 'disabled' : ''}>Submit</button>
+                                <button id="reset-word" ${selectedWord.length === 0 || this.gameWon ? 'disabled' : ''}>Reset</button>
                             </div>
                             <div id="word-feedback" class="word-feedback"></div>
                         </div>
@@ -616,7 +573,7 @@ export default class WordSearch {
     }
 
     handleLetterClick(event) {
-        if (!this.isRunning || this.isDragging) return;
+        if (!this.isRunning || this.isDragging || this.gameWon) return;
 
         const cell = event.target.closest('.letter-cell');
         if (!cell) return;
@@ -738,7 +695,7 @@ export default class WordSearch {
     }
 
     handleReset() {
-        if (!this.isRunning) return;
+        if (!this.isRunning || this.gameWon) return;
 
         this.selectedLetters = [];
         this.updateDisplay();
@@ -779,7 +736,6 @@ export default class WordSearch {
         // Bind control button events
         const submitButton = document.getElementById('submit-word');
         const resetButton = document.getElementById('reset-word');
-        const playAgainButton = document.getElementById('play-again');
 
         if (submitButton) {
             submitButton.addEventListener('click', this.handleSubmit);
@@ -787,10 +743,6 @@ export default class WordSearch {
 
         if (resetButton) {
             resetButton.addEventListener('click', this.handleReset);
-        }
-
-        if (playAgainButton) {
-            playAgainButton.addEventListener('click', () => this.resetGame());
         }
         
         // Bind difficulty button events
@@ -865,8 +817,17 @@ export default class WordSearch {
     }
 
     showVictoryScreen(victoryType) {
-        // Clear existing UI and show victory screen
+        // Update display to show victory state with ghost animation
         this.updateDisplay();
+        
+        // Set victory message in feedback area
+        setTimeout(() => {
+            const feedback = document.getElementById('word-feedback');
+            if (feedback) {
+                feedback.textContent = 'You Win!';
+                feedback.className = 'word-feedback correct';
+            }
+        }, 100);
     }
 
     resetGame() {
@@ -892,7 +853,7 @@ export default class WordSearch {
 
     // Mouse event handlers for drag selection
     handleMouseDown(event) {
-        if (!this.isRunning) return;
+        if (!this.isRunning || this.gameWon) return;
 
         const cell = event.target.closest('.letter-cell');
         if (!cell) return;
@@ -955,7 +916,7 @@ export default class WordSearch {
     }
 
     handleMouseEnter(event) {
-        if (!this.isRunning || !this.isDragging) return;
+        if (!this.isRunning || !this.isDragging || this.gameWon) return;
 
         const cell = event.target.closest('.letter-cell');
         if (!cell) return;
