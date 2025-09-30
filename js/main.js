@@ -9,7 +9,8 @@ class HalloweenGames {
             'candy-swap': 'Candy Swap',
             'game-3': 'Spider Web',
             'game-4': 'Bat Cave',
-            'game-5': "Witch's Brew"
+            'game-5': "Witch's Brew",
+            'trick-r-treat-inc': "Trick r' Treat Inc."
         };
         this.gameDescriptions = {
             'game-0': 'Welcome to Halloween Minigames! Select a game to start playing.',
@@ -17,7 +18,8 @@ class HalloweenGames {
             'candy-swap': 'Trade candy with friends to build the best collection!',
             'game-3': 'Navigate through the intricate spider webs.',
             'game-4': 'Explore the mysterious depths of the bat cave.',
-            'game-5': 'Mix magical potions with the witch!'
+            'game-5': 'Mix magical potions with the witch!',
+            'trick-r-treat-inc': 'Build your candy empire in this spooky corporation tycoon game!'
         };
         
         this.init();
@@ -39,7 +41,7 @@ class HalloweenGames {
     }
 
     async loadGames() {
-        const gameIds = ['game-0', 'game-1', 'candy-swap', 'game-3', 'game-4', 'game-5'];
+        const gameIds = ['game-0', 'game-1', 'candy-swap', 'game-3', 'game-4', 'game-5', 'trick-r-treat-inc'];
         
         for (const gameId of gameIds) {
             try {
@@ -93,7 +95,8 @@ class HalloweenGames {
             'candy-swap': '🍬🍬🍬',
             'game-3': '🕷️🕸️🕷️',
             'game-4': '🦇🦇🦇',
-            'game-5': '🧙‍♀️⚗️🧙‍♀️'
+            'game-5': '🧙‍♀️⚗️🧙‍♀️',
+            'trick-r-treat-inc': '🏢🍬💰'
         };
         return emojis[gameId] || '🎃';
     }
