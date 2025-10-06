@@ -10,7 +10,7 @@ class HalloweenGames {
             'game-3': 'Spider Web',
             'game-4': 'Bat Cave',
             'game-5': "Witch's Brew",
-            'trick-r-treat-inc': "Trick r' Treat Inc."
+            'welcome-game': "Welcome Game"
         };
         this.gameDescriptions = {
             'game-0': 'Welcome to Halloween Minigames! Select a game to start playing.',
@@ -19,7 +19,7 @@ class HalloweenGames {
             'game-3': 'Navigate through the intricate spider webs.',
             'game-4': 'Explore the mysterious depths of the bat cave.',
             'game-5': 'Mix magical potions with the witch!',
-            'trick-r-treat-inc': 'Build your candy empire in this spooky corporation tycoon game!'
+            'welcome-game': 'Welcome to the game!'
         };
         
         this.init();
@@ -41,7 +41,7 @@ class HalloweenGames {
     }
 
     async loadGames() {
-        const gameIds = ['game-0', 'game-1', 'candy-swap', 'game-3', 'game-4', 'game-5', 'trick-r-treat-inc'];
+        const gameIds = ['game-0', 'game-1', 'candy-swap', 'game-3', 'game-4', 'game-5', 'welcome-game'];
         
         for (const gameId of gameIds) {
             try {
@@ -96,7 +96,7 @@ class HalloweenGames {
             'game-3': '🕷️🕸️🕷️',
             'game-4': '🦇🦇🦇',
             'game-5': '🧙‍♀️⚗️🧙‍♀️',
-            'trick-r-treat-inc': '🏢🍬💰'
+            'welcome-game': '🏢🍬💰'
         };
         return emojis[gameId] || '🎃';
     }
