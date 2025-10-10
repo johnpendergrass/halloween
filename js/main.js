@@ -42,10 +42,17 @@ class HalloweenGames {
 
     async loadGames() {
         const gameIds = ['game-0', 'game-1', 'candy-swap', 'game-3', 'game-4', 'game-5', 'welcome-game'];
-        
+
         for (const gameId of gameIds) {
             try {
-                const module = await import(`./games/${gameId}.js`);
+                let module;
+                try {
+                    // Try subdirectory structure first (e.g., welcome-game/welcome-game.js)
+                    module = await import(`./games/${gameId}/${gameId}.js`);
+                } catch (subError) {
+                    // Fall back to flat structure (e.g., game-0.js)
+                    module = await import(`./games/${gameId}.js`);
+                }
                 console.log(`Successfully loaded module for ${gameId}:`, module);
                 this.games[gameId] = new module.default();
                 console.log(`Successfully instantiated game ${gameId}:`, this.games[gameId]);
