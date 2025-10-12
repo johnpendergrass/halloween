@@ -5,6 +5,7 @@ export default class WelcomeGame {
         this.rotationInterval = null;
         this.isOnTarget = false;
         this.keydownHandler = null;
+        this.rotationSpeed = 2.152;
     }
 
     render() {
@@ -28,8 +29,8 @@ export default class WelcomeGame {
             // 360 degrees over 5 seconds = 72 degrees per second
             // Update every 16ms (roughly 60fps) = 1.152 degrees per frame
             this.rotationInterval = setInterval(() => {
-                this.rotation += 2.152;
-                const normalizedRotation = this.rotation % 360;
+                this.rotation += this.rotationSpeed;
+                const normalizedRotation = ((this.rotation % 360) + 360) % 360;
 
                 // Check if spinner is pointing at target (280-290 degrees)
                 this.isOnTarget = normalizedRotation >= 300 && normalizedRotation <= 350;
@@ -55,6 +56,8 @@ export default class WelcomeGame {
                     if (window.gameApp) {
                         window.gameApp.updateScore(this.score);
                     }
+                    // Reverse rotation direction
+                    this.rotationSpeed *= -1;
                 }
             }
         };
