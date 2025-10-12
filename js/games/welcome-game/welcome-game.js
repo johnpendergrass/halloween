@@ -8,6 +8,28 @@ export default class WelcomeGame {
         this.rotationSpeed = 2.152;
     }
 
+    positionOnCircle(degreesFromTop) {
+        // Circle properties
+        const centerX = 5;      // spinner center X
+        const centerY = 35;     // spinner center Y
+        const radius = 100;     // canvas is 200x200
+
+        // Convert "degrees from top" to standard angle
+        // (0° = right, 90° = down, 180° = left, 270° = up)
+        const standardAngle = degreesFromTop - 90;
+        const radians = standardAngle * Math.PI / 180;
+
+        // Calculate position on circle
+        const x = centerX + radius * Math.cos(radians);
+        const y = centerY + radius * Math.sin(radians);
+
+        // Rotation to point toward center
+        // degreesFromTop + 180 makes it point inward
+        const rotation = degreesFromTop + 180;
+
+        return `translateX(${x}px) translateY(${y}px) rotate(${rotation}deg)`;
+    }
+
     render() {
         return `<div style="background-color: rgb(36, 28, 70); width: 100%; height: 100%; padding: 20px; display: flex; flex-direction: column; align-items: center; justify-content: center;">
                 <div id="score-display" style="color: white; font-size: 32px; font-weight: bold; margin-bottom: 20px;">Score: 0</div>
@@ -15,6 +37,10 @@ export default class WelcomeGame {
                     <img src="js/games/welcome-game/halloween_bg.png" style="grid-area: 1/1; width: 100%; height: 100%; object-fit: contain;">
                     <img id="candy-corn" src="js/games/welcome-game/Candy_Corn.png" style="grid-area: 1/1; z-index: 1; height: 180px; transform: translateX(5px) translateY(35px) rotate(5deg);">
                     <img id="candy-corn-target" src="js/games/welcome-game/Candy_Corn.png" style="grid-area: 1/1; z-index: 1; height: 60px; transform: translateX(-90px) translateY(-45px) rotate(125deg); transition: height 0.15s ease-out;">
+                    <img id="candy-corn-target-2" src="js/games/welcome-game/Candy_Corn.png" style="grid-area: 1/1; z-index: 1; height: 60px; transform: ${this.positionOnCircle(45)}; transition: height 0.15s ease-out;">
+                    <img id="candy-corn-target-3" src="js/games/welcome-game/Candy_Corn.png" style="grid-area: 1/1; z-index: 1; height: 60px; transform: ${this.positionOnCircle(140)}; transition: height 0.15s ease-out;">
+                    <img id="candy-corn-target-4" src="js/games/welcome-game/Candy_Corn.png" style="grid-area: 1/1; z-index: 1; height: 60px; transform: ${this.positionOnCircle(225)}; transition: height 0.15s ease-out;">
+                    <img id="candy-corn-target-5" src="js/games/welcome-game/Candy_Corn.png" style="grid-area: 1/1; z-index: 1; height: 60px; transform: ${this.positionOnCircle(315)}; transition: height 0.15s ease-out;">
                     <canvas id="game-canvas" width="200" height="200" style="position: absolute; top: 57%; left: 50%; transform: translate(-50%, -50%); z-index: 2;"></canvas>
                 </div>
         </div>`;
@@ -24,6 +50,10 @@ export default class WelcomeGame {
         console.log('Welcome game started');
         const candyCorn = document.getElementById('candy-corn');
         const target = document.getElementById('candy-corn-target');
+        const target2 = document.getElementById('candy-corn-target-2');
+        const target3 = document.getElementById('candy-corn-target-3');
+        const target4 = document.getElementById('candy-corn-target-4');
+        const target5 = document.getElementById('candy-corn-target-5');
         const scoreDisplay = document.getElementById('score-display');
         const canvas = document.getElementById('game-canvas');
 
@@ -54,8 +84,13 @@ export default class WelcomeGame {
                 // Update spinner rotation
                 candyCorn.style.transform = `translateX(5px) translateY(35px) rotate(${this.rotation}deg)`;
 
-                // Update target size based on whether spinner is on target
-                target.style.height = this.isOnTarget ? '90px' : '60px';
+                // Update target sizes based on whether spinner is on target
+                const targetSize = this.isOnTarget ? '90px' : '60px';
+                target.style.height = targetSize;
+                if (target2) target2.style.height = targetSize;
+                if (target3) target3.style.height = targetSize;
+                if (target4) target4.style.height = targetSize;
+                if (target5) target5.style.height = targetSize;
             }, 16);
         }
 
