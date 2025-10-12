@@ -11,10 +11,11 @@ export default class WelcomeGame {
     render() {
         return `<div style="background-color: rgb(36, 28, 70); width: 100%; height: 100%; padding: 20px; display: flex; flex-direction: column; align-items: center; justify-content: center;">
                 <div id="score-display" style="color: white; font-size: 32px; font-weight: bold; margin-bottom: 20px;">Score: 0</div>
-                <div style="display: grid; grid-template: 1fr / 1fr; place-items: center; background: radial-gradient(ellipse at center, #fff6a0 0%, #ffaa00 30%, #ff4400 70%, #cc0000 100%); height: 404px;">
+                <div style="display: grid; grid-template: 1fr / 1fr; place-items: center; background: radial-gradient(ellipse at center, #fff6a0 0%, #ffaa00 30%, #ff4400 70%, #cc0000 100%); height: 404px; position: relative;">
                     <img src="js/games/welcome-game/halloween_bg.png" style="grid-area: 1/1; width: 100%; height: 100%; object-fit: contain;">
                     <img id="candy-corn" src="js/games/welcome-game/Candy_Corn.png" style="grid-area: 1/1; z-index: 1; height: 180px; transform: translateX(5px) translateY(35px) rotate(5deg);">
                     <img id="candy-corn-target" src="js/games/welcome-game/Candy_Corn.png" style="grid-area: 1/1; z-index: 1; height: 60px; transform: translateX(-90px) translateY(-45px) rotate(125deg); transition: height 0.15s ease-out;">
+                    <canvas id="game-canvas" width="200" height="200" style="position: absolute; top: 57%; left: 50%; transform: translate(-50%, -50%); z-index: 2;"></canvas>
                 </div>
         </div>`;
     }
@@ -24,6 +25,21 @@ export default class WelcomeGame {
         const candyCorn = document.getElementById('candy-corn');
         const target = document.getElementById('candy-corn-target');
         const scoreDisplay = document.getElementById('score-display');
+        const canvas = document.getElementById('game-canvas');
+
+        // Draw circle on canvas
+        if (canvas) {
+            const ctx = canvas.getContext('2d');
+            const centerX = canvas.width / 2;
+            const centerY = canvas.height / 2;
+            const radius = canvas.width / 2;
+
+            ctx.beginPath();
+            ctx.arc(centerX, centerY, radius, 0, 2 * Math.PI);
+            ctx.strokeStyle = 'lime';
+            ctx.lineWidth = 1;
+            ctx.stroke();
+        }
 
         if (candyCorn && target) {
             // 360 degrees over 5 seconds = 72 degrees per second
