@@ -12,7 +12,7 @@ export default class WelcomeGame {
         // Circle properties
         const centerX = 5;      // spinner center X
         const centerY = 35;     // spinner center Y
-        const radius = 100;     // canvas is 200x200
+        const radius = 120;     // canvas is 200x200
 
         // Convert "degrees from top" to standard angle
         // (0° = right, 90° = down, 180° = left, 270° = up)
@@ -36,12 +36,10 @@ export default class WelcomeGame {
                 <div style="display: grid; grid-template: 1fr / 1fr; place-items: center; background: radial-gradient(ellipse at center, #fff6a0 0%, #ffaa00 30%, #ff4400 70%, #cc0000 100%); height: 404px; position: relative;">
                     <img src="js/games/welcome-game/halloween_bg.png" style="grid-area: 1/1; width: 100%; height: 100%; object-fit: contain;">
                     <img id="candy-corn" src="js/games/welcome-game/Candy_Corn.png" style="grid-area: 1/1; z-index: 1; height: 180px; transform: translateX(5px) translateY(35px) rotate(5deg);">
-                    <img id="candy-corn-target" src="js/games/welcome-game/Candy_Corn.png" style="grid-area: 1/1; z-index: 1; height: 60px; transform: translateX(-90px) translateY(-45px) rotate(125deg); transition: height 0.15s ease-out;">
                     <img id="candy-corn-target-2" src="js/games/welcome-game/Candy_Corn.png" style="grid-area: 1/1; z-index: 1; height: 60px; transform: ${this.positionOnCircle(45)}; transition: height 0.15s ease-out;">
                     <img id="candy-corn-target-3" src="js/games/welcome-game/Candy_Corn.png" style="grid-area: 1/1; z-index: 1; height: 60px; transform: ${this.positionOnCircle(140)}; transition: height 0.15s ease-out;">
                     <img id="candy-corn-target-4" src="js/games/welcome-game/Candy_Corn.png" style="grid-area: 1/1; z-index: 1; height: 60px; transform: ${this.positionOnCircle(225)}; transition: height 0.15s ease-out;">
                     <img id="candy-corn-target-5" src="js/games/welcome-game/Candy_Corn.png" style="grid-area: 1/1; z-index: 1; height: 60px; transform: ${this.positionOnCircle(315)}; transition: height 0.15s ease-out;">
-                    <canvas id="game-canvas" width="200" height="200" style="position: absolute; top: 57%; left: 50%; transform: translate(-50%, -50%); z-index: 2;"></canvas>
                 </div>
         </div>`;
     }
