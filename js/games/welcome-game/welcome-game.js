@@ -6,6 +6,7 @@ export default class WelcomeGame {
         this.isOnTarget = false;
         this.keydownHandler = null;
         this.rotationSpeed = 2.152;
+        this.targetDegree = 0;
     }
 
     positionOnCircle(degreesFromTop) {
@@ -30,16 +31,24 @@ export default class WelcomeGame {
         return `translateX(${x}px) translateY(${y}px) rotate(${rotation}deg)`;
     }
 
+    repositionTarget() {
+        // Generate random degree 0-360
+        this.targetDegree = Math.random() * 360;
+
+        // Update target element position
+        const target = document.getElementById('candy-corn-target');
+        if (target) {
+            target.style.transform = this.positionOnCircle(this.targetDegree);
+        }
+    }
+
     render() {
         return `<div style="background-color: rgb(36, 28, 70); width: 100%; height: 100%; padding: 20px; display: flex; flex-direction: column; align-items: center; justify-content: center;">
                 <div id="score-display" style="color: white; font-size: 32px; font-weight: bold; margin-bottom: 20px;">Score: 0</div>
                 <div style="display: grid; grid-template: 1fr / 1fr; place-items: center; background: radial-gradient(ellipse at center, #fff6a0 0%, #ffaa00 30%, #ff4400 70%, #cc0000 100%); height: 404px; position: relative;">
                     <img src="js/games/welcome-game/halloween_bg.png" style="grid-area: 1/1; width: 100%; height: 100%; object-fit: contain;">
                     <img id="candy-corn" src="js/games/welcome-game/Candy_Corn.png" style="grid-area: 1/1; z-index: 1; height: 180px; transform: translateX(5px) translateY(35px) rotate(5deg);">
-                    <img id="candy-corn-target-2" src="js/games/welcome-game/Candy_Corn.png" style="grid-area: 1/1; z-index: 1; height: 60px; transform: ${this.positionOnCircle(45)}; transition: height 0.15s ease-out;">
-                    <img id="candy-corn-target-3" src="js/games/welcome-game/Candy_Corn.png" style="grid-area: 1/1; z-index: 1; height: 60px; transform: ${this.positionOnCircle(140)}; transition: height 0.15s ease-out;">
-                    <img id="candy-corn-target-4" src="js/games/welcome-game/Candy_Corn.png" style="grid-area: 1/1; z-index: 1; height: 60px; transform: ${this.positionOnCircle(225)}; transition: height 0.15s ease-out;">
-                    <img id="candy-corn-target-5" src="js/games/welcome-game/Candy_Corn.png" style="grid-area: 1/1; z-index: 1; height: 60px; transform: ${this.positionOnCircle(315)}; transition: height 0.15s ease-out;">
+                    <img id="candy-corn-target" src="js/games/welcome-game/Candy_Corn.png" style="grid-area: 1/1; z-index: 1; height: 60px; transform: translateX(5px) translateY(-85px) rotate(180deg); transition: height 0.15s ease-out;">
                 </div>
         </div>`;
     }
@@ -48,12 +57,11 @@ export default class WelcomeGame {
         console.log('Welcome game started');
         const candyCorn = document.getElementById('candy-corn');
         const target = document.getElementById('candy-corn-target');
-        const target2 = document.getElementById('candy-corn-target-2');
-        const target3 = document.getElementById('candy-corn-target-3');
-        const target4 = document.getElementById('candy-corn-target-4');
-        const target5 = document.getElementById('candy-corn-target-5');
         const scoreDisplay = document.getElementById('score-display');
         const canvas = document.getElementById('game-canvas');
+
+        // Position target at random location
+        this.repositionTarget();
 
         // Draw circle on canvas
         if (canvas) {
@@ -76,19 +84,19 @@ export default class WelcomeGame {
                 this.rotation += this.rotationSpeed;
                 const normalizedRotation = ((this.rotation % 360) + 360) % 360;
 
-                // Check if spinner is pointing at target (280-290 degrees)
-                this.isOnTarget = normalizedRotation >= 300 && normalizedRotation <= 350;
+                // Check if spinner is pointing at target (within tolerance)
+                const tolerance = 25;
+                const diff = Math.abs(normalizedRotation - this.targetDegree);
+                // Handle wrap-around (e.g., 355° and 5° are 10° apart, not 350°)
+                const angleDiff = Math.min(diff, 360 - diff);
+                this.isOnTarget = angleDiff <= tolerance;
 
                 // Update spinner rotation
                 candyCorn.style.transform = `translateX(5px) translateY(35px) rotate(${this.rotation}deg)`;
 
-                // Update target sizes based on whether spinner is on target
+                // Update target size based on whether spinner is on target
                 const targetSize = this.isOnTarget ? '90px' : '60px';
-                target.style.height = targetSize;
-                if (target2) target2.style.height = targetSize;
-                if (target3) target3.style.height = targetSize;
-                if (target4) target4.style.height = targetSize;
-                if (target5) target5.style.height = targetSize;
+                if (target) target.style.height = targetSize;
             }, 16);
         }
 
@@ -107,6 +115,8 @@ export default class WelcomeGame {
                     }
                     // Reverse rotation direction
                     this.rotationSpeed *= -1;
+                    // Reposition target to random location
+                    this.repositionTarget();
                 }
             }
         };
