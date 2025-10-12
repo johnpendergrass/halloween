@@ -43,6 +43,84 @@ export default class WelcomeGame {
         }
     }
 
+    setWinState() {
+        // Hide spinner and target
+        const candyCorn = document.getElementById('candy-corn');
+        const target = document.getElementById('candy-corn-target');
+        if (candyCorn) candyCorn.style.opacity = '0';
+        if (target) target.style.opacity = '0';
+
+        // Get game content area
+        const gameContent = document.getElementById('game-content');
+        if (!gameContent) return;
+
+        const contentRect = gameContent.getBoundingClientRect();
+
+        // Create shower container
+        const showerContainer = document.createElement('div');
+        showerContainer.id = 'candy-corn-shower';
+        showerContainer.style.cssText = `
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1000;
+            overflow: hidden;
+        `;
+        gameContent.style.position = 'relative'; // Ensure parent is positioned
+        gameContent.appendChild(showerContainer);
+
+        // Create 180 falling candy corns
+        const numCorns = 180;
+        for (let i = 0; i < numCorns; i++) {
+            const corn = document.createElement('img');
+            corn.src = 'js/games/welcome-game/Candy_Corn.png';
+
+            // Random properties
+            const startX = Math.random() * contentRect.width;
+            const height = 40 + Math.random() * 40; // 40-80px height
+            const duration = 2 + Math.random() * 2; // 2-4 seconds
+            const delay = Math.random() * 2; // 0-2s delay (continuous spawning)
+            const rotations = 1 + Math.random() * 3; // 1-4 full rotations
+
+            corn.style.cssText = `
+                position: absolute;
+                left: ${startX}px;
+                top: -100px;
+                height: ${height}px;
+                width: auto;
+                animation: fall-${i} ${duration}s linear ${delay}s forwards,
+                           rotate-${i} ${duration}s linear ${delay}s infinite;
+            `;
+
+            // Create unique keyframes for each corn
+            const styleSheet = document.createElement('style');
+            styleSheet.textContent = `
+                @keyframes fall-${i} {
+                    to { top: ${contentRect.height + 100}px; }
+                }
+                @keyframes rotate-${i} {
+                    to { transform: rotate(${rotations * 360}deg); }
+                }
+            `;
+            document.head.appendChild(styleSheet);
+
+            showerContainer.appendChild(corn);
+        }
+
+        // Clean up after 7 seconds (2s spawn + 4s max fall + 1s buffer)
+        setTimeout(() => {
+            if (showerContainer && showerContainer.parentNode) {
+                showerContainer.parentNode.removeChild(showerContainer);
+            }
+            // Restore game elements
+            if (candyCorn) candyCorn.style.opacity = '1';
+            if (target) target.style.opacity = '1';
+        }, 7000);
+    }
+
     render() {
         return `<div style="background-color: rgb(36, 28, 70); width: 100%; height: 100%; padding: 20px; display: flex; flex-direction: column; align-items: center; justify-content: center;">
                 <div id="score-display" style="color: white; font-size: 32px; font-weight: bold; margin-bottom: 20px;">Score: 0</div>
@@ -112,15 +190,29 @@ export default class WelcomeGame {
                 if (window.gameApp) {
                     window.gameApp.updateScore(this.score);
                 }
-                // Reverse rotation direction
+
+                // Trigger win state at score 13
+                if (this.score === 13) {
+                    this.setWinState();
+                }
+
+                // Reverse rotation direction and increase speed
                 this.rotationSpeed *= -1;
+                const speedMultiplier = 1.1; // 10% faster each time
+                this.rotationSpeed = this.rotationSpeed > 0
+                    ? this.rotationSpeed * speedMultiplier
+                    : this.rotationSpeed * speedMultiplier;
                 // Reposition target to random location
                 this.repositionTarget();
             }
         };
 
-        // Add keydown listener (any key)
+        // Add keydown listener (any key, except browser shortcuts)
         this.keydownHandler = (e) => {
+            // Don't interfere with browser shortcuts (cmd/ctrl + key)
+            if (e.metaKey || e.ctrlKey) {
+                return;
+            }
             e.preventDefault();
             handleScore();
         };
