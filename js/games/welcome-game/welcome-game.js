@@ -115,9 +115,32 @@ export default class WelcomeGame {
             if (showerContainer && showerContainer.parentNode) {
                 showerContainer.parentNode.removeChild(showerContainer);
             }
-            // Restore game elements
-            if (candyCorn) candyCorn.style.opacity = '1';
-            if (target) target.style.opacity = '1';
+
+            // Wait 1 more second, then reset and restore game
+            setTimeout(() => {
+                // Reset game state
+                this.score = 0;
+                this.rotationSpeed = 2.152;
+                this.rotation = 5;
+
+                // Update score display
+                const scoreDisplay = document.getElementById('score-display');
+                if (scoreDisplay) {
+                    scoreDisplay.textContent = 'Score: 0';
+                }
+
+                // Update game app score
+                if (window.gameApp) {
+                    window.gameApp.updateScore(0);
+                }
+
+                // Reposition target
+                this.repositionTarget();
+
+                // Restore game elements AFTER reset
+                if (candyCorn) candyCorn.style.opacity = '1';
+                if (target) target.style.opacity = '1';
+            }, 1000);
         }, 7000);
     }
 
