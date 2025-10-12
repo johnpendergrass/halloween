@@ -5,6 +5,7 @@ export default class WelcomeGame {
         this.rotationInterval = null;
         this.isOnTarget = false;
         this.keydownHandler = null;
+        this.clickHandler = null;
         this.rotationSpeed = 2.152;
         this.targetDegree = 0;
     }
@@ -100,27 +101,36 @@ export default class WelcomeGame {
             }, 16);
         }
 
-        // Add spacebar listener
-        this.keydownHandler = (e) => {
-            if (e.code === 'Space' || e.key === ' ') {
-                e.preventDefault();
-                if (this.isOnTarget) {
-                    this.score++;
-                    if (scoreDisplay) {
-                        scoreDisplay.textContent = `Score: ${this.score}`;
-                    }
-                    // Update the game app score
-                    if (window.gameApp) {
-                        window.gameApp.updateScore(this.score);
-                    }
-                    // Reverse rotation direction
-                    this.rotationSpeed *= -1;
-                    // Reposition target to random location
-                    this.repositionTarget();
+        // Scoring logic (shared between keydown and click)
+        const handleScore = () => {
+            if (this.isOnTarget) {
+                this.score++;
+                if (scoreDisplay) {
+                    scoreDisplay.textContent = `Score: ${this.score}`;
                 }
+                // Update the game app score
+                if (window.gameApp) {
+                    window.gameApp.updateScore(this.score);
+                }
+                // Reverse rotation direction
+                this.rotationSpeed *= -1;
+                // Reposition target to random location
+                this.repositionTarget();
             }
         };
+
+        // Add keydown listener (any key)
+        this.keydownHandler = (e) => {
+            e.preventDefault();
+            handleScore();
+        };
         document.addEventListener('keydown', this.keydownHandler);
+
+        // Add click listener
+        this.clickHandler = () => {
+            handleScore();
+        };
+        document.addEventListener('click', this.clickHandler);
     }
 
     stop() {
@@ -132,6 +142,10 @@ export default class WelcomeGame {
         if (this.keydownHandler) {
             document.removeEventListener('keydown', this.keydownHandler);
             this.keydownHandler = null;
+        }
+        if (this.clickHandler) {
+            document.removeEventListener('click', this.clickHandler);
+            this.clickHandler = null;
         }
     }
 
