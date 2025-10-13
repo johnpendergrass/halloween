@@ -43,6 +43,21 @@ export default class WelcomeGame {
         }
     }
 
+    updateBackground() {
+        const background = document.getElementById('game-background');
+        if (background) {
+            let bgImage = 'halloween_bg.png';
+            if (this.score === 0) {
+                bgImage = 'Halloween_1.png';
+            } else if (this.score === 1) {
+                bgImage = 'Halloween_2.png';
+            } else if (this.score === 2) {
+                bgImage = 'Halloween_3.png';
+            }
+            background.src = `js/games/welcome-game/${bgImage}`;
+        }
+    }
+
     setWinState() {
         // Hide spinner and target
         const candyCorn = document.getElementById('candy-corn');
@@ -137,6 +152,9 @@ export default class WelcomeGame {
                 // Reposition target
                 this.repositionTarget();
 
+                // Update background to default
+                this.updateBackground();
+
                 // Restore game elements AFTER reset
                 if (candyCorn) candyCorn.style.opacity = '1';
                 if (target) target.style.opacity = '1';
@@ -148,7 +166,7 @@ export default class WelcomeGame {
         return `<div style="background-color: rgb(36, 28, 70); width: 100%; height: 100%; padding: 20px; display: flex; flex-direction: column; align-items: center; justify-content: center;">
                 <div id="score-display" style="color: white; font-size: 32px; font-weight: bold; margin-bottom: 20px;">Score: 0</div>
                 <div style="display: grid; grid-template: 1fr / 1fr; place-items: center; background: radial-gradient(ellipse at center, #fff6a0 0%, #ffaa00 30%, #ff4400 70%, #cc0000 100%); height: 404px; position: relative;">
-                    <img src="js/games/welcome-game/halloween_bg.png" style="grid-area: 1/1; width: 100%; height: 100%; object-fit: contain;">
+                    <img id="game-background" src="js/games/welcome-game/halloween_bg.png" style="grid-area: 1/1; width: 100%; height: 100%; object-fit: contain;">
                     <img id="candy-corn" src="js/games/welcome-game/Candy_Corn.png" style="grid-area: 1/1; z-index: 1; height: 180px; transform: translateX(5px) translateY(35px) rotate(5deg);">
                     <img id="candy-corn-target" src="js/games/welcome-game/Candy_Corn.png" style="grid-area: 1/1; z-index: 1; height: 60px; transform: translateX(5px) translateY(-85px) rotate(180deg); transition: height 0.15s ease-out;">
                 </div>
@@ -164,6 +182,9 @@ export default class WelcomeGame {
 
         // Position target at random location
         this.repositionTarget();
+
+        // Set initial background
+        this.updateBackground();
 
         // Draw circle on canvas
         if (canvas) {
@@ -213,6 +234,9 @@ export default class WelcomeGame {
                 if (window.gameApp) {
                     window.gameApp.updateScore(this.score);
                 }
+
+                // Update background based on new score
+                this.updateBackground();
 
                 // Trigger win state at score 13
                 if (this.score === 13) {
