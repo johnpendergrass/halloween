@@ -43,16 +43,19 @@ export default class WelcomeGame {
         }
     }
 
+    // Background image progression:
+    // - score = 0: Halloween_1.png
+    // - score = 1: Halloween_2.png
+    // - score = n (for n = 0-13): Halloween_{n+1}.png
+    // - score = 14: Halloween_Final.png (winning state)
     updateBackground() {
         const background = document.getElementById('game-background');
         if (background) {
-            let bgImage = 'halloween_bg.png';
-            if (this.score === 0) {
-                bgImage = 'Halloween_1.png';
-            } else if (this.score === 1) {
-                bgImage = 'Halloween_2.png';
-            } else if (this.score === 2) {
-                bgImage = 'Halloween_3.png';
+            let bgImage;
+            if (this.score === 14) {
+                bgImage = 'Halloween_Final.png';
+            } else {
+                bgImage = `Halloween_${this.score + 1}.png`;
             }
             background.src = `js/games/welcome-game/${bgImage}`;
         }
@@ -238,8 +241,8 @@ export default class WelcomeGame {
                 // Update background based on new score
                 this.updateBackground();
 
-                // Trigger win state at score 13
-                if (this.score === 13) {
+                // Trigger win state at score 14
+                if (this.score === 14) {
                     this.setWinState();
                 }
 
