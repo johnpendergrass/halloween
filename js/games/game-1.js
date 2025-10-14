@@ -7,8 +7,8 @@ export default class FindPumpkin {
         this.isRunning = false;
         
         // Pumpkin position (starting in center)
-        this.pumpkinX = 340; // Center of game area (780px / 2 - 50px for pumpkin center)
-        this.pumpkinY = 290; // Center of game area (680px / 2 - 50px for pumpkin center)
+        this.pumpkinX = 402; // Center of game area (905px / 2 - 50px for pumpkin center)
+        this.pumpkinY = 310; // Center of game area (720px / 2 - 50px for pumpkin center)
         
         // Movement settings
         this.moveDistance = 20;
@@ -16,9 +16,9 @@ export default class FindPumpkin {
         
         // Game area boundaries (accounting for padding and pumpkin size)
         this.minX = 0;
-        this.maxX = 680; // 780px - 100px pumpkin width
+        this.maxX = 805; // 905px - 100px pumpkin width
         this.minY = 0;
-        this.maxY = 580; // 680px - 100px pumpkin height
+        this.maxY = 620; // 720px - 100px pumpkin height
         
         // Bind the keyboard handler to maintain 'this' context
         this.handleKeyPress = this.handleKeyPress.bind(this);
