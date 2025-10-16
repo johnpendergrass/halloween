@@ -11,7 +11,7 @@
  * - Run with command like `node js/games/word-search/puzzles/validate.js`
  */
 
-const puzzle = require('./hard');
+const puzzle = require('./easy');
 const processedGrid = puzzle.grid;
 
 function findWord(grid, word) {
