@@ -5,7 +5,7 @@
  * Perfect for beginners or quick games
  */
 
-module.exports = {
+export default {
     name: "Spotted on Halloween night...",
     description: "Find all the words",
 

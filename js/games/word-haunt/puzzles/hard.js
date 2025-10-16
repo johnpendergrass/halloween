@@ -4,7 +4,7 @@
  * A 7x8 grid containing Halloween-themed words
  */
 
-module.exports = {
+export default {
     name: "Halloween Word Haunt",
     description: "Find Halloween words hidden in the letter grid!",
     

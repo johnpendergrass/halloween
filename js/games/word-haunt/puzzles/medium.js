@@ -5,7 +5,7 @@
  * Mix of horizontal, vertical, and diagonal placements
  */
 
-module.exports = {
+export default {
     name: "Medium Halloween Haunt",
     description: "Find spooky words with moderate challenge!",
     

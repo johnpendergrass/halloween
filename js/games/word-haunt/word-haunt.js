@@ -1,3 +1,7 @@
+import easyPuzzle from './puzzles/easy.js';
+import mediumPuzzle from './puzzles/medium.js';
+import hardPuzzle from './puzzles/hard.js';
+
 export default class WordSearch {
     constructor(puzzle = null) {
         // Set default difficulty
@@ -76,50 +80,11 @@ export default class WordSearch {
     }
 
     getPuzzleData() {
-        const puzzles = {
-            easy: {
-                name: "Easy Halloween Puzzle",
-                description: "Find simple spooky words in this beginner-friendly grid!",
-                grid: [
-                    ['G', 'H', 'O', 'S', 'T', 'M'],
-                    ['O', 'A', 'R', 'A', 'N', 'U'],
-                    ['B', 'T', 'I', 'C', 'K', 'M'],
-                    ['L', 'K', 'N', 'G', 'L', 'M'],
-                    ['I', 'C', 'A', 'T', 'S', 'Y'],
-                    ['N', 'E', 'B', 'A', 'T', 'S']
-                ],
-                words: ['GHOST', 'HAT', 'CATS', 'BATS', 'TRICK']
-            },
-            medium: {
-                name: "Medium Halloween Puzzle",
-                description: "Find spooky words with moderate challenge!",
-                grid: [
-                    ['W', 'I', 'T', 'C', 'H', 'E', 'S'],
-                    ['A', 'R', 'A', 'M', 'U', 'N', 'P'],
-                    ['R', 'D', 'K', 'G', 'M', 'M', 'I'],
-                    ['L', 'C', 'A', 'N', 'D', 'Y', 'D'],
-                    ['O', 'A', 'S', 'T', 'L', 'E', 'R'],
-                    ['C', 'U', 'L', 'D', 'R', 'O', 'N'],
-                    ['K', 'S', 'P', 'O', 'O', 'K', 'Y']
-                ],
-                words: ['WITCHES', 'SPOOKY', 'CANDY', 'CASTLE', 'CAULDRON', 'WARD']
-            },
-            hard: {
-                name: 'Halloween Word Haunt',
-                description: 'Find Halloween words hidden in the letter grid!',
-                grid: [
-                    ['R', 'N', 'O', 'B', 'W', 'E', 'F', 'F'],
-                    ['E', 'C', 'E', 'G', 'C', 'O', 'B', 'I'],
-                    ['T', 'N', 'A', 'E', 'H', 'S', 'D', 'N'],
-                    ['G', 'R', 'A', 'L', 'O', 'K', 'N', 'U'],
-                    ['Y', 'O', 'I', 'A', 'B', 'A', 'C', 'O'],
-                    ['L', 'T', 'W', 'R', 'R', 'A', 'H', 'R'],
-                    ['E', 'H', 'E', 'E', 'J', 'I', 'E', 'S']
-                ],
-                words: ['EERIE', 'JACKOLANTERN', 'COBWEB', 'BANSHEE', 'WRAITH', 'SHROUD', 'GARGOYLE', 'COFFIN']
-            }
+        return {
+            easy: easyPuzzle,
+            medium: mediumPuzzle,
+            hard: hardPuzzle
         };
-        return puzzles;
     }
 
     switchDifficulty(difficulty) {
