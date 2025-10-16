@@ -3,17 +3,28 @@ class HalloweenGames {
         this.currentGame = 'game-0';
         this.currentScore = 0;
         this.games = {};
+        this.isPanelCollapsed = false;
         this.gameNames = {
             'game-0': 'Title Screen',
             'game-1': 'Find the Pumpkin',
             'candy-swap': 'Candy Swap',
-            'word-search': 'Word Haunt'
+            'word-haunt': 'Word Haunt',
+            'game-3': 'Spider Web',
+            'game-4': 'Bat Cave',
+            'game-5': "Witch's Brew",
+            'welcome-game': "Welcome Game",
+            'test-size': 'Test Size'
         };
         this.gameDescriptions = {
             'game-0': 'Welcome to Halloween Minigames! Select a game to start playing.',
             'game-1': 'Use WASD keys to move the pumpkin around the screen!',
             'candy-swap': 'Trade candy with friends to build the best collection!',
-            'word-search': 'Find Halloween words hidden in the letter grid!'
+            'word-haunt': 'Find Halloween words hidden in the letter grid!',
+            'game-3': 'Navigate through the intricate spider webs.',
+            'game-4': 'Explore the mysterious depths of the bat cave.',
+            'game-5': 'Mix magical potions with the witch!',
+            'welcome-game': 'Welcome to the game!',
+            'test-size': 'Test to verify exact 905x720 pixel dimensions with sliding panel overlay'
         };
         
         this.init();
@@ -32,14 +43,37 @@ class HalloweenGames {
                 this.switchGame(gameId);
             });
         });
+
+        // Panel toggle button
+        const toggleBtn = document.getElementById('panel-toggle-btn');
+        if (toggleBtn) {
+            toggleBtn.addEventListener('click', (e) => {
+                e.preventDefault();
+                this.togglePanel();
+            });
+        }
+
+        // Load panel state from localStorage
+        const savedPanelState = localStorage.getItem('panelState');
+        if (savedPanelState === 'collapsed') {
+            this.isPanelCollapsed = true;
+            this.updatePanelState();
+        }
     }
 
     async loadGames() {
-        const gameIds = ['game-0', 'game-1', 'candy-swap', 'word-search'];
-        
+        const gameIds = ['game-0', 'game-1', 'candy-swap', 'word-haunt', 'game-3', 'game-4', 'game-5', 'welcome-game', 'test-size'];
+
         for (const gameId of gameIds) {
             try {
-                const module = await import(`./games/${gameId === 'word-search' ? 'word-haunt/word-haunt' : gameId}.js`);
+                let module;
+                try {
+                    // Try subdirectory structure first (e.g., welcome-game/welcome-game.js)
+                    module = await import(`./games/${gameId}/${gameId}.js`);
+                } catch (subError) {
+                    // Fall back to flat structure (e.g., game-0.js)
+                    module = await import(`./games/${gameId}.js`);
+                }
                 console.log(`Successfully loaded module for ${gameId}:`, module);
                 this.games[gameId] = new module.default();
                 console.log(`Successfully instantiated game ${gameId}:`, this.games[gameId]);
@@ -53,6 +87,29 @@ class HalloweenGames {
         // Initialize the title screen after all games are loaded
         this.switchGame('game-0');
         this.updateUI();
+    }
+
+    togglePanel() {
+        this.isPanelCollapsed = !this.isPanelCollapsed;
+        this.updatePanelState();
+        localStorage.setItem('panelState', this.isPanelCollapsed ? 'collapsed' : 'expanded');
+    }
+
+    updatePanelState() {
+        const panel = document.querySelector('.right-nav');
+        const arrow = document.querySelector('.toggle-arrow');
+        
+        if (this.isPanelCollapsed) {
+            panel.classList.remove('expanded');
+            panel.classList.add('collapsed');
+            // Panel is collapsed, show expand arrow with simple format
+            arrow.textContent = '←···';
+        } else {
+            panel.classList.remove('collapsed');
+            panel.classList.add('expanded');
+            // Panel is expanded, show collapse arrow pointing right
+            arrow.textContent = '···→';
+        }
     }
 
     createFallbackGame(gameId) {
@@ -87,9 +144,12 @@ class HalloweenGames {
             'game-0': '🦇👻🎃',
             'game-1': '🎃🎃🎃',
             'candy-swap': '🍬🍬🍬',
+            'word-haunt': '🔍👻🔍',
             'game-3': '🕷️🕸️🕷️',
             'game-4': '🦇🦇🦇',
-            'game-5': '🧙‍♀️⚗️🧙‍♀️'
+            'game-5': '🧙‍♀️⚗️🧙‍♀️',
+            'welcome-game': '🏢🍬💰',
+            'test-size': '📏📐📏'
         };
         return emojis[gameId] || '🎃';
     }
@@ -98,6 +158,23 @@ class HalloweenGames {
         console.log('=== SWITCH GAME DEBUG ===');
         console.log('Switching to game:', gameId);
         console.log('Current game:', this.currentGame);
+        
+        // Auto-collapse/expand panel based on game (do this even if same game)
+        if (gameId === 'game-0') {
+            // Title screen - expand panel
+            if (this.isPanelCollapsed) {
+                this.isPanelCollapsed = false;
+                this.updatePanelState();
+                localStorage.setItem('panelState', 'expanded');
+            }
+        } else {
+            // Any game - collapse panel for more space
+            if (!this.isPanelCollapsed) {
+                this.isPanelCollapsed = true;
+                this.updatePanelState();
+                localStorage.setItem('panelState', 'collapsed');
+            }
+        }
         
         if (this.currentGame === gameId) {
             console.log('Already on this game, returning');

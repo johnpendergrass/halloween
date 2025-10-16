@@ -39,9 +39,8 @@
             </div>
 
             <!-- Right Navigation - Game List -->
-            <div class="right-nav">
+            <div class="right-nav expanded">
                 <div class="title-section">
-                    <h3>🦇 Menu</h3>
                     <ul class="game-list">
                         <li class="game-item active" data-game="game-0">
                             <span class="game-icon">🏠</span>
@@ -51,7 +50,7 @@
                 </div>
                 
                 <div class="games-section">
-                    <h3>🕸️ Games</h3>
+                    <h3><span class="games-icon">🕸️</span> <span class="games-text">Games</span></h3>
                     <ul class="game-list">
                         <li class="game-item" data-game="game-1">
                             <span class="game-icon">🎃</span>
@@ -61,11 +60,26 @@
                             <span class="game-icon">🍬</span>
                             <span class="game-name">Candy Swap</span>
                         </li>
-                        <li class="game-item" data-game="word-search">
+                        <li class="game-item" data-game="word-haunt">
                             <span class="game-icon">🔍</span>
                             <span class="game-name">Word Haunt</span>
                         </li>
+                        <li class="game-item" data-game="welcome-game">
+                            <span class="game-icon">🏢</span>
+                            <span class="game-name">Welcome Game</span>
+                        </li>
+                        <li class="game-item" data-game="test-size">
+                            <span class="game-icon">📏</span>
+                            <span class="game-name">Test Size</span>
+                        </li>
                     </ul>
+                </div>
+                
+                <!-- Panel Toggle Button -->
+                <div class="panel-toggle">
+                    <button id="panel-toggle-btn" class="toggle-button" aria-label="Toggle panel">
+                        <span class="toggle-arrow">···→</span>
+                    </button>
                 </div>
             </div>
         </div>
