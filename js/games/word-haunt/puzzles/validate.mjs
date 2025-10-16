@@ -6,12 +6,25 @@
  * it's valid (and having some of them found more than once doesn't mean the puzzle isn't valid either), but it's a start.
  *
  * Usage:
- * - Replace txtInput with grid to test
- * - Replace words at bottom with target words
- * - Run with command like `node js/games/word-search/puzzles/validate.js`
+ * - npm run validate-word-haunt easy
+ * - npm run validate-word-haunt medium
+ * - npm run validate-word-haunt hard
  */
 
-const puzzle = require('./easy');
+// Get puzzle name from command line argument (default to 'easy')
+const puzzleName = process.argv[2] || 'easy';
+
+// Validate puzzle name
+if (!['easy', 'medium', 'hard'].includes(puzzleName)) {
+  console.error(`❌ Invalid puzzle name: "${puzzleName}"`);
+  console.error('Valid options: easy, medium, hard');
+  console.error('Usage: npm run validate-word-haunt <puzzle-name>');
+  process.exit(1);
+}
+
+// Load puzzle using dynamic import (for ES6 modules)
+const puzzleModule = await import(`./${puzzleName}.mjs`);
+const puzzle = puzzleModule.default;
 const processedGrid = puzzle.grid;
 
 function findWord(grid, word) {

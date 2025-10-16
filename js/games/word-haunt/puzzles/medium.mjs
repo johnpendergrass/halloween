@@ -8,7 +8,7 @@
 export default {
     name: "Medium Halloween Haunt",
     description: "Find spooky words with moderate challenge!",
-    
+
     // 7 rows x 7 columns grid
     grid: [
         ['W', 'I', 'T', 'C', 'H', 'E', 'S'],
@@ -19,7 +19,7 @@ export default {
         ['C', 'U', 'L', 'D', 'R', 'O', 'N'],
         ['K', 'S', 'P', 'O', 'O', 'K', 'Y']
     ],
-    
+
     // Target words to find - mix of lengths and orientations
     words: [
         'WITCHES',  // 7 letters - horizontal, top row
@@ -29,7 +29,7 @@ export default {
         'CAULDRON', // 8 letters - diagonal, scattered
         'WARD'      // 4 letters - vertical, column 1
     ],
-    
+
     gridSize: 49,           // 7 * 7 = 49
     totalWordLength: 36     // 7+6+5+6+8+4 = 36
 };

@@ -12,7 +12,8 @@
       "Bash(npm run create-word-search:*)",
       "Bash(npm run validate-partial-word-search:*)",
       "Bash(node:*)",
-      "Bash(cat:*)"
+      "Bash(cat:*)",
+      "Bash(npm run validate-word-haunt:*)"
     ],
     "deny": [],
     "ask": []

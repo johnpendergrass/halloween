@@ -1,6 +1,6 @@
-import easyPuzzle from './puzzles/easy.js';
-import mediumPuzzle from './puzzles/medium.js';
-import hardPuzzle from './puzzles/hard.js';
+import easyPuzzle from './puzzles/easy.mjs';
+import mediumPuzzle from './puzzles/medium.mjs';
+import hardPuzzle from './puzzles/hard.mjs';
 
 export default class WordSearch {
     constructor(puzzle = null) {

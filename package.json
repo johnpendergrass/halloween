@@ -6,7 +6,8 @@
   "scripts": {
     "test": "jest",
     "test:watch": "jest --watch",
-    "serve": "python3 -m http.server 8000"
+    "serve": "python3 -m http.server 8000",
+    "validate-word-haunt": "node js/games/word-haunt/puzzles/validate.mjs"
   },
   "devDependencies": {
     "jest": "^29.7.0"

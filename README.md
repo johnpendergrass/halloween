@@ -46,6 +46,50 @@ TBD
 
 5. **Start developing!** Edit files and refresh the browser to see changes.
 
+## 🔍 Word Haunt Puzzle Validation
+
+The Word Haunt game includes a validation tool to ensure puzzle integrity. Each word in the puzzle should appear exactly once in the grid.
+
+### Running the Validator
+
+```bash
+# Validate the easy puzzle (default)
+npm run validate-word-haunt easy
+
+# Validate the medium puzzle
+npm run validate-word-haunt medium
+
+# Validate the hard puzzle
+npm run validate-word-haunt hard
+```
+
+### Validation Results
+
+- ✅ **GOOD** - All words found exactly once
+- ⚠️ **NEEDS REVIEW** - One or more words found 0 or multiple times
+
+The validator shows:
+- How many times each word appears in the grid
+- Summary of validation results
+- Grid dimensions and word count
+
+### Example Output
+
+```
+=== WORD HAUNT PUZZLE VALIDATION ===
+Puzzle: Spotted on Halloween night...
+Grid size: 5x8
+Target words: 6
+
+=== INDIVIDUAL WORD VALIDATION ===
+word BUZZ found 1 time(s)
+word ELSA found 3 time(s)
+word FIREFIGHTER found 1 time(s)
+...
+
+Validation result: NEEDS REVIEW ⚠️
+```
+
 ## GitHub Pages Deployment
 
 This project is designed to work seamlessly with GitHub Pages:

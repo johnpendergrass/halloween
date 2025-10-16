@@ -7,7 +7,7 @@
 export default {
     name: "Halloween Word Haunt",
     description: "Find Halloween words hidden in the letter grid!",
-    
+
     // 7 rows x 8 columns grid
     grid: [
         ['R', 'N', 'O', 'B', 'W', 'E', 'F', 'F'],
@@ -18,7 +18,7 @@ export default {
         ['L', 'T', 'W', 'R', 'R', 'A', 'H', 'R'],
         ['E', 'H', 'E', 'E', 'J', 'I', 'E', 'S']
     ],
-    
+
     // Target words to find (total length should equal grid size: 7*8 = 56)
     words: [
         'EERIE',       // 5 letters
@@ -31,7 +31,7 @@ export default {
         'COFFIN'       // 6 letters
     ],
     // Total: 5+12+6+7+6+6+8+6 = 56 letters ✓
-    
+
     gridSize: 56,
     totalWordLength: 56
 };
