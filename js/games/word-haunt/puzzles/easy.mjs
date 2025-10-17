@@ -6,7 +6,7 @@
  */
 
 export default {
-    name: "Spotted on Halloween night...",
+    name: "Spotted on Halloween night",
     description: "Find all the words",
 
     // 6 rows x 6 columns grid
