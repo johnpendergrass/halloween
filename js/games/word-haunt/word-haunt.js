@@ -275,6 +275,7 @@ export default class WordSearch {
                     padding: 15px;
                     border-radius: 8px;
                     border: 2px solid #8b4513;
+                    align-self: flex-start;
                 }
 
                 .letter-cell {
