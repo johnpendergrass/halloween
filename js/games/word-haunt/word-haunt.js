@@ -6,7 +6,10 @@ export default class WordSearch {
     constructor(puzzle = null) {
         // Set default difficulty
         this.currentDifficulty = 'easy';
-        
+
+        // Define available puzzles (determines UI buttons and puzzle numbering)
+        this.availablePuzzles = ['easy', 'medium'];
+
         // Initialize separate states for each difficulty
         this.difficultyStates = {
             easy: {
@@ -85,6 +88,11 @@ export default class WordSearch {
             medium: mediumPuzzle,
             hard: hardPuzzle
         };
+    }
+
+    getPuzzleNumber(difficulty) {
+        const index = this.availablePuzzles.indexOf(difficulty);
+        return index !== -1 ? index + 1 : 0;
     }
 
     switchDifficulty(difficulty) {
@@ -258,6 +266,16 @@ export default class WordSearch {
                     padding: 20px;
                     height: 100%;
                     overflow-y: auto;
+                }
+
+                .puzzle-subtitle {
+                    font-size: 18px;
+                    color: #ffd700;
+                    font-weight: 700;
+                    margin: -10px 0 20px 0;
+                    font-style: italic;
+                    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+                    letter-spacing: 0.5px;
                 }
 
                 .word-search-container {
@@ -503,15 +521,19 @@ export default class WordSearch {
         `;
 
 
+        const difficultyButtons = this.availablePuzzles.map(difficulty => {
+            const capitalizedDifficulty = difficulty.charAt(0).toUpperCase() + difficulty.slice(1);
+            return `<button data-difficulty="${difficulty}" class="difficulty-btn ${this.currentDifficulty === difficulty ? 'active' : ''}">${capitalizedDifficulty}</button>`;
+        }).join('\n                    ');
+
         return `
             <div class="game-screen word-search-game" style="--hover-color: ${currentHoverColor}; --hover-text-color: ${currentTextColor};">
                 <div class="difficulty-selector">
                     <label>Difficulty: </label>
-                    <button data-difficulty="easy" class="difficulty-btn ${this.currentDifficulty === 'easy' ? 'active' : ''}">Easy</button>
-                    <button data-difficulty="medium" class="difficulty-btn ${this.currentDifficulty === 'medium' ? 'active' : ''}">Medium</button>
-                    <button data-difficulty="hard" class="difficulty-btn ${this.currentDifficulty === 'hard' ? 'active' : ''}">Hard</button>
+                    ${difficultyButtons}
                 </div>
                 <h2>Word Haunt</h2>
+                <div class="puzzle-subtitle">Puzzle ${this.getPuzzleNumber(this.currentDifficulty)}: ${this.puzzle.name}</div>
                 <div class="word-search-container">
                     <div class="word-search-grid">
                         ${gridHTML}
