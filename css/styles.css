@@ -323,6 +323,32 @@ body {
     flex-shrink: 0;
 }
 
+/* Word Haunt custom grid icon */
+.word-haunt-icon {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr 1fr;
+    gap: 0;
+    width: 30px;
+    height: 30px;
+    font-size: 0.75em;
+}
+
+.word-haunt-icon > span {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    line-height: 0.8;
+    letter-spacing: -0.1em;
+}
+
+/* Make letters bigger than emojis */
+.word-haunt-icon > span:first-child,
+.word-haunt-icon > span:last-child {
+    font-size: 1.3em;
+    font-weight: bold;
+}
+
 .game-name {
     font-weight: bold;
     flex-grow: 1;

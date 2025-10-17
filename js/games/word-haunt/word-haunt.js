@@ -510,7 +510,7 @@ export default class WordSearch {
                     <button data-difficulty="medium" class="difficulty-btn ${this.currentDifficulty === 'medium' ? 'active' : ''}">Medium</button>
                     <button data-difficulty="hard" class="difficulty-btn ${this.currentDifficulty === 'hard' ? 'active' : ''}">Hard</button>
                 </div>
-                <h2>🔍 Word Haunt 🔍</h2>
+                <h2>Word Haunt</h2>
                 <div class="word-search-container">
                     <div class="word-search-grid">
                         ${gridHTML}
