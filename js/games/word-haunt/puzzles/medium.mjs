@@ -1,35 +1,56 @@
 /**
  * Medium Halloween Word Haunt Puzzle
- * 
+ *
  * A 7x7 grid with moderate difficulty Halloween words
  * Mix of horizontal, vertical, and diagonal placements
  */
 
 export default {
-    name: "Medium Halloween Haunt",
+    name: "Trick 'r Treat Goodness",
     description: "Find spooky words with moderate challenge!",
 
-    // 7 rows x 7 columns grid
     grid: [
-        ['W', 'I', 'T', 'C', 'H', 'E', 'S'],
-        ['A', 'R', 'A', 'M', 'U', 'N', 'P'],
-        ['R', 'D', 'K', 'G', 'M', 'M', 'I'],
-        ['L', 'C', 'A', 'N', 'D', 'Y', 'D'],
-        ['O', 'A', 'S', 'T', 'L', 'E', 'R'],
-        ['C', 'U', 'L', 'D', 'R', 'O', 'N'],
-        ['K', 'S', 'P', 'O', 'O', 'K', 'Y']
+        ['E', 'N', 'C', 'N', 'R', 'O'],
+        ['Y', 'O', 'N', 'A', 'C', 'B'],
+        ['L', 'M', 'D', 'O', 'P', 'O'],
+        ['L', 'A', 'Y', 'P', 'N', 'U'],
+        ['C', 'F', 'B', 'C', 'R', 'E'],
+        ['A', 'R', 'T', 'Y', 'O', 'L'],
+        ['R', 'U', 'I', 'K', 'C', 'P'],
+        ['A', 'M', 'E', 'L', 'A', 'P'],
     ],
+    // grid: [
+    //     [' ', ' ', ' ', ' ', ' ', ' '],
+    //     [' ', ' ', ' ', ' ', ' ', ' '],
+    //     [' ', ' ', ' ', ' ', ' ', ' '],
+    //     [' ', ' ', ' ', ' ', ' ', ' '],
+    //     [' ', ' ', ' ', ' ', ' ', ' '],
+    //     [' ', ' ', ' ', ' ', ' ', ' '],
+    //     [' ', ' ', ' ', ' ', ' ', ' '],
+    //     [' ', ' ', ' ', ' ', ' ', ' '],
+    // ],
+    // grid: [
+    //     ['Y', 'D', 'N', 'A', 'C', ' '],
+    //     ['B', 'O', 'U', ' ', ' ', ' '],
+    //     [' ', ' ', ' ', 'N', 'C', ' '],
+    //     [' ', ' ', ' ', ' ', ' ', 'Y'],
+    //     ['C', ' ', ' ', ' ', 'B', 'E'],
+    //     ['A', ' ', ' ', ' ', 'A', 'L'],
+    //     ['R', ' ', ' ', 'L', 'L', 'P'],
+    //     ['A', 'M', 'E', 'L', 'A', 'P'],
+    // ],
 
     // Target words to find - mix of lengths and orientations
     words: [
-        'WITCHES',  // 7 letters - horizontal, top row
-        'SPOOKY',   // 6 letters - horizontal, bottom row
-        'CANDY',    // 5 letters - horizontal, row 4
-        'CASTLE',   // 6 letters - vertical, column 6
-        'CAULDRON', // 8 letters - diagonal, scattered
-        'WARD'      // 4 letters - vertical, column 1
+        'CARAMELAPPLE', //
+        'CANDY',
+        'MONEY',
+        'POPCORN', //
+        'FRUIT',//
+        'BOUNCYBALL', //
+        'ROCK', //
     ],
 
-    gridSize: 49,           // 7 * 7 = 49
-    totalWordLength: 36     // 7+6+5+6+8+4 = 36
+    gridSize: 48,
+    totalWordLength: 48,
 };
